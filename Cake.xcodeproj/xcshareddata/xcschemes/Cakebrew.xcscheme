@@ -16,8 +16,8 @@
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "1FE4FE53148E4CDD008EDE8B"
                BuildableName = "Cakebrew.app"
-               BlueprintName = "Cakebrew"
-               ReferencedContainer = "container:Cakebrew.xcodeproj">
+               BlueprintName = "Cake"
+               ReferencedContainer = "container:Cake.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
          <BuildActionEntry
@@ -29,9 +29,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "D261C9BF1B852FA300409803"
-               BuildableName = "CakebrewTests.xctest"
-               BlueprintName = "CakebrewTests"
-               ReferencedContainer = "container:Cakebrew.xcodeproj">
+               BuildableName = "CakeTests.xctest"
+               BlueprintName = "CakeTests"
+               ReferencedContainer = "container:Cake.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -46,8 +46,8 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "1FE4FE53148E4CDD008EDE8B"
             BuildableName = "Cakebrew.app"
-            BlueprintName = "Cakebrew"
-            ReferencedContainer = "container:Cakebrew.xcodeproj">
+            BlueprintName = "Cake"
+            ReferencedContainer = "container:Cake.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <Testables>
@@ -56,9 +56,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "D261C9BF1B852FA300409803"
-               BuildableName = "CakebrewTests.xctest"
-               BlueprintName = "CakebrewTests"
-               ReferencedContainer = "container:Cakebrew.xcodeproj">
+               BuildableName = "CakeTests.xctest"
+               BlueprintName = "CakeTests"
+               ReferencedContainer = "container:Cake.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -79,8 +79,8 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "1FE4FE53148E4CDD008EDE8B"
             BuildableName = "Cakebrew.app"
-            BlueprintName = "Cakebrew"
-            ReferencedContainer = "container:Cakebrew.xcodeproj">
+            BlueprintName = "Cake"
+            ReferencedContainer = "container:Cake.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -96,8 +96,8 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "1FE4FE53148E4CDD008EDE8B"
             BuildableName = "Cakebrew.app"
-            BlueprintName = "Cakebrew"
-            ReferencedContainer = "container:Cakebrew.xcodeproj">
+            BlueprintName = "Cake"
+            ReferencedContainer = "container:Cake.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "D261C9BF1B852FA300409803"
-               BuildableName = "CakebrewTests.xctest"
-               BlueprintName = "CakebrewTests"
-               ReferencedContainer = "container:Cakebrew.xcodeproj">
+               BuildableName = "CakeTests.xctest"
+               BlueprintName = "CakeTests"
+               ReferencedContainer = "container:Cake.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -31,9 +31,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "D261C9BF1B852FA300409803"
-            BuildableName = "CakebrewTests.xctest"
-            BlueprintName = "CakebrewTests"
-            ReferencedContainer = "container:Cakebrew.xcodeproj">
+            BuildableName = "CakeTests.xctest"
+            BlueprintName = "CakeTests"
+            ReferencedContainer = "container:Cake.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <Testables>
@@ -42,9 +42,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "D261C9BF1B852FA300409803"
-               BuildableName = "CakebrewTests.xctest"
-               BlueprintName = "CakebrewTests"
-               ReferencedContainer = "container:Cakebrew.xcodeproj">
+               BuildableName = "CakeTests.xctest"
+               BlueprintName = "CakeTests"
+               ReferencedContainer = "container:Cake.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -63,9 +63,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "D261C9BF1B852FA300409803"
-            BuildableName = "CakebrewTests.xctest"
-            BlueprintName = "CakebrewTests"
-            ReferencedContainer = "container:Cakebrew.xcodeproj">
+            BuildableName = "CakeTests.xctest"
+            BlueprintName = "CakeTests"
+            ReferencedContainer = "container:Cake.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
    </LaunchAction>
