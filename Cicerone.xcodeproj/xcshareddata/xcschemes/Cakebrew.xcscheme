@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "1FE4FE53148E4CDD008EDE8B"
-               BuildableName = "Cakebrew.app"
+               BuildableName = "Cake.app"
                BlueprintName = "Cake"
                ReferencedContainer = "container:Cake.xcodeproj">
             </BuildableReference>
@@ -45,7 +45,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "1FE4FE53148E4CDD008EDE8B"
-            BuildableName = "Cakebrew.app"
+            BuildableName = "Cake.app"
             BlueprintName = "Cake"
             ReferencedContainer = "container:Cake.xcodeproj">
          </BuildableReference>
@@ -78,7 +78,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "1FE4FE53148E4CDD008EDE8B"
-            BuildableName = "Cakebrew.app"
+            BuildableName = "Cake.app"
             BlueprintName = "Cake"
             ReferencedContainer = "container:Cake.xcodeproj">
          </BuildableReference>
@@ -95,7 +95,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "1FE4FE53148E4CDD008EDE8B"
-            BuildableName = "Cakebrew.app"
+            BuildableName = "Cake.app"
             BlueprintName = "Cake"
             ReferencedContainer = "container:Cake.xcodeproj">
          </BuildableReference>
