@@ -1,10 +1,10 @@
 # Cicerone
 
-A GUI for the (Home-)Brew CLI tool (`Brew`) found at [brew.sh](https://brew.sh). `Brew` is a build artifact and/or source code distribution tool similar to `Choco` and `WinGet`, but for macOS. This GUI tool aims to make it easier to use and control. See (the features section)
+A GUI for the `Brew` CLI tool found at [brew.sh](https://brew.sh). `Brew` is a build artifact and/or source code distribution tool similar to `Choco` and `WinGet`, but for macOS and Linux. This GUI tool aims to make it easier to use and control on macOS. See [the Features section](#Features).
 
-Cicero is based on Bruno Philipe's [Cakebrew](https://github.com/brunophilipe/Cakebrew), which itself is based on Vincent Saluzzo's [Homebrew-GUI](https://github.com/vincentsaluzzo/Homebrew-GUI). The commit histories of both are still attached to this branch in Git.
+Cicerone is based on Bruno Philipe's [Cakebrew](https://github.com/brunophilipe/Cakebrew), which itself is based on Vincent Saluzzo's [Homebrew-GUI](https://github.com/vincentsaluzzo/Homebrew-GUI). The commit histories of both are still attached to this branch in Git.
 
-See [the credits file](Credits.md) for more information on the historical context of the source code and other content distributed with this file.
+See [the Credits file](Credits.MD) for more information on the historical context of the source code and other content distributed with this file.
 
 ## Features
 
@@ -64,7 +64,9 @@ See [the credits file](Credits.md) for more information on the historical contex
         - [ ] from Errored States
 - [ ] Publish Distributions (Formulae)
     - [ ] Generate Local Distribution Entries (Formulae)
-- [ ] Other Distribution Tools
+- [?] Other Distribution Tools
+    - [?] Differences Between Distributions
+- [?] Cross-Platform
 
 </details>
 
@@ -107,7 +109,7 @@ Copyright © 2014-2021 Bruno Philipe, © 2023 Alex Fânaț. All rights reserved.
 
 <summary>
 
-### FOSS Author Liabilities Statement
+### FOSS Author Liabilities Information
 
 </summary>
 
