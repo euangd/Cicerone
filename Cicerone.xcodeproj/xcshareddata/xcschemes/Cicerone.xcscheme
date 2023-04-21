@@ -9,15 +9,29 @@
          <BuildActionEntry
             buildForTesting = "YES"
             buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "1FE4FE53148E4CDD008EDE8B"
+               BuildableName = "Cicerone.app"
+               BlueprintName = "Cicerone"
+               ReferencedContainer = "container:Cicerone.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
             buildForProfiling = "NO"
             buildForArchiving = "NO"
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "D261C9BF1B852FA300409803"
-               BuildableName = "CakeTests.xctest"
-               BlueprintName = "CakeTests"
-               ReferencedContainer = "container:Cake.xcodeproj">
+               BuildableName = "CiceroneTests.xctest"
+               BlueprintName = "CiceroneTests"
+               ReferencedContainer = "container:Cicerone.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -30,10 +44,10 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "D261C9BF1B852FA300409803"
-            BuildableName = "CakeTests.xctest"
-            BlueprintName = "CakeTests"
-            ReferencedContainer = "container:Cake.xcodeproj">
+            BlueprintIdentifier = "1FE4FE53148E4CDD008EDE8B"
+            BuildableName = "Cicerone.app"
+            BlueprintName = "Cicerone"
+            ReferencedContainer = "container:Cicerone.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <Testables>
@@ -42,9 +56,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "D261C9BF1B852FA300409803"
-               BuildableName = "CakeTests.xctest"
-               BlueprintName = "CakeTests"
-               ReferencedContainer = "container:Cake.xcodeproj">
+               BuildableName = "CiceroneTests.xctest"
+               BlueprintName = "CiceroneTests"
+               ReferencedContainer = "container:Cicerone.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -59,15 +73,16 @@
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
       allowLocationSimulation = "YES">
-      <MacroExpansion>
+      <BuildableProductRunnable
+         runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "D261C9BF1B852FA300409803"
-            BuildableName = "CakeTests.xctest"
-            BlueprintName = "CakeTests"
-            ReferencedContainer = "container:Cake.xcodeproj">
+            BlueprintIdentifier = "1FE4FE53148E4CDD008EDE8B"
+            BuildableName = "Cicerone.app"
+            BlueprintName = "Cicerone"
+            ReferencedContainer = "container:Cicerone.xcodeproj">
          </BuildableReference>
-      </MacroExpansion>
+      </BuildableProductRunnable>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"
@@ -75,6 +90,16 @@
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
+      <BuildableProductRunnable
+         runnableDebuggingMode = "0">
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "1FE4FE53148E4CDD008EDE8B"
+            BuildableName = "Cicerone.app"
+            BlueprintName = "Cicerone"
+            ReferencedContainer = "container:Cicerone.xcodeproj">
+         </BuildableReference>
+      </BuildableProductRunnable>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">

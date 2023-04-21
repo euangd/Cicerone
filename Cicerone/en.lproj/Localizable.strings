@@ -6,7 +6,7 @@
   Copyright (c) 2015 Bruno Philipe. All rights reserved.
 */
 
-"Cakebrew" = "Cakebrew";
+"Cicerone" = "Cicerone";
 
 "Generic_OK" = "OK";
 "Generic_Cancel" = "Cancel";
@@ -18,7 +18,7 @@
 "Message_BGTask_Title" = "Active background task!";
 "Message_BGTask_Body" = "Sorry, a background task is already running. You can't perform two tasks at the same time.";
 "Message_No_Homebrew_Title" = "Homebrew Website";
-"Message_No_Homebrew_Body" = "Homebrew was not found in your system. Please install Homebrew before using Cakebrew. You can click the button below to open Homebrew's website.";
+"Message_No_Homebrew_Body" = "Homebrew was not found in your system. Please install Homebrew before using Cicerone. You can click the button below to open Homebrew's website.";
 "Message_Shell_Invalid_Title" = "No Valid shell was found!";
 "Message_Shell_Invalid_Body" = "Please add your shell \"%@\" to the valid shells file at \"/etc/shells\" before trying again.";
 "Message_Tap_Title" = "Tapping Repository";

@@ -1,4 +1,4 @@
 language: objective-c
-osx_image: xcode12.3
+osx_image: xcode14.3
 script:
-  - xcodebuild clean build -project Cakebrew.xcodeproj -scheme CakebrewTests CODE_SIGNING_REQUIRED=NO test | xcpretty
+  - xcodebuild clean build -project Cicerone.xcodeproj -scheme CiceroneTests CODE_SIGNING_REQUIRED=NO test | xcpretty
