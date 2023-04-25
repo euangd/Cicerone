@@ -10,18 +10,15 @@
 		150AEC4C1B3F999A00163767 /* BPDoctorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 150AEC391B3F999A00163767 /* BPDoctorViewController.m */; };
 		150AEC4D1B3F999A00163767 /* BPFormulaOptionsWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 150AEC3B1B3F999A00163767 /* BPFormulaOptionsWindowController.m */; };
 		150AEC4E1B3F999A00163767 /* BPFormulaPopoverViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 150AEC3D1B3F999A00163767 /* BPFormulaPopoverViewController.m */; };
-		150AEC4F1B3F999A00163767 /* BPHomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 150AEC3F1B3F999A00163767 /* BPHomeViewController.m */; };
 		150AEC511B3F999A00163767 /* BPInstallationWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 150AEC431B3F999A00163767 /* BPInstallationWindowController.m */; };
 		150AEC531B3F999A00163767 /* BPSelectedFormulaViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 150AEC471B3F999A00163767 /* BPSelectedFormulaViewController.m */; };
 		150AEC541B3F999A00163767 /* BPSideBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 150AEC491B3F999A00163767 /* BPSideBarController.m */; };
 		150AEC551B3F999A00163767 /* BPUpdateViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 150AEC4B1B3F999A00163767 /* BPUpdateViewController.m */; };
 		1536BFF718EBA92400B67C5C /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1536BFF618EBA92400B67C5C /* Images.xcassets */; };
 		1540FA3518ECF66B00334A5C /* download.icns in Resources */ = {isa = PBXBuildFile; fileRef = 1540FA3418ECF66B00334A5C /* download.icns */; };
-		1570BA3618EE0A66001C3C5C /* BPHomeManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 1570BA3518EE0A66001C3C5C /* BPHomeManager.m */; };
 		1570BA5618EE50BD001C3C5C /* BPFormula.m in Sources */ = {isa = PBXBuildFile; fileRef = 1570BA5518EE50BD001C3C5C /* BPFormula.m */; };
 		15715F611C78050B00AE0E66 /* BPBundleWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 15715F5F1C78050B00AE0E66 /* BPBundleWindow.xib */; };
 		15715F641C78053300AE0E66 /* BPBundleWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 15715F631C78053300AE0E66 /* BPBundleWindowController.m */; };
-		1584884A1F0708F000BD2CD9 /* info_nmap.txt in Resources */ = {isa = PBXBuildFile; fileRef = 158488491F0708F000BD2CD9 /* info_nmap.txt */; };
 		1594D13C1B8A6D1A00F764FA /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 15D2CFAC18F202D000B6D9F1 /* QuartzCore.framework */; };
 		15A89D3925F2F467003D33F5 /* NSLayoutConstraint+Shims.m in Sources */ = {isa = PBXBuildFile; fileRef = 15A89D3825F2F467003D33F5 /* NSLayoutConstraint+Shims.m */; };
 		15B23A2C18F5003600714212 /* dsa_pub.pem in Resources */ = {isa = PBXBuildFile; fileRef = 15B23A2B18F5003600714212 /* dsa_pub.pem */; };
@@ -52,17 +49,27 @@
 		1FE4FE65148E4CDD008EDE8B /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 1FE4FE64148E4CDD008EDE8B /* main.m */; };
 		1FE4FE6C148E4CDD008EDE8B /* BPAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1FE4FE6B148E4CDD008EDE8B /* BPAppDelegate.m */; };
 		1FE4FE6F148E4CDD008EDE8B /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1FE4FE6D148E4CDD008EDE8B /* MainMenu.xib */; };
-		1FE4FE77148E4D43008EDE8B /* BPHomeInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = 1FE4FE76148E4D43008EDE8B /* BPHomeInterface.m */; };
 		222DC89E284CE05B0094E825 /* BPCasksDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 222DC89D284CE05B0094E825 /* BPCasksDataSource.m */; };
 		8568B3F161789EE0F3CFB9EA /* Pods_CiceroneTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B70EBB99C630D39AC65F0200 /* Pods_CiceroneTests.framework */; };
 		B7BA471F29EE6EB400301D80 /* Credits.md in Resources */ = {isa = PBXBuildFile; fileRef = B7BA471E29EE6EB400301D80 /* Credits.md */; };
+		B7C9177D29F80C8800A6E748 /* brewInfo_sbtenv.txt in Resources */ = {isa = PBXBuildFile; fileRef = B7C9177329F80C8700A6E748 /* brewInfo_sbtenv.txt */; };
+		B7C9177E29F80C8800A6E748 /* brewInfo_bison.txt in Resources */ = {isa = PBXBuildFile; fileRef = B7C9177429F80C8700A6E748 /* brewInfo_bison.txt */; };
+		B7C9177F29F80C8800A6E748 /* brewInfo_mysql.txt in Resources */ = {isa = PBXBuildFile; fileRef = B7C9177529F80C8800A6E748 /* brewInfo_mysql.txt */; };
+		B7C9178029F80C8800A6E748 /* brewinfo_nmap.txt in Resources */ = {isa = PBXBuildFile; fileRef = B7C9177629F80C8800A6E748 /* brewinfo_nmap.txt */; };
+		B7C9178129F80C8800A6E748 /* brewInfo_percona-server.txt in Resources */ = {isa = PBXBuildFile; fileRef = B7C9177729F80C8800A6E748 /* brewInfo_percona-server.txt */; };
+		B7C9178229F80C8800A6E748 /* brewInfo_acme.txt in Resources */ = {isa = PBXBuildFile; fileRef = B7C9177829F80C8800A6E748 /* brewInfo_acme.txt */; };
+		B7C9178329F80C8800A6E748 /* brewInfo_ffmpeg.txt in Resources */ = {isa = PBXBuildFile; fileRef = B7C9177929F80C8800A6E748 /* brewInfo_ffmpeg.txt */; };
+		B7C9178429F80C8800A6E748 /* brewInfo_bfg.txt in Resources */ = {isa = PBXBuildFile; fileRef = B7C9177A29F80C8800A6E748 /* brewInfo_bfg.txt */; };
+		B7C9178529F80C8800A6E748 /* CakebrewTests.m in Sources */ = {isa = PBXBuildFile; fileRef = B7C9177B29F80C8800A6E748 /* CakebrewTests.m */; };
+		B7C9178629F80C8800A6E748 /* brewInfo_fakeformula.txt in Resources */ = {isa = PBXBuildFile; fileRef = B7C9177C29F80C8800A6E748 /* brewInfo_fakeformula.txt */; };
+		B7C9178929F80E7300A6E748 /* BPHomebrewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B7C9178829F80E7300A6E748 /* BPHomebrewViewController.m */; };
+		B7C9178E29F80E8600A6E748 /* BPHomebrewInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = B7C9178A29F80E8600A6E748 /* BPHomebrewInterface.m */; };
+		B7C9178F29F80E8600A6E748 /* BPHomebrewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B7C9178B29F80E8600A6E748 /* BPHomebrewManager.m */; };
 		C755BFA2FA2AF4B4937B9CD8 /* Pods_Cicerone.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8E3B2F2DB08D3A5D17E010AE /* Pods_Cicerone.framework */; };
 		D212A5881B853069003000ED /* BPFormulaTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D212A5871B853069003000ED /* BPFormulaTests.m */; };
 		D212A5891B853132003000ED /* BPFormula.m in Sources */ = {isa = PBXBuildFile; fileRef = 1570BA5518EE50BD001C3C5C /* BPFormula.m */; };
 		D228335A1BA71B9900E44C82 /* BPTask.m in Sources */ = {isa = PBXBuildFile; fileRef = D23620E01B8B3094006D293D /* BPTask.m */; };
 		D23620E11B8B3094006D293D /* BPTask.m in Sources */ = {isa = PBXBuildFile; fileRef = D23620E01B8B3094006D293D /* BPTask.m */; };
-		D2682D011B8532B0003DE3D8 /* BPHomeManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 1570BA3518EE0A66001C3C5C /* BPHomeManager.m */; };
-		D2682D021B8532B6003DE3D8 /* BPHomeInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = 1FE4FE76148E4D43008EDE8B /* BPHomeInterface.m */; };
 		D2682D031B8535BD003DE3D8 /* BPAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1FE4FE6B148E4CDD008EDE8B /* BPAppDelegate.m */; };
 		D2A3A82D1B8C9F5200D05469 /* BPStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = D2A3A82A1B8C9F5200D05469 /* BPStyle.m */; };
 		D2A3A82E1B8C9F5200D05469 /* BPStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = D2A3A82A1B8C9F5200D05469 /* BPStyle.m */; };
@@ -72,14 +79,6 @@
 		D2B3A3B019B9D7FC00DE23B5 /* BPFormulaeDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = D2B3A3AF19B9D7FC00DE23B5 /* BPFormulaeDataSource.m */; };
 		D2BBAB4B1B85EA7C00F21332 /* BPFormulaOption.m in Sources */ = {isa = PBXBuildFile; fileRef = D2BBAB4A1B85EA7C00F21332 /* BPFormulaOption.m */; };
 		D2BBAB4E1B863FAB00F21332 /* BPFormulaOption.m in Sources */ = {isa = PBXBuildFile; fileRef = D2BBAB4A1B85EA7C00F21332 /* BPFormulaOption.m */; };
-		D2BBAB681B87142F00F21332 /* Info_acme.txt in Resources */ = {isa = PBXBuildFile; fileRef = D2BBAB621B87142F00F21332 /* Info_acme.txt */; };
-		D2BBAB691B87142F00F21332 /* Info_bfg.txt in Resources */ = {isa = PBXBuildFile; fileRef = D2BBAB631B87142F00F21332 /* Info_bfg.txt */; };
-		D2BBAB6A1B87142F00F21332 /* Info_fakeformula.txt in Resources */ = {isa = PBXBuildFile; fileRef = D2BBAB641B87142F00F21332 /* Info_fakeformula.txt */; };
-		D2BBAB6B1B87142F00F21332 /* Info_ffmpeg.txt in Resources */ = {isa = PBXBuildFile; fileRef = D2BBAB651B87142F00F21332 /* Info_ffmpeg.txt */; };
-		D2BBAB6C1B87142F00F21332 /* Info_mysql.txt in Resources */ = {isa = PBXBuildFile; fileRef = D2BBAB661B87142F00F21332 /* Info_mysql.txt */; };
-		D2BBAB6D1B87142F00F21332 /* Info_percona-server.txt in Resources */ = {isa = PBXBuildFile; fileRef = D2BBAB671B87142F00F21332 /* Info_percona-server.txt */; };
-		D2BBAB6F1B87290B00F21332 /* Info_bison.txt in Resources */ = {isa = PBXBuildFile; fileRef = D2BBAB6E1B87290B00F21332 /* Info_bison.txt */; };
-		D2BBAB711B87377D00F21332 /* Info_sbtenv.txt in Resources */ = {isa = PBXBuildFile; fileRef = D2BBAB701B87377D00F21332 /* Info_sbtenv.txt */; };
 		D2C1B1021B821A2A00FFC2CA /* BPToolbar.m in Sources */ = {isa = PBXBuildFile; fileRef = D2C1B1011B821A2A00FFC2CA /* BPToolbar.m */; };
 		D2C3E02A1B8E15B2000D89BB /* Disabled.xib in Resources */ = {isa = PBXBuildFile; fileRef = D2C3E02C1B8E15B2000D89BB /* Disabled.xib */; };
 		D2C3E02D1B8E15D5000D89BB /* Loading.xib in Resources */ = {isa = PBXBuildFile; fileRef = D2C3E02F1B8E15D5000D89BB /* Loading.xib */; };
@@ -107,8 +106,6 @@
 		150AEC3B1B3F999A00163767 /* BPFormulaOptionsWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BPFormulaOptionsWindowController.m; path = Controllers/BPFormulaOptionsWindowController.m; sourceTree = "<group>"; };
 		150AEC3C1B3F999A00163767 /* BPFormulaPopoverViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BPFormulaPopoverViewController.h; path = Controllers/BPFormulaPopoverViewController.h; sourceTree = "<group>"; };
 		150AEC3D1B3F999A00163767 /* BPFormulaPopoverViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BPFormulaPopoverViewController.m; path = Controllers/BPFormulaPopoverViewController.m; sourceTree = "<group>"; };
-		150AEC3E1B3F999A00163767 /* BPHomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BPHomeViewController.h; path = Controllers/BPHomeViewController.h; sourceTree = "<group>"; };
-		150AEC3F1B3F999A00163767 /* BPHomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BPHomeViewController.m; path = Controllers/BPHomeViewController.m; sourceTree = "<group>"; };
 		150AEC421B3F999A00163767 /* BPInstallationWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BPInstallationWindowController.h; path = Controllers/BPInstallationWindowController.h; sourceTree = "<group>"; };
 		150AEC431B3F999A00163767 /* BPInstallationWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BPInstallationWindowController.m; path = Controllers/BPInstallationWindowController.m; sourceTree = "<group>"; };
 		150AEC461B3F999A00163767 /* BPSelectedFormulaViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BPSelectedFormulaViewController.h; path = Controllers/BPSelectedFormulaViewController.h; sourceTree = "<group>"; };
@@ -121,8 +118,6 @@
 		1529086A1927C05B00206767 /* .travis.yml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .travis.yml; sourceTree = SOURCE_ROOT; };
 		1536BFF618EBA92400B67C5C /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		1540FA3418ECF66B00334A5C /* download.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = download.icns; sourceTree = "<group>"; };
-		1570BA3418EE0A66001C3C5C /* BPHomeManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BPHomeManager.h; sourceTree = "<group>"; };
-		1570BA3518EE0A66001C3C5C /* BPHomeManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BPHomeManager.m; sourceTree = "<group>"; };
 		1570BA5418EE50BD001C3C5C /* BPFormula.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BPFormula.h; path = Models/BPFormula.h; sourceTree = "<group>"; };
 		1570BA5518EE50BD001C3C5C /* BPFormula.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BPFormula.m; path = Models/BPFormula.m; sourceTree = "<group>"; };
 		1570E11C25F195BE0043560B /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/BPBundleWindow.strings; sourceTree = "<group>"; };
@@ -143,7 +138,6 @@
 		15715F661C78D3C600AE0E66 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/BPBundleWindow.strings; sourceTree = "<group>"; };
 		15715F681C78D3C800AE0E66 /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = pt.lproj/BPBundleWindow.strings; sourceTree = "<group>"; };
 		15715F6A1C78D3CC00AE0E66 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/BPBundleWindow.strings; sourceTree = "<group>"; };
-		158488491F0708F000BD2CD9 /* info_nmap.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = info_nmap.txt; sourceTree = "<group>"; };
 		15A00B3C1B84000600528486 /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = pt.lproj/MainMenu.strings; sourceTree = "<group>"; };
 		15A00B3D1B84002E00528486 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		15A00B3E1B84003F00528486 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -217,8 +211,6 @@
 		1FE4FE66148E4CDD008EDE8B /* Cicerone-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Cicerone-Prefix.pch"; sourceTree = "<group>"; };
 		1FE4FE6A148E4CDD008EDE8B /* BPAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BPAppDelegate.h; sourceTree = "<group>"; };
 		1FE4FE6B148E4CDD008EDE8B /* BPAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BPAppDelegate.m; sourceTree = "<group>"; };
-		1FE4FE75148E4D43008EDE8B /* BPHomeInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BPHomeInterface.h; sourceTree = "<group>"; };
-		1FE4FE76148E4D43008EDE8B /* BPHomeInterface.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BPHomeInterface.m; sourceTree = "<group>"; };
 		222DC894284CDF900094E825 /* BPCasksDataSource.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BPCasksDataSource.h; sourceTree = "<group>"; };
 		222DC89D284CE05B0094E825 /* BPCasksDataSource.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = BPCasksDataSource.m; path = Controllers/BPCasksDataSource.m; sourceTree = "<group>"; };
 		5A096FDAF6579F93FCF80355 /* Pods-Cicerone.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Cicerone.release.xcconfig"; path = "Target Support Files/Pods-Cicerone/Pods-Cicerone.release.xcconfig"; sourceTree = "<group>"; };
@@ -228,6 +220,22 @@
 		B7BA471E29EE6EB400301D80 /* Credits.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = Credits.md; sourceTree = SOURCE_ROOT; };
 		B7BA472029F0F7BF00301D80 /* Podfile */ = {isa = PBXFileReference; lastKnownFileType = text; path = Podfile; sourceTree = SOURCE_ROOT; };
 		B7C9177229F7E3ED00A6E748 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = SOURCE_ROOT; };
+		B7C9177329F80C8700A6E748 /* brewInfo_sbtenv.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = brewInfo_sbtenv.txt; sourceTree = "<group>"; };
+		B7C9177429F80C8700A6E748 /* brewInfo_bison.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = brewInfo_bison.txt; sourceTree = "<group>"; };
+		B7C9177529F80C8800A6E748 /* brewInfo_mysql.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = brewInfo_mysql.txt; sourceTree = "<group>"; };
+		B7C9177629F80C8800A6E748 /* brewinfo_nmap.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = brewinfo_nmap.txt; sourceTree = "<group>"; };
+		B7C9177729F80C8800A6E748 /* brewInfo_percona-server.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "brewInfo_percona-server.txt"; sourceTree = "<group>"; };
+		B7C9177829F80C8800A6E748 /* brewInfo_acme.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = brewInfo_acme.txt; sourceTree = "<group>"; };
+		B7C9177929F80C8800A6E748 /* brewInfo_ffmpeg.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = brewInfo_ffmpeg.txt; sourceTree = "<group>"; };
+		B7C9177A29F80C8800A6E748 /* brewInfo_bfg.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = brewInfo_bfg.txt; sourceTree = "<group>"; };
+		B7C9177B29F80C8800A6E748 /* CakebrewTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CakebrewTests.m; sourceTree = "<group>"; };
+		B7C9177C29F80C8800A6E748 /* brewInfo_fakeformula.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = brewInfo_fakeformula.txt; sourceTree = "<group>"; };
+		B7C9178729F80E5E00A6E748 /* BPHomebrewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BPHomebrewViewController.h; path = Controllers/BPHomebrewViewController.h; sourceTree = "<group>"; };
+		B7C9178829F80E7300A6E748 /* BPHomebrewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BPHomebrewViewController.m; path = Controllers/BPHomebrewViewController.m; sourceTree = "<group>"; };
+		B7C9178A29F80E8600A6E748 /* BPHomebrewInterface.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BPHomebrewInterface.m; sourceTree = "<group>"; };
+		B7C9178B29F80E8600A6E748 /* BPHomebrewManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BPHomebrewManager.m; sourceTree = "<group>"; };
+		B7C9178C29F80E8600A6E748 /* BPHomebrewManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BPHomebrewManager.h; sourceTree = "<group>"; };
+		B7C9178D29F80E8600A6E748 /* BPHomebrewInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BPHomebrewInterface.h; sourceTree = "<group>"; };
 		CC48D4580DADCBBA6EF403D2 /* Pods-Cicerone.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Cicerone.debug.xcconfig"; path = "Target Support Files/Pods-Cicerone/Pods-Cicerone.debug.xcconfig"; sourceTree = "<group>"; };
 		D212A5871B853069003000ED /* BPFormulaTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BPFormulaTests.m; sourceTree = "<group>"; };
 		D23620DF1B8B3094006D293D /* BPTask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BPTask.h; sourceTree = "<group>"; };
@@ -244,14 +252,6 @@
 		D2B3A3AF19B9D7FC00DE23B5 /* BPFormulaeDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BPFormulaeDataSource.m; sourceTree = "<group>"; };
 		D2BBAB491B85EA7C00F21332 /* BPFormulaOption.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BPFormulaOption.h; path = Models/BPFormulaOption.h; sourceTree = "<group>"; };
 		D2BBAB4A1B85EA7C00F21332 /* BPFormulaOption.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BPFormulaOption.m; path = Models/BPFormulaOption.m; sourceTree = "<group>"; };
-		D2BBAB621B87142F00F21332 /* Info_acme.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Info_acme.txt; sourceTree = "<group>"; };
-		D2BBAB631B87142F00F21332 /* Info_bfg.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Info_bfg.txt; sourceTree = "<group>"; };
-		D2BBAB641B87142F00F21332 /* Info_fakeformula.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Info_fakeformula.txt; sourceTree = "<group>"; };
-		D2BBAB651B87142F00F21332 /* Info_ffmpeg.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Info_ffmpeg.txt; sourceTree = "<group>"; };
-		D2BBAB661B87142F00F21332 /* Info_mysql.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Info_mysql.txt; sourceTree = "<group>"; };
-		D2BBAB671B87142F00F21332 /* Info_percona-server.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "Info_percona-server.txt"; sourceTree = "<group>"; };
-		D2BBAB6E1B87290B00F21332 /* Info_bison.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Info_bison.txt; sourceTree = "<group>"; };
-		D2BBAB701B87377D00F21332 /* Info_sbtenv.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Info_sbtenv.txt; sourceTree = "<group>"; };
 		D2C1B1001B821A2A00FFC2CA /* BPToolbar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BPToolbar.h; sourceTree = "<group>"; };
 		D2C1B1011B821A2A00FFC2CA /* BPToolbar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BPToolbar.m; sourceTree = "<group>"; };
 		D2C3E02B1B8E15B2000D89BB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/Disabled.xib; sourceTree = "<group>"; };
@@ -341,8 +341,8 @@
 				15D28A1F1AE332EF005C8A3E /* BPFormulaPopoverView.xib */,
 				150AEC3C1B3F999A00163767 /* BPFormulaPopoverViewController.h */,
 				150AEC3D1B3F999A00163767 /* BPFormulaPopoverViewController.m */,
-				150AEC3E1B3F999A00163767 /* BPHomeViewController.h */,
-				150AEC3F1B3F999A00163767 /* BPHomeViewController.m */,
+				B7C9178729F80E5E00A6E748 /* BPHomebrewViewController.h */,
+				B7C9178829F80E7300A6E748 /* BPHomebrewViewController.m */,
 				15D28A221AE332F4005C8A3E /* BPInstallationWindow.xib */,
 				150AEC421B3F999A00163767 /* BPInstallationWindowController.h */,
 				150AEC431B3F999A00163767 /* BPInstallationWindowController.m */,
@@ -362,17 +362,17 @@
 			name = Controllers;
 			sourceTree = "<group>";
 		};
-		15A974AC1968A3E800621C35 /* Home */ = {
+		15A974AC1968A3E800621C35 /* Brew */ = {
 			isa = PBXGroup;
 			children = (
 				D23620DF1B8B3094006D293D /* BPTask.h */,
 				D23620E01B8B3094006D293D /* BPTask.m */,
-				1FE4FE75148E4D43008EDE8B /* BPHomeInterface.h */,
-				1FE4FE76148E4D43008EDE8B /* BPHomeInterface.m */,
-				1570BA3418EE0A66001C3C5C /* BPHomeManager.h */,
-				1570BA3518EE0A66001C3C5C /* BPHomeManager.m */,
+				B7C9178D29F80E8600A6E748 /* BPHomebrewInterface.h */,
+				B7C9178A29F80E8600A6E748 /* BPHomebrewInterface.m */,
+				B7C9178C29F80E8600A6E748 /* BPHomebrewManager.h */,
+				B7C9178B29F80E8600A6E748 /* BPHomebrewManager.m */,
 			);
-			name = Home;
+			name = Brew;
 			sourceTree = "<group>";
 		};
 		15D28A0F1AE1BCFE005C8A3E /* BPTimedDispatch */ = {
@@ -475,7 +475,7 @@
 				15EC1B0625CED52C00C93861 /* BPWindow.m */,
 				D2F732EE19190B75002B2512 /* Categories */,
 				15A974AB1968A3C900621C35 /* Controllers */,
-				15A974AC1968A3E800621C35 /* Home */,
+				15A974AC1968A3E800621C35 /* Brew */,
 				15D5BEED18EBB3D9001DDED7 /* Icons */,
 				1536BFF618EBA92400B67C5C /* Images.xcassets */,
 				15D5BEF618EBC56E001DDED7 /* Libraries */,
@@ -510,15 +510,16 @@
 			isa = PBXGroup;
 			children = (
 				D212A5871B853069003000ED /* BPFormulaTests.m */,
-				D2BBAB701B87377D00F21332 /* Info_sbtenv.txt */,
-				D2BBAB6E1B87290B00F21332 /* Info_bison.txt */,
-				D2BBAB621B87142F00F21332 /* Info_acme.txt */,
-				D2BBAB631B87142F00F21332 /* Info_bfg.txt */,
-				D2BBAB641B87142F00F21332 /* Info_fakeformula.txt */,
-				D2BBAB651B87142F00F21332 /* Info_ffmpeg.txt */,
-				D2BBAB661B87142F00F21332 /* Info_mysql.txt */,
-				D2BBAB671B87142F00F21332 /* Info_percona-server.txt */,
-				158488491F0708F000BD2CD9 /* info_nmap.txt */,
+				B7C9177B29F80C8800A6E748 /* CakebrewTests.m */,
+				B7C9177829F80C8800A6E748 /* brewInfo_acme.txt */,
+				B7C9177A29F80C8800A6E748 /* brewInfo_bfg.txt */,
+				B7C9177429F80C8700A6E748 /* brewInfo_bison.txt */,
+				B7C9177C29F80C8800A6E748 /* brewInfo_fakeformula.txt */,
+				B7C9177929F80C8800A6E748 /* brewInfo_ffmpeg.txt */,
+				B7C9177529F80C8800A6E748 /* brewInfo_mysql.txt */,
+				B7C9177629F80C8800A6E748 /* brewinfo_nmap.txt */,
+				B7C9177729F80C8800A6E748 /* brewInfo_percona-server.txt */,
+				B7C9177329F80C8700A6E748 /* brewInfo_sbtenv.txt */,
 				D261C9C21B852FA300409803 /* Supporting Files */,
 			);
 			path = CiceroneTests;
@@ -551,7 +552,6 @@
 				1B21B61714EAF13EA84FF222 /* Pods-CiceroneTests.debug.xcconfig */,
 				ABCD0FD1BA4ECE02384478B4 /* Pods-CiceroneTests.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -676,15 +676,15 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D2BBAB691B87142F00F21332 /* Info_bfg.txt in Resources */,
-				D2BBAB6B1B87142F00F21332 /* Info_ffmpeg.txt in Resources */,
-				D2BBAB6D1B87142F00F21332 /* Info_percona-server.txt in Resources */,
-				D2BBAB681B87142F00F21332 /* Info_acme.txt in Resources */,
-				D2BBAB6A1B87142F00F21332 /* Info_fakeformula.txt in Resources */,
-				D2BBAB6F1B87290B00F21332 /* Info_bison.txt in Resources */,
-				1584884A1F0708F000BD2CD9 /* info_nmap.txt in Resources */,
-				D2BBAB711B87377D00F21332 /* Info_sbtenv.txt in Resources */,
-				D2BBAB6C1B87142F00F21332 /* Info_mysql.txt in Resources */,
+				B7C9178129F80C8800A6E748 /* brewInfo_percona-server.txt in Resources */,
+				B7C9178329F80C8800A6E748 /* brewInfo_ffmpeg.txt in Resources */,
+				B7C9177F29F80C8800A6E748 /* brewInfo_mysql.txt in Resources */,
+				B7C9178229F80C8800A6E748 /* brewInfo_acme.txt in Resources */,
+				B7C9177D29F80C8800A6E748 /* brewInfo_sbtenv.txt in Resources */,
+				B7C9177E29F80C8800A6E748 /* brewInfo_bison.txt in Resources */,
+				B7C9178629F80C8800A6E748 /* brewInfo_fakeformula.txt in Resources */,
+				B7C9178029F80C8800A6E748 /* brewinfo_nmap.txt in Resources */,
+				B7C9178429F80C8800A6E748 /* brewInfo_bfg.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -789,16 +789,15 @@
 				15CEFC631AB335B2005CF54A /* BPLoadingView.m in Sources */,
 				15EC1B0725CED52C00C93861 /* BPWindow.m in Sources */,
 				D2C4278B1B8E055B001C1F80 /* BPDisabledView.m in Sources */,
+				B7C9178F29F80E8600A6E748 /* BPHomebrewManager.m in Sources */,
+				B7C9178E29F80E8600A6E748 /* BPHomebrewInterface.m in Sources */,
 				1FE4FE65148E4CDD008EDE8B /* main.m in Sources */,
 				150AEC4E1B3F999A00163767 /* BPFormulaPopoverViewController.m in Sources */,
 				D2C1B1021B821A2A00FFC2CA /* BPToolbar.m in Sources */,
-				1570BA3618EE0A66001C3C5C /* BPHomeManager.m in Sources */,
 				1FE4FE6C148E4CDD008EDE8B /* BPAppDelegate.m in Sources */,
-				1FE4FE77148E4D43008EDE8B /* BPHomeInterface.m in Sources */,
 				D2B3A3AA19B9CBEC00DE23B5 /* BPFormulaeTableView.m in Sources */,
 				D23620E11B8B3094006D293D /* BPTask.m in Sources */,
 				15C34CBF19512DE100B92E36 /* BPAutoScrollTextView.m in Sources */,
-				150AEC4F1B3F999A00163767 /* BPHomeViewController.m in Sources */,
 				D2B3A3B019B9D7FC00DE23B5 /* BPFormulaeDataSource.m in Sources */,
 				D2F732F119190B75002B2512 /* NSString+URLValidation.m in Sources */,
 				D2A3A82D1B8C9F5200D05469 /* BPStyle.m in Sources */,
@@ -808,6 +807,7 @@
 				D2BBAB4B1B85EA7C00F21332 /* BPFormulaOption.m in Sources */,
 				150AEC4C1B3F999A00163767 /* BPDoctorViewController.m in Sources */,
 				150AEC551B3F999A00163767 /* BPUpdateViewController.m in Sources */,
+				B7C9178929F80E7300A6E748 /* BPHomebrewViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -815,9 +815,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D2682D021B8532B6003DE3D8 /* BPHomeInterface.m in Sources */,
-				D2682D011B8532B0003DE3D8 /* BPHomeManager.m in Sources */,
 				D228335A1BA71B9900E44C82 /* BPTask.m in Sources */,
+				B7C9178529F80C8800A6E748 /* CakebrewTests.m in Sources */,
 				D212A5891B853132003000ED /* BPFormula.m in Sources */,
 				D2682D031B8535BD003DE3D8 /* BPAppDelegate.m in Sources */,
 				D2BBAB4E1B863FAB00F21332 /* BPFormulaOption.m in Sources */,
@@ -1090,7 +1089,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = CC48D4580DADCBBA6EF403D2 /* Pods-Cicerone.debug.xcconfig */;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = "Interim Icon";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_OBJC_EXPLICIT_OWNERSHIP_TYPE = YES;
@@ -1098,7 +1097,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 595;
+				CURRENT_PROJECT_VERSION = 0;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = "";
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -1110,12 +1109,13 @@
 				GCC_PREFIX_HEADER = "Cicerone/Cicerone-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = "$(inherited)";
 				INFOPLIST_FILE = "Cicerone/Cicerone-Info.plist";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.developer-tools";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 13.3;
-				MARKETING_VERSION = 1.4;
+				MARKETING_VERSION = 0.1;
 				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = "oaVa-o.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = Cicerone;
@@ -1129,7 +1129,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 5A096FDAF6579F93FCF80355 /* Pods-Cicerone.release.xcconfig */;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = "Interim Icon";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_OBJC_EXPLICIT_OWNERSHIP_TYPE = YES;
@@ -1137,7 +1137,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 595;
+				CURRENT_PROJECT_VERSION = 0;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = "";
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -1148,12 +1148,13 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Cicerone/Cicerone-Prefix.pch";
 				INFOPLIST_FILE = "Cicerone/Cicerone-Info.plist";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.developer-tools";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 13.3;
-				MARKETING_VERSION = 1.4;
+				MARKETING_VERSION = 0.1;
 				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = "oaVa-o.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = Cicerone;
