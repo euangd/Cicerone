@@ -220,6 +220,7 @@
 		222DC89D284CE05B0094E825 /* BPCasksDataSource.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = BPCasksDataSource.m; path = Controllers/BPCasksDataSource.m; sourceTree = "<group>"; };
 		B7BA471E29EE6EB400301D80 /* Credits.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = Credits.md; sourceTree = SOURCE_ROOT; };
 		B7BA472029F0F7BF00301D80 /* Podfile */ = {isa = PBXFileReference; lastKnownFileType = text; path = Podfile; sourceTree = SOURCE_ROOT; };
+		B7C9177229F7E3ED00A6E748 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = SOURCE_ROOT; };
 		D212A5871B853069003000ED /* BPFormulaTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BPFormulaTests.m; sourceTree = "<group>"; };
 		D23620DF1B8B3094006D293D /* BPTask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BPTask.h; sourceTree = "<group>"; };
 		D23620E01B8B3094006D293D /* BPTask.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BPTask.m; sourceTree = "<group>"; };
@@ -476,6 +477,7 @@
 		1FE4FE5F148E4CDD008EDE8B /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				B7C9177229F7E3ED00A6E748 /* .gitignore */,
 				B7BA472029F0F7BF00301D80 /* Podfile */,
 				15D28A301AE33453005C8A3E /* Localizable.strings */,
 				15B23A2B18F5003600714212 /* dsa_pub.pem */,
