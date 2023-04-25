@@ -1,0 +1,36 @@
+PODS:
+  - DCOAboutWindow (0.3.1):
+    - DCOTransparentScroller
+  - DCOTransparentScroller (0.0.2)
+  - PXSourceList (2.0.7)
+  - Sparkle (1.24.0)
+
+DEPENDENCIES:
+  - DCOAboutWindow
+  - PXSourceList (from `https://github.com/brunophilipe/PXSourceList.git`)
+  - Sparkle
+
+SPEC REPOS:
+  trunk:
+    - DCOAboutWindow
+    - DCOTransparentScroller
+    - Sparkle
+
+EXTERNAL SOURCES:
+  PXSourceList:
+    :git: https://github.com/brunophilipe/PXSourceList.git
+
+CHECKOUT OPTIONS:
+  PXSourceList:
+    :commit: 38cecbd7e1d8449cac2db4ed03fb0dd3cee14f9f
+    :git: https://github.com/brunophilipe/PXSourceList.git
+
+SPEC CHECKSUMS:
+  DCOAboutWindow: b4a293903fd70a0c962b9bced1264d45e19ade78
+  DCOTransparentScroller: 1ff1c24a51536d2bed21b8c73cf020205d02297f
+  PXSourceList: 1088e8103521fe12c1dc69d3f59974ad5b89a78e
+  Sparkle: 270cd27377bf04e9c128af06e3a22d0f572d6ee3
+
+PODFILE CHECKSUM: 1eab46b7fe1f54de5b182bbd0d10a786b98f54aa
+
+COCOAPODS: 1.12.1
