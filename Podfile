@@ -1,3 +1,4 @@
+platform :macos, '10.8'
 workspace 'Cicerone'
 
 target 'Cicerone' do
@@ -8,7 +9,7 @@ target 'Cicerone' do
   
   pod 'PXSourceList', :git => 'https://github.com/brunophilipe/PXSourceList.git'
   pod 'DCOAboutWindow'
-  pod 'Sparkle', :branch => 'master'
+  pod 'Sparkle'
 
   target 'CiceroneTests' do
     inherit! :search_paths
