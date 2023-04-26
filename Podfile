@@ -1,6 +1,6 @@
-macOSVersion = '13.3'
+$macOSVersion = '13.3'
 
-platform :macos, macOSVersion
+platform :macos, $macOSVersion
 workspace 'Cicerone'
 
 target 'Cicerone' do
@@ -22,12 +22,20 @@ end
 
 post_install do |installer|
   installer.generated_projects.each do |project|
+    def customize_build (build)
+      build['ARCHS'] = '$(NATIVE_ARCH)' # set to native architecture
+      build['DEPLOYMENT_POSTPROCESSING'] = 'YES'
+      build['ONLY_ACTIVE_ARCH'] = 'YES'
+      build['MACOSX_DEPLOYMENT_TARGET'] = $macOSVersion # not sure if targets inherit specified platform in an accessible way from an abstract_target ancestor
+    end
+  
+    project.build_configurations.each do |configuration|
+      customize_build configuration.build_settings
+    end
+  
     project.targets.each do |target|
       target.build_configurations.each do |configuration|
-        # configuration.build_settings['ARCHS'] = '$(NATIVE_ARCH)' # consider locking to Apple Silicon (arm64), or NATIVE_ARCH
-        configuration.build_settings['DEPLOYMENT_POSTPROCESSING'] = 'YES'
-        configuration.build_settings['ONLY_ACTIVE_ARCH'] = 'NO'
-        configuration.build_settings['MACOSX_DEPLOYMENT_TARGET'] = macOSVersion # not sure if targets inherit specified platform in an accessible way from an abstract_target ancestor
+        customize_build configuration.build_settings
       end
     end
   end
