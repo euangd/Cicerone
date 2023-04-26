@@ -220,7 +220,7 @@
 		ABCD0FD1BA4ECE02384478B4 /* Pods-CiceroneTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CiceroneTests.release.xcconfig"; path = "Target Support Files/Pods-CiceroneTests/Pods-CiceroneTests.release.xcconfig"; sourceTree = "<group>"; };
 		B70EBB99C630D39AC65F0200 /* Pods_CiceroneTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CiceroneTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B7BA471E29EE6EB400301D80 /* Credits.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = Credits.md; sourceTree = SOURCE_ROOT; };
-		B7BA472029F0F7BF00301D80 /* Podfile */ = {isa = PBXFileReference; indentWidth = 2; lastKnownFileType = text; path = Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; };
+		B7BA472029F0F7BF00301D80 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; indentWidth = 2; path = Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; };
 		B7C9177229F7E3ED00A6E748 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = SOURCE_ROOT; };
 		B7C9177329F80C8700A6E748 /* brewInfo_sbtenv.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = brewInfo_sbtenv.txt; sourceTree = "<group>"; };
 		B7C9177429F80C8700A6E748 /* brewInfo_bison.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = brewInfo_bison.txt; sourceTree = "<group>"; };
@@ -608,7 +608,7 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
-				CLASSPREFIX = OV;
+				CLASSPREFIX = CiO;
 				LastUpgradeCheck = 1430;
 				ORGANIZATIONNAME = "oaVa-o";
 				TargetAttributes = {
