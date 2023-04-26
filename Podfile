@@ -1,4 +1,4 @@
-platform :macos, '10.8'
+platform :macos, '13.3'
 workspace 'Cicerone'
 
 target 'Cicerone' do
