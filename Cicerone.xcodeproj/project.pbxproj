@@ -697,6 +697,7 @@
 /* Begin PBXShellScriptBuildPhase section */
 		1555FD5F25CF4E5800E5D344 /* Fix Sparkle Hardened Runtime */ = {
 			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
 			files = (
 			);
