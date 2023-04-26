@@ -1,4 +1,6 @@
-platform :macos, '13.3'
+macOSVersion = '13.3'
+
+platform :macos, macOSVersion
 workspace 'Cicerone'
 
 target 'Cicerone' do
@@ -16,4 +18,17 @@ target 'Cicerone' do
     # Pods for testing
   end
 
+end
+
+post_install do |installer|
+  installer.generated_projects.each do |project|
+    project.targets.each do |target|
+      target.build_configurations.each do |configuration|
+        # configuration.build_settings['ARCHS'] = '$(NATIVE_ARCH)' # consider locking to Apple Silicon (arm64), or NATIVE_ARCH
+        configuration.build_settings['DEPLOYMENT_POSTPROCESSING'] = 'YES'
+        configuration.build_settings['ONLY_ACTIVE_ARCH'] = 'NO'
+        configuration.build_settings['MACOSX_DEPLOYMENT_TARGET'] = macOSVersion # not sure if targets inherit specified platform in an accessible way from an abstract_target ancestor
+      end
+    end
+  end
 end

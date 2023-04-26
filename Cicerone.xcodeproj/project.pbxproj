@@ -65,7 +65,8 @@
 		B7C9178929F80E7300A6E748 /* BPHomebrewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B7C9178829F80E7300A6E748 /* BPHomebrewViewController.m */; };
 		B7C9178E29F80E8600A6E748 /* BPHomebrewInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = B7C9178A29F80E8600A6E748 /* BPHomebrewInterface.m */; };
 		B7C9178F29F80E8600A6E748 /* BPHomebrewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B7C9178B29F80E8600A6E748 /* BPHomebrewManager.m */; };
-		C755BFA2FA2AF4B4937B9CD8 /* Pods_Cicerone.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8E3B2F2DB08D3A5D17E010AE /* Pods_Cicerone.framework */; };
+		B7C9179029F8CEBD00A6E748 /* Pods_Cicerone.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8E3B2F2DB08D3A5D17E010AE /* Pods_Cicerone.framework */; };
+		B7C9179129F8CEBD00A6E748 /* Pods_Cicerone.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8E3B2F2DB08D3A5D17E010AE /* Pods_Cicerone.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D212A5881B853069003000ED /* BPFormulaTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D212A5871B853069003000ED /* BPFormulaTests.m */; };
 		D212A5891B853132003000ED /* BPFormula.m in Sources */ = {isa = PBXBuildFile; fileRef = 1570BA5518EE50BD001C3C5C /* BPFormula.m */; };
 		D228335A1BA71B9900E44C82 /* BPTask.m in Sources */ = {isa = PBXBuildFile; fileRef = D23620E01B8B3094006D293D /* BPTask.m */; };
@@ -94,6 +95,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				B7C9179129F8CEBD00A6E748 /* Pods_Cicerone.framework in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -218,7 +220,7 @@
 		ABCD0FD1BA4ECE02384478B4 /* Pods-CiceroneTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CiceroneTests.release.xcconfig"; path = "Target Support Files/Pods-CiceroneTests/Pods-CiceroneTests.release.xcconfig"; sourceTree = "<group>"; };
 		B70EBB99C630D39AC65F0200 /* Pods_CiceroneTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CiceroneTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B7BA471E29EE6EB400301D80 /* Credits.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = Credits.md; sourceTree = SOURCE_ROOT; };
-		B7BA472029F0F7BF00301D80 /* Podfile */ = {isa = PBXFileReference; lastKnownFileType = text; path = Podfile; sourceTree = SOURCE_ROOT; };
+		B7BA472029F0F7BF00301D80 /* Podfile */ = {isa = PBXFileReference; indentWidth = 2; lastKnownFileType = text; path = Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; };
 		B7C9177229F7E3ED00A6E748 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = SOURCE_ROOT; };
 		B7C9177329F80C8700A6E748 /* brewInfo_sbtenv.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = brewInfo_sbtenv.txt; sourceTree = "<group>"; };
 		B7C9177429F80C8700A6E748 /* brewInfo_bison.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = brewInfo_bison.txt; sourceTree = "<group>"; };
@@ -284,10 +286,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B7C9179029F8CEBD00A6E748 /* Pods_Cicerone.framework in Frameworks */,
 				D2CC8CA71B90F04C00F763DF /* Security.framework in Frameworks */,
 				15D2CFAD18F202D000B6D9F1 /* QuartzCore.framework in Frameworks */,
 				1FE4FE59148E4CDD008EDE8B /* Cocoa.framework in Frameworks */,
-				C755BFA2FA2AF4B4937B9CD8 /* Pods_Cicerone.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -567,8 +569,8 @@
 				1FE4FE51148E4CDD008EDE8B /* Frameworks */,
 				1FE4FE52148E4CDD008EDE8B /* Resources */,
 				1570BA6018EF9B0F001C3C5C /* CopyFiles */,
-				1555FD5F25CF4E5800E5D344 /* Fix Sparkle Hardened Runtime */,
 				6A35F7BC147C2F7885E312B2 /* [CP] Embed Pods Frameworks */,
+				1555FD5F25CF4E5800E5D344 /* Fix Sparkle Hardened Runtime */,
 			);
 			buildRules = (
 			);
@@ -1104,6 +1106,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Cicerone/Frameworks",
+					"$(PROJECT_DIR)/Pods/Sparkle",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Cicerone/Cicerone-Prefix.pch";
@@ -1144,6 +1147,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Cicerone/Frameworks",
+					"$(PROJECT_DIR)/Pods/Sparkle",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Cicerone/Cicerone-Prefix.pch";
