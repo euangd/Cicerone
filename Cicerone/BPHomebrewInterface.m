@@ -27,7 +27,7 @@ NSString *brewPath = @"";
 #define kDEBUG_WARNING @"\
 User Shell: %@\n\
 Command: %@\n\
-OS X Version: %@\n\n\
+macOS Version: %@\n\n\
 The outputs are going to be different if run from Xcode!!\n\
 Installing and upgrading formulas is not advised in DEBUG mode!\n\n"
 

@@ -239,6 +239,7 @@
 		B7C9178C29F80E8600A6E748 /* BPHomebrewManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BPHomebrewManager.h; sourceTree = "<group>"; };
 		B7C9178D29F80E8600A6E748 /* BPHomebrewInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BPHomebrewInterface.h; sourceTree = "<group>"; };
 		B7C9179529F983F900A6E748 /* Cicerone.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Cicerone.entitlements; sourceTree = "<group>"; };
+		B7C9179729F9CD3B00A6E748 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/MainMenu.strings; sourceTree = "<group>"; };
 		CC48D4580DADCBBA6EF403D2 /* Pods-Cicerone.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Cicerone.debug.xcconfig"; path = "Target Support Files/Pods-Cicerone/Pods-Cicerone.debug.xcconfig"; sourceTree = "<group>"; };
 		D212A5871B853069003000ED /* BPFormulaTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BPFormulaTests.m; sourceTree = "<group>"; };
 		D23620DF1B8B3094006D293D /* BPTask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BPTask.h; sourceTree = "<group>"; };
@@ -961,6 +962,7 @@
 				F752F5521C79875500C0DEFE /* fr */,
 				15F313151C7A903500F22608 /* zh-Hans */,
 				1570E12625F195BE0043560B /* it */,
+				B7C9179729F9CD3B00A6E748 /* en */,
 			);
 			name = MainMenu.xib;
 			sourceTree = "<group>";

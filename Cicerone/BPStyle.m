@@ -43,10 +43,16 @@ static BOOL shouldUseFlatUserInterface;
 	if (!font)
 	{
 		font = [NSFont fontWithName:@"Andale Mono" size:12];
+        
 		if (!font)
-			font = [NSFont fontWithName:@"Menlo" size:12];
+        {
+            font = [NSFont fontWithName:@"Menlo" size:12];
+        }
+        
 		if (!font)
-			font = [NSFont systemFontOfSize:12];
+        {
+            font = [NSFont systemFontOfSize:12];
+        }
 	}
 	
 	return font;
@@ -60,13 +66,16 @@ static BOOL shouldUseFlatUserInterface;
 	{
 		return NSToolbarSizeModeSmall;
 	}
+    
 	return NSToolbarSizeModeDefault;
 }
 
 + (NSImage *)toolbarImageForInstall
 {
 	static NSImage *image;
-	if (!image) {
+    
+	if (!image)
+    {
 		image = [self appropriateIconForToolbarWithName:@"download" orSymbol:@"plus.circle.fill"];
 	}
 	
@@ -76,7 +85,9 @@ static BOOL shouldUseFlatUserInterface;
 + (NSImage *)toolbarImageForUninstall
 {
 	static NSImage *image;
-	if (!image) {
+    
+	if (!image)
+    {
 		image = [self appropriateIconForToolbarWithName:@"delete" orSymbol:@"xmark.circle.fill"];
 	}
 	
@@ -86,7 +97,9 @@ static BOOL shouldUseFlatUserInterface;
 + (NSImage *)toolbarImageForTap
 {
 	static NSImage *image;
-	if (!image) {
+    
+	if (!image)
+    {
 		image = [self appropriateIconForToolbarWithName:@"download" orSymbol:@"plus.circle.fill"];
 	}
 	
@@ -96,7 +109,9 @@ static BOOL shouldUseFlatUserInterface;
 + (NSImage *)toolbarImageForUntap
 {
 	static NSImage *image;
-	if (!image) {
+    
+	if (!image)
+    {
 		image = [self appropriateIconForToolbarWithName:@"delete" orSymbol:@"xmark.circle.fill"];
 	}
 	
@@ -106,7 +121,9 @@ static BOOL shouldUseFlatUserInterface;
 + (NSImage *)toolbarImageForUpdate
 {
 	static NSImage *image;
-	if (!image) {
+    
+	if (!image)
+    {
 		image = [self appropriateIconForToolbarWithName:@"reload" orSymbol:@"arrow.triangle.2.circlepath.circle.fill"];
 	}
 	
@@ -116,7 +133,9 @@ static BOOL shouldUseFlatUserInterface;
 + (NSImage *)toolbarImageForMoreInformation
 {
 	static NSImage *image;
-	if (!image) {
+    
+	if (!image)
+    {
 		image = [self appropriateIconForToolbarWithName:@"label" orSymbol:@"info.circle.fill"];
 	}
 	
@@ -126,7 +145,9 @@ static BOOL shouldUseFlatUserInterface;
 + (NSImage *)toolbarImageForUpgrade
 {
 	static NSImage *image;
-	if (!image) {
+    
+	if (!image)
+    {
 		image = [self appropriateIconForToolbarWithName:@"globe" orSymbol:@"globe"];
 	}
 	
@@ -135,11 +156,16 @@ static BOOL shouldUseFlatUserInterface;
 
 + (NSImage *)appropriateIconForToolbarWithName:(NSString *)name orSymbol:(NSString *)symbol
 {
-	if (@available(macOS 11.0, *)) {
+	if (@available(macOS 11.0, *))
+    {
 		return [NSImage imageWithSystemSymbolName:symbol accessibilityDescription:name];
-	} else if ([self isFlat]) {
+	}
+    else if ([self isFlat])
+    {
 		return [NSImage imageNamed:[NSString stringWithFormat:@"%@_flat", name]];
-	} else {
+	}
+    else
+    {
 		return [NSImage imageNamed:[NSString stringWithFormat:@"%@.icns", name]];
 	}
 }
@@ -149,10 +175,15 @@ static BOOL shouldUseFlatUserInterface;
 + (NSColor *)popoverTitleColor
 {
 	static NSColor *color;
-	if (!color) {
-		if (@available(macOS 10.14, *)) {
+    
+	if (!color)
+    {
+		if (@available(macOS 10.14, *))
+        {
 			color = [NSColor textColor];
-		} else {
+		}
+        else
+        {
 			color = [self isFlat] ? [NSColor blackColor] : [NSColor whiteColor];
 		}
 	}
@@ -163,10 +194,15 @@ static BOOL shouldUseFlatUserInterface;
 + (NSColor *)popoverTextViewColor
 {
 	static NSColor *color;
-	if (!color) {
-		if (@available(macOS 10.14, *)) {
+    
+	if (!color)
+    {
+		if (@available(macOS 10.14, *))
+        {
 			color = [NSColor textColor];
-		} else {
+		}
+        else
+        {
 			color = [self isFlat] ? [NSColor blackColor] : [NSColor whiteColor];
 		}
 	}
@@ -179,7 +215,9 @@ static BOOL shouldUseFlatUserInterface;
 + (NSColor *)sidebarDividerColor
 {
 	static NSColor *color;
-	if (!color) {
+    
+	if (!color)
+    {
 		color = [NSColor colorWithCalibratedRed:0.835294 green:0.858824 blue:0.858824 alpha:1.0];
 	}
 	

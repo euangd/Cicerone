@@ -21,6 +21,7 @@
 
 #import "BPToolbar.h"
 #import "BPStyle.h"
+#import "BPAppDelegate.h"
 
 static NSString *kToolbarIdentifier = @"toolbarIdentifier";
 
@@ -31,7 +32,7 @@ static NSString *kToolbarItemMultiActionIdentifier = @"toolbarItemMultiAction";
 
 @interface BPToolbar() <NSSearchFieldDelegate>
 
-@property (assign) BPToolbarMode currentMode;
+@property (assign) CiOBarUserAccessIntent currentBarUAI;
 @property (strong) NSSearchField *searchField;
 
 @end
@@ -41,326 +42,311 @@ static NSString *kToolbarItemMultiActionIdentifier = @"toolbarItemMultiAction";
 - (instancetype)initWithIdentifier:(NSString *)identifier
 {
 	self = [super initWithIdentifier:kToolbarIdentifier];
+    
 	if (self)
 	{
-		NSToolbarSizeMode mode = [BPStyle toolbarSize];
-		[self setSizeMode:mode];
+		[self setSizeMode:[BPStyle toolbarSize]];
 		
-		_currentMode = BPToolbarModeInitial;
-		[self configureForMode:BPToolbarModeDefault];
-		[self lockItems];
+		_currentBarUAI = CiOBarUAINone;
+        
+		[self setItemsOnIntent:CiOBarUAIBase];
+		[self freeze:YES];
 		[self setAllowsUserCustomization:YES];
 	}
+    
 	return self;
 }
 
-- (void)configureForMode:(BPToolbarMode)mode
+- (void)setItemsOnIntent:(CiOBarUserAccessIntent)intent
 {
-	if (self.currentMode == mode)
+	if (self.currentBarUAI == intent)
 	{
 		return;
 	}
 	
-	self.currentMode = mode;
-	NSToolbarItem *moreInfoItem = [self toolbarItemInformation];
+	self.currentBarUAI = intent;
+	NSToolbarItem *localInformationItem = [self informationItem];
 	
-	if (mode == BPToolbarModeTap ||
-		mode == BPToolbarModeUntap ||
-		mode == BPToolbarModeUpdateMany ||
-		mode == BPToolbarModeDefault)
+	if (intent == CiOBarUAIActOnSourcesViewerVisible || intent == CiOBarUAIActOnInstalledSource || intent == CiOBarUAIActOnOldVersionsInstalled || intent == CiOBarUAIBase)
 	{
-		//will force toolbar to show empty nonclickable item
-		[self reconfigureItem:moreInfoItem
-						image:nil
-						label:nil
-					   action:nil];
+		// will force toolbar to show empty nonclickable item
+		[self customizeItem:localInformationItem withVisual:nil withLabel:nil withAction:nil];
 	}
 	else
 	{
-		[self reconfigureItem:moreInfoItem
-						image:[BPStyle toolbarImageForMoreInformation]
-						label:NSLocalizedString(@"Toolbar_More_Information", nil)
-					   action:@selector(showFormulaInfo:)];
+		[self customizeItem:localInformationItem withVisual:[BPStyle toolbarImageForMoreInformation] withLabel:NSLocalizedString(@"Toolbar_More_Information", nil) withAction:@selector(showFormulaInfo:)];
 	}
 	
-	
-	NSToolbarItem *multiActionItem = [self toolbarItemMultiAction];
-	switch (mode) {
-		case BPToolbarModeDefault:
-			[self reconfigureItem:multiActionItem
-							image:nil
-							label:nil
-						   action:nil];
-			break;
-			
-		case BPToolbarModeInstall:
-			[self reconfigureItem:multiActionItem
-							image:[BPStyle toolbarImageForInstall]
-							label:NSLocalizedString(@"Toolbar_Install_Formula", nil)
-						   action:@selector(installFormula:)];
-			break;
-			
-		case BPToolbarModeUninstall:
-			[self reconfigureItem:multiActionItem
-							image:[BPStyle toolbarImageForUninstall]
-							label:NSLocalizedString(@"Toolbar_Uninstall_Formula", nil)
-						   action:@selector(uninstallFormula:)];
-			break;
-			
-		case BPToolbarModeTap:
-			[self reconfigureItem:multiActionItem
-							image:[BPStyle toolbarImageForTap]
-							label:NSLocalizedString(@"Toolbar_Tap_Repo", nil)
-						   action:@selector(tapRepository:)];
-			break;
-			
-		case BPToolbarModeUntap:
-			[self reconfigureItem:multiActionItem
-							image:[BPStyle toolbarImageForUntap]
-							label:NSLocalizedString(@"Toolbar_Untap_Repo", nil)
-						   action:@selector(untapRepository:)];
-			break;
-			
-		case BPToolbarModeUpdateSingle:
-			[self reconfigureItem:multiActionItem
-							image:[BPStyle toolbarImageForUpdate]
-							label:NSLocalizedString(@"Toolbar_Update_Formula", nil)
-						   action:@selector(upgradeSelectedFormulae:)];
-			break;
-			
-		case BPToolbarModeUpdateMany:
-			[self reconfigureItem:multiActionItem
-							image:[BPStyle toolbarImageForUpdate]
-							label:NSLocalizedString(@"Toolbar_Update_Selected", nil)
-						   action:@selector(upgradeSelectedFormulae:)];
-			break;
-			
-		default:
-			break;
+	NSToolbarItem *localVariedActionsItem = [self variedActionsItem];
+
+	switch (intent) {
+        case CiOBarUAIBase:
+            [self customizeItem:localVariedActionsItem withVisual:nil withLabel:nil withAction:nil];
+            break;
+            
+        case CiOBarUAIActOnInstallable:
+            [self customizeItem:localVariedActionsItem withVisual:[BPStyle toolbarImageForInstall] withLabel:NSLocalizedString(@"Toolbar_Install_Formula", nil) withAction:@selector(installFormula:)];
+            break;
+            
+        case CiOBarUAIActOnInstalled:
+            [self customizeItem:localVariedActionsItem withVisual:[BPStyle toolbarImageForUninstall] withLabel:NSLocalizedString(@"Toolbar_Uninstall_Formula", nil) withAction:@selector(uninstallFormula:)];
+            break;
+            
+        case CiOBarUAIActOnSourcesViewerVisible:
+            [self customizeItem:localVariedActionsItem withVisual:[BPStyle toolbarImageForTap] withLabel:NSLocalizedString(@"Toolbar_Tap_Repo", nil) withAction:@selector(tapRepository:)];
+            break;
+            
+        case CiOBarUAIActOnInstalledSource:
+            [self customizeItem:localVariedActionsItem withVisual:[BPStyle toolbarImageForUntap] withLabel:NSLocalizedString(@"Toolbar_Untap_Repo", nil) withAction:@selector(untapRepository:)];
+            break;
+            
+        case CiOBarUAIActOnOldVersionInstalled:
+            [self customizeItem:localVariedActionsItem withVisual:[BPStyle toolbarImageForUpdate] withLabel:NSLocalizedString(@"Toolbar_Update_Formula", nil) withAction:@selector( upgradeSelectedFormulae:)];
+            break;
+            
+        case CiOBarUAIActOnOldVersionsInstalled:
+            [self customizeItem:localVariedActionsItem withVisual:[BPStyle toolbarImageForUpdate] withLabel:NSLocalizedString(@"Toolbar_Update_Selected", nil) withAction:@selector(upgradeSelectedFormulae:)];
+            break;
+            
+        default:
+            break;
 	}
+    
 	[self validateVisibleItems];
 }
 
-- (void)setController:(id)controller
+- (void)setActiveVisualContext:(id)controller
 {
-	if (_controller != controller)
+	if (_activeVisualContext != controller)
 	{
-		_controller = controller;
+		_activeVisualContext = controller;
 	}
 }
 
-- (void)updateToolbarItemsWithTarget:(id)target
+- (void)setToolBarItemsController:(id)controller
 {
 	NSDictionary *supportedItems = [self customToolbarItems];
-	[supportedItems enumerateKeysAndObjectsUsingBlock:^(id key, NSToolbarItem *object, BOOL *stop) {
-		[object setTarget:target];
-		[object setEnabled:target != nil]; //Disables the searchbox toolbar item
+	[supportedItems enumerateKeysAndObjectsUsingBlock:^(id key, NSToolbarItem *object, BOOL *stop){
+        [object setTarget:controller];
+        [object setEnabled:controller != nil]; // Disables the searchbox toolbar item
 	}];
 }
 
-- (void)lockItems
+- (void)freeze:(BOOL)shouldFreeze
 {
-	[self updateToolbarItemsWithTarget:nil];
-	[self validateVisibleItems];
-}
-
-- (void)unlockItems
-{
-	[self updateToolbarItemsWithTarget:_controller];
-	[self validateVisibleItems];
+    [self setToolBarItemsController: shouldFreeze ? nil : _activeVisualContext];
+    [self validateVisibleItems];
 }
 
 - (NSToolbarItem *)toolbar:(NSToolbar *)toolbar itemForItemIdentifier:(NSString *)itemIdentifier willBeInsertedIntoToolbar:(BOOL)flag
 {
 	NSDictionary *supportedItems = [self customToolbarItems];
+    
 	if (![supportedItems objectForKey:itemIdentifier])
 	{
 		return nil;
 	}
+    
 	return supportedItems[itemIdentifier];
 }
 
 - (NSArray *)toolbarDefaultItemIdentifiers:(NSToolbar *)toolbar
 {
 	if (@available(macOS 11.0, *)) {
-		return @[NSToolbarFlexibleSpaceItemIdentifier,
-				 kToolbarItemHomebrewUpdateIdentifier,
-				 NSToolbarSidebarTrackingSeparatorItemIdentifier,
-				 NSToolbarFlexibleSpaceItemIdentifier,
-				 kToolbarItemMultiActionIdentifier,
-				 kToolbarItemInformationIdentifier,
-				 kToolbarItemSearchIdentifier,
+		return @[
+            NSToolbarFlexibleSpaceItemIdentifier,
+            kToolbarItemHomebrewUpdateIdentifier,
+            NSToolbarSidebarTrackingSeparatorItemIdentifier,
+            NSToolbarFlexibleSpaceItemIdentifier,
+            kToolbarItemMultiActionIdentifier,
+            kToolbarItemInformationIdentifier,
+            kToolbarItemSearchIdentifier,
 		];
 	} else {
-		return @[kToolbarItemHomebrewUpdateIdentifier,
-				 NSToolbarFlexibleSpaceItemIdentifier,
-				 kToolbarItemMultiActionIdentifier,
-				 kToolbarItemInformationIdentifier,
-				 kToolbarItemSearchIdentifier,
-				 ];
+        return @[
+            kToolbarItemHomebrewUpdateIdentifier,
+            NSToolbarFlexibleSpaceItemIdentifier,
+            kToolbarItemMultiActionIdentifier,
+            kToolbarItemInformationIdentifier,
+            kToolbarItemSearchIdentifier,
+        ];
 	}
 }
 
 - (NSArray *)toolbarAllowedItemIdentifiers:(NSToolbar *)toolbar
 {
 	NSArray *systemToolbarItems = [self systemToolbarItems];
-	NSArray *customToolbarItems = @[kToolbarItemHomebrewUpdateIdentifier,
-									kToolbarItemInformationIdentifier,
-									kToolbarItemSearchIdentifier,
-									kToolbarItemMultiActionIdentifier
-									];
+	NSArray *customToolbarItems = @[
+        kToolbarItemHomebrewUpdateIdentifier,
+        kToolbarItemInformationIdentifier,
+        kToolbarItemSearchIdentifier,
+        kToolbarItemMultiActionIdentifier
+    ];
 	return [systemToolbarItems arrayByAddingObjectsFromArray:customToolbarItems];
 }
 
 - (NSArray *)systemToolbarItems
 {
 	static NSArray *systemToolbarItems = nil;
+    
 	if (!systemToolbarItems)
 	{
 		if (@available(macOS 11.0, *)) {
-			systemToolbarItems =  @[
+			systemToolbarItems = @[
 				NSToolbarSpaceItemIdentifier,
 				NSToolbarFlexibleSpaceItemIdentifier,
 				NSToolbarSidebarTrackingSeparatorItemIdentifier,
 				NSToolbarSeparatorItemIdentifier
 			];
 		} else {
-			systemToolbarItems =  @[
+			systemToolbarItems = @[
 				NSToolbarSpaceItemIdentifier,
 				NSToolbarFlexibleSpaceItemIdentifier,
 				NSToolbarSeparatorItemIdentifier
 			];
 		}
 	}
+    
 	return systemToolbarItems;
 }
 
 - (NSDictionary *)customToolbarItems
 {
 	static NSDictionary *customToolbarItems = nil;
+    
 	if (!customToolbarItems)
 	{
-		customToolbarItems =  @{
-								kToolbarItemHomebrewUpdateIdentifier : [self toolbarItemHomebrewUpdate],
-								kToolbarItemInformationIdentifier : [self toolbarItemInformation],
-								kToolbarItemSearchIdentifier : [self toolbarItemSearch],
-								kToolbarItemMultiActionIdentifier : [self toolbarItemMultiAction]
-								};
+		customToolbarItems = @{
+            kToolbarItemHomebrewUpdateIdentifier : [self toolbarItemHomebrewUpdate],
+            kToolbarItemInformationIdentifier : [self informationItem],
+            kToolbarItemSearchIdentifier : [self searchItem],
+            kToolbarItemMultiActionIdentifier : [self variedActionsItem]
+        };
 	}
+    
 	return customToolbarItems;
 }
 
 - (NSToolbarItem *)toolbarItemHomebrewUpdate
 {
 	static NSToolbarItem* toolbarItemHomebrewUpdate = nil;
+    
 	if (!toolbarItemHomebrewUpdate)
 	{
-		toolbarItemHomebrewUpdate = [self toolbarItemWithIdentifier:kToolbarItemHomebrewUpdateIdentifier
-															  image:[BPStyle toolbarImageForUpgrade]
-															  label:NSLocalizedString(@"Toolbar_Homebrew_Update", nil)
-															 action:@selector(updateHomebrew:)];
+		toolbarItemHomebrewUpdate = [self toolbarItemWithIdentifier:kToolbarItemHomebrewUpdateIdentifier image:[BPStyle toolbarImageForUpgrade] label:NSLocalizedString(@"Toolbar_Homebrew_Update", nil) action:@selector(updateHomebrew:)];
 	}
+    
 	return toolbarItemHomebrewUpdate;
 }
 
-- (NSToolbarItem *)toolbarItemInformation
+- (NSToolbarItem *)informationItem
 {
 	static NSToolbarItem* toolbarItemInformation = nil;
+    
 	if (!toolbarItemInformation)
 	{
-		toolbarItemInformation = [self toolbarItemWithIdentifier:kToolbarItemInformationIdentifier
-														   image:[BPStyle toolbarImageForMoreInformation]
-														   label:NSLocalizedString(@"Toolbar_More_Information", nil)
-														  action:@selector(showFormulaInfo:)];
+		toolbarItemInformation = [self toolbarItemWithIdentifier:kToolbarItemInformationIdentifier image:[BPStyle toolbarImageForMoreInformation] label:NSLocalizedString(@"Toolbar_More_Information", nil) action:@selector(showFormulaInfo:)];
 	}
+    
 	return toolbarItemInformation;
 }
 
 
-- (NSToolbarItem *)toolbarItemMultiAction
+- (NSToolbarItem *)variedActionsItem
 {
 	static NSToolbarItem* toolbarItemMultiAction = nil;
+    
 	if (!toolbarItemMultiAction)
 	{
-		toolbarItemMultiAction = [self toolbarItemWithIdentifier:kToolbarItemMultiActionIdentifier
-														   image:nil
-														   label:nil
-														  action:nil];
+		toolbarItemMultiAction = [self toolbarItemWithIdentifier:kToolbarItemMultiActionIdentifier image:nil label:nil action:nil];
 	}
+    
 	return toolbarItemMultiAction;
 }
 
-
-
-- (NSToolbarItem *)toolbarItemSearch
+- (NSToolbarItem *)searchItem
 {
-	static NSToolbarItem* item = nil;
-	if (!item)
+	static NSToolbarItem* localSearchItem = nil;
+    
+	if (!localSearchItem)
 	{
-		if (@available(macOS 11.0, *)) {
-			item = [[NSSearchToolbarItem alloc] initWithItemIdentifier:kToolbarItemSearchIdentifier];
-		} else {
-			item = [[NSToolbarItem alloc] initWithItemIdentifier:kToolbarItemSearchIdentifier];
+		if (@available(macOS 11.0, *))
+        {
+			localSearchItem = [[NSSearchToolbarItem alloc] initWithItemIdentifier:kToolbarItemSearchIdentifier];
 		}
-		item.label = NSLocalizedString(@"Toolbar_Search", nil);
-		item.paletteLabel = NSLocalizedString(@"Toolbar_Search", nil);
-		item.action = @selector(performSearchWithString:);
+        else
+        {
+			localSearchItem = [[NSToolbarItem alloc] initWithItemIdentifier:kToolbarItemSearchIdentifier];
+		}
+        
+		localSearchItem.label = NSLocalizedString(@"Toolbar_Search", nil);
+		localSearchItem.paletteLabel = NSLocalizedString(@"Toolbar_Search", nil);
+		localSearchItem.action = @selector(performSearchWithString:);
 		
 		self.searchField = [[NSSearchField alloc] initWithFrame:NSZeroRect];
 		self.searchField.delegate = self;
 		self.searchField.continuous = YES;
 		[self.searchField setRecentsAutosaveName:@"RecentSearches"];
 
-		if (@available(macOS 11.0, *)) {
-			[(NSSearchToolbarItem *)item setSearchField:self.searchField];
-		} else {
-			[item setView:self.searchField];
+		if (@available(macOS 11.0, *))
+        {
+			[(NSSearchToolbarItem *)localSearchItem setSearchField:self.searchField];
+		}
+        else
+        {
+			[localSearchItem setView:self.searchField];
 		}
 	}
-	return item;
+    
+	return localSearchItem;
 }
 
-- (NSToolbarItem *)toolbarItemWithIdentifier:(NSString *)identifier
-									   image:(NSImage *)image
-									   label:(NSString *)label
-									  action:(SEL)action
+- (NSToolbarItem *)toolbarItemWithIdentifier:(NSString *)identifier image:(NSImage *)image label:(NSString *)label action:(SEL)action
 {
 	NSToolbarItem *item = [[NSToolbarItem alloc] initWithItemIdentifier:identifier];
-	if (@available(macOS 11.0, *)) {
-		item.view = [self makeButtonForItemImage:image target:[self controller] action:action];
-	} else {
-		item.image = image;
-		item.target = [self controller];
+    
+	if (@available(macOS 11.0, *))
+    {
+		item.view = [self buttonWithVisual:image andReceiver:[self activeVisualContext] forAction:action];
 	}
+    else
+    {
+		item.image = image;
+		item.target = [self activeVisualContext];
+	}
+    
 	item.label = label;
 	item.paletteLabel = label;
 	item.action = action;
 	item.autovalidates = YES;
 	item.toolTip = label;
+    
 	return item;
 }
 
-- (void)reconfigureItem:(NSToolbarItem *)item image:(NSImage *)image label:(NSString *)label action:(SEL)action
+- (void)customizeItem:(NSToolbarItem *)item withVisual:(NSImage *)visual withLabel:(NSString *)label withAction:(SEL)action
 {
 	assert([NSThread isMainThread]);
 
-	static BOOL (^staticBlock)(NSRect) = ^BOOL(NSRect dstRect) {
+	static BOOL (^staticBlock)(NSRect) = ^BOOL(NSRect dstRect)
+    {
 		return YES;
 	};
 	
-	if (!image) {
-		if (@available(macOS 11.0, *)) {
-			item.view = nil;
-		} else {
-			item.image = [NSImage imageWithSize:NSMakeSize(32, 32) flipped:NO drawingHandler:staticBlock];
-		}
-
+	if (!visual)
+    {
+        item.view = nil;
 		item.action = action;
-	} else {
-		if (@available(macOS 11.0, *)) {
-			item.view = [self makeButtonForItemImage:image target:[self controller] action:action];
-		} else {
-			item.image = image;
+	}
+    else
+    {
+		if (@available(macOS 11.0, *))
+        {
+			item.view = [self buttonWithVisual:visual andReceiver:[self activeVisualContext] forAction:action];
+		}
+        else
+        {
+			item.image = visual;
 			item.action = action;
 		}
 	}
@@ -369,32 +355,33 @@ static NSString *kToolbarItemMultiActionIdentifier = @"toolbarItemMultiAction";
 	item.toolTip = label;
 }
 
-- (NSButton *)makeButtonForItemImage:(NSImage *)image target:(id)target action:(SEL)action
+- (NSButton *)buttonWithVisual:(NSImage *)visual andReceiver:(id)receiver forAction:(SEL)action
 {
-	if (image == nil) {
+	if (visual == nil)
+    {
 		return nil;
 	}
-	NSButton *button = [NSButton buttonWithImage:image target:target action:action];
-	[button setBezelStyle:NSBezelStyleRegularSquare];
-	[button setBordered:NO];
-	[button setTranslatesAutoresizingMaskIntoConstraints:NO];
-	if (@available(macOS 11, *)) {
-		[button setSymbolConfiguration:[NSImageSymbolConfiguration configurationWithPointSize:24
-																						  weight:NSFontWeightMedium
-																						   scale:NSImageSymbolScaleMedium]];
-	}
-	[button setImageScaling:NSImageScaleProportionallyUpOrDown];
-	return button;
+    
+    NSButton *button = [NSButton buttonWithImage:visual target:receiver action:action];
+    [button setBezelStyle:NSBezelStyleTexturedRounded];
+    [button setButtonType:NSButtonTypeMomentaryPushIn];
+    [button setBordered:YES];
+    [button setAlignment:NSTextAlignmentCenter];
+	
+    return button;
 }
 
-- (void)makeSearchFieldFirstResponder
+- (void)startSearchEventCatch
 {
 	NSView *searchView;
 
-	if (@available(macOS 11.0, *)) {
-		searchView = [(NSSearchToolbarItem *)[self toolbarItemSearch] searchField];
-	} else {
-		searchView = [[self toolbarItemSearch] view];
+	if (@available(macOS 11.0, *))
+    {
+		searchView = [(NSSearchToolbarItem *)[self searchItem] searchField];
+	}
+    else
+    {
+		searchView = [[self searchItem] view];
 	}
 
 	[[searchView window] makeFirstResponder:searchView];
@@ -404,7 +391,7 @@ static NSString *kToolbarItemMultiActionIdentifier = @"toolbarItemMultiAction";
 - (void)controlTextDidChange:(NSNotification *)aNotification
 {
 	NSSearchField *field = (NSSearchField *)[aNotification object];
-	[self.controller performSearchWithString:field.stringValue];
+	[self.activeVisualContext performSearchWithString:field.stringValue];
 }
 
 @end

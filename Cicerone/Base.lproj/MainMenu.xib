@@ -582,8 +582,8 @@ CA
             </items>
             <point key="canvasLocation" x="-235" y="154"/>
         </menu>
-        <window title="Cakebrew" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" frameAutosaveName="MainWindow" animationBehavior="default" id="371" customClass="BPWindow">
-            <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
+        <window title="Cicerone" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" frameAutosaveName="MainWindow" animationBehavior="default" titlebarAppearsTransparent="YES" id="371" userLabel="CIcerone" customClass="BPWindow">
+            <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES" fullSizeContentView="YES"/>
             <windowCollectionBehavior key="collectionBehavior" fullScreenPrimary="YES"/>
             <rect key="contentRect" x="629" y="349" width="826" height="439"/>
             <rect key="screenRect" x="0.0" y="0.0" width="2056" height="1285"/>
@@ -780,7 +780,7 @@ CA
                             <rect key="frame" x="0.0" y="0.0" width="396" height="264"/>
                             <clipView key="contentView" focusRingType="none" copiesOnScroll="NO" id="6nf-zO-0ou">
                                 <rect key="frame" x="0.0" y="0.0" width="396" height="249"/>
-                                <autoresizingMask key="autoresizingMask"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <subviews>
                                     <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" alternatingRowBackgroundColors="YES" columnReordering="NO" multipleSelection="NO" autosaveColumns="NO" headerView="pLZ-e2-9bs" id="swO-GD-dpc" customClass="BPFormulaeTableView">
                                         <rect key="frame" x="0.0" y="0.0" width="546" height="226"/>

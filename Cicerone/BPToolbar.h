@@ -36,23 +36,29 @@
 
 @interface BPToolbar : NSToolbar <NSToolbarDelegate>
 
-typedef NS_ENUM(NSUInteger, BPToolbarMode) {
-	BPToolbarModeInitial,
-	BPToolbarModeDefault,
-	BPToolbarModeInstall,
-	BPToolbarModeUninstall,
-	BPToolbarModeUpdateSingle,
-	BPToolbarModeUpdateMany,
-	BPToolbarModeTap,
-	BPToolbarModeUntap
+// user access intent, as in the intent the user would have to access bar controls with the current context
+
+typedef NS_ENUM(NSUInteger, CiOBarUserAccessIntent)
+{
+	CiOBarUAINone,
+    
+	CiOBarUAIBase,
+    
+	CiOBarUAIActOnInstallable,
+	CiOBarUAIActOnInstalled,
+    
+	CiOBarUAIActOnOldVersionInstalled,
+	CiOBarUAIActOnOldVersionsInstalled,
+    
+	CiOBarUAIActOnSourcesViewerVisible,
+	CiOBarUAIActOnInstalledSource
 };
 
-@property (nonatomic, weak) id controller;
+@property (nonatomic, weak) id activeVisualContext;
 
-- (void)configureForMode:(BPToolbarMode)mode;
-- (void)lockItems;
-- (void)unlockItems;
-- (void)makeSearchFieldFirstResponder;
+- (void)setItemsOnIntent:(CiOBarUserAccessIntent)intent;
+- (void)freeze:(BOOL)shouldFreeze;
+- (void)startSearchEventCatch;
 - (NSSearchField*)searchField;
 
 @end
