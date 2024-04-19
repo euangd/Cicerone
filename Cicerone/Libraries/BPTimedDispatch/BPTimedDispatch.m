@@ -1,6 +1,6 @@
 //
 //  BPTimedDispatch.m
-//  Cakebrew
+//  Cicerone
 //
 //  Created by Bruno Philipe on 4/17/15.
 //  Copyright (c) 2015 Bruno Philipe. All rights reserved.

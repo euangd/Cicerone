@@ -1,6 +1,6 @@
 //
 //	AppDelegate.m
-//	Cakebrew – The Homebrew GUI App for OS X
+//	Cicerone – The Homebrew GUI App for OS X
 //
 //	Created by Vincent Saluzzo on 06/12/11.
 //	Copyright (c) 2014 Bruno Philipe. All rights reserved.
@@ -23,7 +23,7 @@
 #import "DCOAboutWindowController.h"
 #import "BPAppDelegate.h"
 
-NSString *const kBP_HOMEBREW_WEBSITE = @"https://www.cakebrew.com";
+NSString *const kBP_HOMEBREW_WEBSITE = @"https://github.com/TheFanatr/Cicerone";
 
 
 @interface BPAppDelegate () <NSUserNotificationCenterDelegate>
@@ -94,7 +94,7 @@ NSString *const kBP_HOMEBREW_WEBSITE = @"https://www.cakebrew.com";
 	if (error) return nil;
 	error = nil;
 
-	path = [path URLByAppendingPathComponent:@"Cakebrew/"];
+	path = [path URLByAppendingPathComponent:@"Cicerone/"];
 
 	[[NSFileManager defaultManager] createDirectoryAtPath:path.relativePath withIntermediateDirectories:YES attributes:nil error:&error];
 
@@ -117,13 +117,13 @@ NSString *const kBP_HOMEBREW_WEBSITE = @"https://www.cakebrew.com";
 	
 	error = nil;
 
-	path = [path URLByAppendingPathComponent:@"com.brunophilipe.Cakebrew/"];
+	path = [path URLByAppendingPathComponent:@"oaVa-o.Cicerone/"];
 
 	[[NSFileManager defaultManager] createDirectoryAtPath:path.relativePath withIntermediateDirectories:YES attributes:nil error:&error];
 
 	if (error)
 	{
-		NSLog(@"Error creating Cakebrew cache directory: %@", path);
+		NSLog(@"Error creating Cicerone cache directory: %@", path);
 		return nil;
 	}
 	

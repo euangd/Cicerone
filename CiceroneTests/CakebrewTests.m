@@ -1,6 +1,6 @@
 //
-//  CakebrewTests.m
-//  CakebrewTests
+//  CiceroneTests.m
+//  CiceroneTests
 //
 //  Created by Marek Hrusovsky on 19/08/15.
 //  Copyright (c) 2015 Bruno Philipe. All rights reserved.
@@ -9,11 +9,11 @@
 #import <Cocoa/Cocoa.h>
 #import <XCTest/XCTest.h>
 
-@interface CakebrewTests : XCTestCase
+@interface CiceroneTests : XCTestCase
 
 @end
 
-@implementation CakebrewTests
+@implementation CiceroneTests
 
 - (void)setUp {
     [super setUp];

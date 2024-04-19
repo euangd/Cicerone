@@ -1,6 +1,6 @@
 //
 //  BPFormulaOption.m
-//  Cakebrew
+//  Cicerone
 //
 //  Created by Marek Hrusovsky on 09/10/14.
 //  Copyright (c) 2014 Bruno Philipe. All rights reserved.

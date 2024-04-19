@@ -1,6 +1,6 @@
 //
 //	BrewInterface.m
-//	Cakebrew – The Homebrew GUI App for OS X
+//	Cicerone – The Homebrew GUI App for OS X
 //
 //	Created by Vincent Saluzzo on 06/12/11.
 //	Copyright (c) 2014 Bruno Philipe. All rights reserved.
@@ -31,7 +31,7 @@ macOS Version: %@\n\n\
 The outputs are going to be different if run from Xcode!!\n\
 Installing and upgrading formulas is not advised in DEBUG mode!\n\n"
 
-static NSString *cakebrewOutputIdentifier = @"+++++Cakebrew+++++";
+static NSString *CiceroneOutputIdentifier = @"+++++Cicerone+++++";
 
 @interface BPHomebrewInterfaceListCall : NSObject
 
@@ -106,7 +106,7 @@ static NSString *cakebrewOutputIdentifier = @"+++++Cakebrew+++++";
 			attributes = DISPATCH_QUEUE_CONCURRENT;
 		}
 
-		_taskOperationsQueue = dispatch_queue_create("com.brunophilipe.Cakebrew.BPHomebrewInterface.Tasks", attributes);
+		_taskOperationsQueue = dispatch_queue_create("com.brunophilipe.Cicerone.BPHomebrewInterface.Tasks", attributes);
 	}
 	return self;
 }
@@ -218,7 +218,7 @@ static NSString *cakebrewOutputIdentifier = @"+++++Cakebrew+++++";
 {
 	NSString *command = nil;
 	if (sendOutputID) {
-		command = [NSString stringWithFormat:@"echo \"%@\";%@ %@", cakebrewOutputIdentifier, brewPath, [extraArguments componentsJoinedByString:@" "]];
+		command = [NSString stringWithFormat:@"echo \"%@\";%@ %@", CiceroneOutputIdentifier, brewPath, [extraArguments componentsJoinedByString:@" "]];
 	} else {
 		command = [NSString stringWithFormat:@"%@ %@", brewPath, [extraArguments componentsJoinedByString:@" "]];
 	}
@@ -407,7 +407,7 @@ static NSString *cakebrewOutputIdentifier = @"+++++Cakebrew+++++";
 
 - (NSString*)removeLoginShellOutputFromString:(NSString*)string {
 	if (string) {
-		NSRange range = [string rangeOfString:cakebrewOutputIdentifier];
+		NSRange range = [string rangeOfString:CiceroneOutputIdentifier];
 		if (range.location != NSNotFound) {
 			return [string substringFromIndex:range.location + range.length+1];
 		} else {
@@ -504,7 +504,7 @@ static NSString *cakebrewOutputIdentifier = @"+++++Cakebrew+++++";
 		[output enumerateLinesUsingBlock:^(NSString *line, BOOL *stop) {
 			if ([line hasPrefix:@"Error:"] || [line hasPrefix:@"fatal:"])
 			{
-				error = [NSError errorWithDomain:@"Cakebrew"
+				error = [NSError errorWithDomain:@"Cicerone"
 											code:2701
 										userInfo:@{NSLocalizedDescriptionKey: line}];
 				

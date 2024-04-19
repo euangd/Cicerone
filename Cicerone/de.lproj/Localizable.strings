@@ -1,5 +1,5 @@
 /* No comment provided by engineer. */
-"Cakebrew" = "Cakebrew";
+"Cicerone" = "Cicerone";
 
 /* No comment provided by engineer. */
 "Confirmation_Install_Formula" = "Sind Sie sicher, dass Sie die Formel '%@' installieren möchten?";
@@ -119,7 +119,7 @@
 "Message_BGTask_Title" = "Hintergrundprozess aktiv!";
 
 /* No comment provided by engineer. */
-"Message_No_Homebrew_Body" = "In Ihrem System wurde keine Homebrew-Installation gefunden. Homebrew wurde auf Ihrem System nicht gefunden. Bitte installieren Sie Hombrew bevor Sie Cakebrew verwenden. Sie finden unterhalb einen Button, welcher Sie auf die Webseite von Homebrew führt.";
+"Message_No_Homebrew_Body" = "In Ihrem System wurde keine Homebrew-Installation gefunden. Homebrew wurde auf Ihrem System nicht gefunden. Bitte installieren Sie Hombrew bevor Sie Cicerone verwenden. Sie finden unterhalb einen Button, welcher Sie auf die Webseite von Homebrew führt.";
 
 /* No comment provided by engineer. */
 "Message_No_Homebrew_Title" = "Homebrew Webseite";

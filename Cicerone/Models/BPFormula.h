@@ -1,6 +1,6 @@
 //
 //	BPFormula.h
-//	Cakebrew – The Homebrew GUI App for OS X 
+//	Cicerone – The Homebrew GUI App for OS X 
 //
 //	Created by Bruno Philipe on 4/3/14.
 //	Copyright (c) 2014 Bruno Philipe. All rights reserved.

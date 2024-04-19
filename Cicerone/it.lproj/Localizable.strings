@@ -1,5 +1,5 @@
 /* No comment provided by engineer. */
-"Cakebrew" = "Cakebrew";
+"Cicerone" = "Cicerone";
 
 /* No comment provided by engineer. */
 "Confirmation_Install_Formula" = "Sei sicuro di voler installare la forumla '%@¡?";
@@ -119,7 +119,7 @@
 "Message_BGTask_Title" = "Operazione in background attiva";
 
 /* No comment provided by engineer. */
-"Message_No_Homebrew_Body" = "Homebrew non è installato nel sistema. Installare Homebrew prima di utilizzare Cakebrew. Cliccare sul bottone di seguito per visitare il sito di Homebrew.";
+"Message_No_Homebrew_Body" = "Homebrew non è installato nel sistema. Installare Homebrew prima di utilizzare Cicerone. Cliccare sul bottone di seguito per visitare il sito di Homebrew.";
 
 /* No comment provided by engineer. */
 "Message_No_Homebrew_Title" = "Sito di Homebrew";

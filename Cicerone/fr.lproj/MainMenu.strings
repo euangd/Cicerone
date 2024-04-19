@@ -55,14 +55,14 @@
 /* Class = "NSMenu"; title = "AMainMenu"; ObjectID = "29"; */
 "29.title" = "AMainMenu";
 
-/* Class = "NSMenuItem"; title = "Cakebrew"; ObjectID = "56"; */
-"56.title" = "Cakebrew";
+/* Class = "NSMenuItem"; title = "Cicerone"; ObjectID = "56"; */
+"56.title" = "Cicerone";
 
-/* Class = "NSMenu"; title = "Cakebrew"; ObjectID = "57"; */
-"57.title" = "Cakebrew";
+/* Class = "NSMenu"; title = "Cicerone"; ObjectID = "57"; */
+"57.title" = "Cicerone";
 
-/* Class = "NSMenuItem"; title = "About Cakebrew"; ObjectID = "58"; */
-"58.title" = "À propos de Cakebrew";
+/* Class = "NSMenuItem"; title = "About Cicerone"; ObjectID = "58"; */
+"58.title" = "À propos de Cicerone";
 
 /* Class = "NSMenuItem"; title = "Preferences…"; ObjectID = "129"; */
 "129.title" = "Préférences…";
@@ -73,11 +73,11 @@
 /* Class = "NSMenuItem"; title = "Services"; ObjectID = "131"; */
 "131.title" = "Services";
 
-/* Class = "NSMenuItem"; title = "Hide Cakebrew"; ObjectID = "134"; */
-"134.title" = "Masquer Cakebrew";
+/* Class = "NSMenuItem"; title = "Hide Cicerone"; ObjectID = "134"; */
+"134.title" = "Masquer Cicerone";
 
-/* Class = "NSMenuItem"; title = "Quit Cakebrew"; ObjectID = "136"; */
-"136.title" = "Quitter Cakebrew";
+/* Class = "NSMenuItem"; title = "Quit Cicerone"; ObjectID = "136"; */
+"136.title" = "Quitter Cicerone";
 
 /* Class = "NSMenuItem"; title = "Hide Others"; ObjectID = "145"; */
 "145.title" = "Masquer les autres";
@@ -88,8 +88,8 @@
 /* Class = "NSMenuItem"; title = "Zoom"; ObjectID = "239"; */
 "239.title" = "Zoom";
 
-/* Class = "NSWindow"; title = "Cakebrew"; ObjectID = "371"; */
-"371.title" = "Cakebrew";
+/* Class = "NSWindow"; title = "Cicerone"; ObjectID = "371"; */
+"371.title" = "Cicerone";
 
 /* Class = "NSMenuItem"; title = "Help"; ObjectID = "490"; */
 "490.title" = "Aide";
@@ -97,8 +97,8 @@
 /* Class = "NSMenu"; title = "Help"; ObjectID = "491"; */
 "491.title" = "Aide";
 
-/* Class = "NSMenuItem"; title = "Cakebrew Help"; ObjectID = "492"; */
-"492.title" = "Aide Cakebrew";
+/* Class = "NSMenuItem"; title = "Cicerone Help"; ObjectID = "492"; */
+"492.title" = "Aide Cicerone";
 
 /* Class = "NSViewController"; title = "HomebrewController"; ObjectID = "547"; */
 "547.title" = "HomebrewController";

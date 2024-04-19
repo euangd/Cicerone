@@ -50,7 +50,10 @@
 		1FE4FE6C148E4CDD008EDE8B /* BPAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1FE4FE6B148E4CDD008EDE8B /* BPAppDelegate.m */; };
 		1FE4FE6F148E4CDD008EDE8B /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1FE4FE6D148E4CDD008EDE8B /* MainMenu.xib */; };
 		222DC89E284CE05B0094E825 /* BPCasksDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 222DC89D284CE05B0094E825 /* BPCasksDataSource.m */; };
-		8568B3F161789EE0F3CFB9EA /* Pods_CiceroneTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B70EBB99C630D39AC65F0200 /* Pods_CiceroneTests.framework */; };
+		B7247B652BD2AE7200C13021 /* Pods-CiceroneTests in Frameworks */ = {isa = PBXBuildFile; fileRef = B79350752BD2ACB100C793ED /* Pods-CiceroneTests */; };
+		B7247B662BD2AE7200C13021 /* Pods-CiceroneTests in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = B79350752BD2ACB100C793ED /* Pods-CiceroneTests */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		B79350782BD2ACCD00C793ED /* Pods-Cicerone in Frameworks */ = {isa = PBXBuildFile; fileRef = B79350732BD2ACB100C793ED /* Pods-Cicerone */; };
+		B79350792BD2ACCD00C793ED /* Pods-Cicerone in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = B79350732BD2ACB100C793ED /* Pods-Cicerone */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		B7BA471F29EE6EB400301D80 /* Credits.md in Resources */ = {isa = PBXBuildFile; fileRef = B7BA471E29EE6EB400301D80 /* Credits.md */; };
 		B7C9177D29F80C8800A6E748 /* brewInfo_sbtenv.txt in Resources */ = {isa = PBXBuildFile; fileRef = B7C9177329F80C8700A6E748 /* brewInfo_sbtenv.txt */; };
 		B7C9177E29F80C8800A6E748 /* brewInfo_bison.txt in Resources */ = {isa = PBXBuildFile; fileRef = B7C9177429F80C8700A6E748 /* brewInfo_bison.txt */; };
@@ -65,8 +68,6 @@
 		B7C9178929F80E7300A6E748 /* BPHomebrewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B7C9178829F80E7300A6E748 /* BPHomebrewViewController.m */; };
 		B7C9178E29F80E8600A6E748 /* BPHomebrewInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = B7C9178A29F80E8600A6E748 /* BPHomebrewInterface.m */; };
 		B7C9178F29F80E8600A6E748 /* BPHomebrewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B7C9178B29F80E8600A6E748 /* BPHomebrewManager.m */; };
-		B7C9179029F8CEBD00A6E748 /* Pods_Cicerone.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8E3B2F2DB08D3A5D17E010AE /* Pods_Cicerone.framework */; };
-		B7C9179129F8CEBD00A6E748 /* Pods_Cicerone.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8E3B2F2DB08D3A5D17E010AE /* Pods_Cicerone.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D212A5881B853069003000ED /* BPFormulaTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D212A5871B853069003000ED /* BPFormulaTests.m */; };
 		D212A5891B853132003000ED /* BPFormula.m in Sources */ = {isa = PBXBuildFile; fileRef = 1570BA5518EE50BD001C3C5C /* BPFormula.m */; };
 		D228335A1BA71B9900E44C82 /* BPTask.m in Sources */ = {isa = PBXBuildFile; fileRef = D23620E01B8B3094006D293D /* BPTask.m */; };
@@ -88,15 +89,65 @@
 		D2F732F119190B75002B2512 /* NSString+URLValidation.m in Sources */ = {isa = PBXBuildFile; fileRef = D2F732F019190B75002B2512 /* NSString+URLValidation.m */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		B793506E2BD2ACB100C793ED /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B79350652BD2ACB100C793ED /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 638B3D482675D5B7F772E86A0195DEFF;
+			remoteInfo = DCOAboutWindow;
+		};
+		B79350702BD2ACB100C793ED /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B79350652BD2ACB100C793ED /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 6717683B270E078467AB636904F2CE68;
+			remoteInfo = DCOTransparentScroller;
+		};
+		B79350722BD2ACB100C793ED /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B79350652BD2ACB100C793ED /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = FEF48ADB5913F7B1581156C8F486F376;
+			remoteInfo = "Pods-Cicerone";
+		};
+		B79350742BD2ACB100C793ED /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B79350652BD2ACB100C793ED /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 16832971BD7DAD3C2EE570570A79342B;
+			remoteInfo = "Pods-CiceroneTests";
+		};
+		B79350762BD2ACB100C793ED /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B79350652BD2ACB100C793ED /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 624624BD0760A5D1D8BE4C09DF17945A;
+			remoteInfo = PXSourceList;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXCopyFilesBuildPhase section */
-		1570BA6018EF9B0F001C3C5C /* CopyFiles */ = {
+		B7247B672BD2AE7200C13021 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				B7C9179129F8CEBD00A6E748 /* Pods_Cicerone.framework in CopyFiles */,
+				B7247B662BD2AE7200C13021 /* Pods-CiceroneTests in Embed Frameworks */,
 			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B793507A2BD2ACCD00C793ED /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				B79350792BD2ACCD00C793ED /* Pods-Cicerone in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
@@ -219,8 +270,9 @@
 		8E3B2F2DB08D3A5D17E010AE /* Pods_Cicerone.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Cicerone.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		ABCD0FD1BA4ECE02384478B4 /* Pods-CiceroneTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CiceroneTests.release.xcconfig"; path = "Target Support Files/Pods-CiceroneTests/Pods-CiceroneTests.release.xcconfig"; sourceTree = "<group>"; };
 		B70EBB99C630D39AC65F0200 /* Pods_CiceroneTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CiceroneTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B79350652BD2ACB100C793ED /* Pods.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Pods.xcodeproj; path = Pods/Pods.xcodeproj; sourceTree = "<group>"; };
 		B7BA471E29EE6EB400301D80 /* Credits.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = Credits.md; sourceTree = SOURCE_ROOT; };
-		B7BA472029F0F7BF00301D80 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; indentWidth = 2; path = Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; };
+		B7BA472029F0F7BF00301D80 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; indentWidth = 2; path = Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		B7C9177229F7E3ED00A6E748 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = SOURCE_ROOT; };
 		B7C9177329F80C8700A6E748 /* brewInfo_sbtenv.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = brewInfo_sbtenv.txt; sourceTree = "<group>"; };
 		B7C9177429F80C8700A6E748 /* brewInfo_bison.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = brewInfo_bison.txt; sourceTree = "<group>"; };
@@ -288,7 +340,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B7C9179029F8CEBD00A6E748 /* Pods_Cicerone.framework in Frameworks */,
+				B79350782BD2ACCD00C793ED /* Pods-Cicerone in Frameworks */,
 				D2CC8CA71B90F04C00F763DF /* Security.framework in Frameworks */,
 				15D2CFAD18F202D000B6D9F1 /* QuartzCore.framework in Frameworks */,
 				1FE4FE59148E4CDD008EDE8B /* Cocoa.framework in Frameworks */,
@@ -299,8 +351,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B7247B652BD2AE7200C13021 /* Pods-CiceroneTests in Frameworks */,
 				1594D13C1B8A6D1A00F764FA /* QuartzCore.framework in Frameworks */,
-				8568B3F161789EE0F3CFB9EA /* Pods_CiceroneTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -446,6 +498,7 @@
 		1FE4FE57148E4CDD008EDE8B /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				B79350652BD2ACB100C793ED /* Pods.xcodeproj */,
 				D2CC8CA61B90F04C00F763DF /* Security.framework */,
 				15D2CFAC18F202D000B6D9F1 /* QuartzCore.framework */,
 				1FE4FE58148E4CDD008EDE8B /* Cocoa.framework */,
@@ -511,6 +564,18 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		B79350662BD2ACB100C793ED /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				B793506F2BD2ACB100C793ED /* DCOAboutWindow */,
+				B79350712BD2ACB100C793ED /* DCOTransparentScroller */,
+				B79350732BD2ACB100C793ED /* Pods-Cicerone */,
+				B79350752BD2ACB100C793ED /* Pods-CiceroneTests */,
+				B79350772BD2ACB100C793ED /* PXSourceList */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		D261C9C11B852FA300409803 /* CiceroneTests */ = {
 			isa = PBXGroup;
 			children = (
@@ -571,9 +636,9 @@
 				1FE4FE50148E4CDD008EDE8B /* Sources */,
 				1FE4FE51148E4CDD008EDE8B /* Frameworks */,
 				1FE4FE52148E4CDD008EDE8B /* Resources */,
-				1570BA6018EF9B0F001C3C5C /* CopyFiles */,
 				6A35F7BC147C2F7885E312B2 /* [CP] Embed Pods Frameworks */,
 				1555FD5F25CF4E5800E5D344 /* Fix Sparkle Hardened Runtime */,
+				B793507A2BD2ACCD00C793ED /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -592,6 +657,7 @@
 				D261C9BC1B852FA300409803 /* Sources */,
 				D261C9BD1B852FA300409803 /* Frameworks */,
 				D261C9BE1B852FA300409803 /* Resources */,
+				B7247B672BD2AE7200C13021 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -637,6 +703,12 @@
 			mainGroup = 1FE4FE49148E4CDD008EDE8B;
 			productRefGroup = 1FE4FE55148E4CDD008EDE8B /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = B79350662BD2ACB100C793ED /* Products */;
+					ProjectRef = B79350652BD2ACB100C793ED /* Pods.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				1FE4FE53148E4CDD008EDE8B /* Cicerone */,
@@ -644,6 +716,49 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		B793506F2BD2ACB100C793ED /* DCOAboutWindow */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			name = DCOAboutWindow;
+			path = DCOAboutWindow.framework;
+			remoteRef = B793506E2BD2ACB100C793ED /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		B79350712BD2ACB100C793ED /* DCOTransparentScroller */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			name = DCOTransparentScroller;
+			path = DCOTransparentScroller.framework;
+			remoteRef = B79350702BD2ACB100C793ED /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		B79350732BD2ACB100C793ED /* Pods-Cicerone */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			name = "Pods-Cicerone";
+			path = Pods_Cicerone.framework;
+			remoteRef = B79350722BD2ACB100C793ED /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		B79350752BD2ACB100C793ED /* Pods-CiceroneTests */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			name = "Pods-CiceroneTests";
+			path = Pods_CiceroneTests.framework;
+			remoteRef = B79350742BD2ACB100C793ED /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		B79350772BD2ACB100C793ED /* PXSourceList */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			name = PXSourceList;
+			path = PXSourceList.framework;
+			remoteRef = B79350762BD2ACB100C793ED /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		1FE4FE52148E4CDD008EDE8B /* Resources */ = {
@@ -1127,7 +1242,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 13.3;
+				MACOSX_DEPLOYMENT_TARGET = 14.4;
 				MARKETING_VERSION = 0.1;
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "oaVa-o.${PRODUCT_NAME:rfc1034identifier}";
@@ -1168,7 +1283,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 13.3;
+				MACOSX_DEPLOYMENT_TARGET = 14.4;
 				MARKETING_VERSION = 0.1;
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "oaVa-o.${PRODUCT_NAME:rfc1034identifier}";
@@ -1210,7 +1325,7 @@
 					"@executable_path/../Frameworks",
 					"@loader_path/../Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 13.3;
+				MACOSX_DEPLOYMENT_TARGET = 14.4;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "oaVa-o.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1245,7 +1360,7 @@
 					"@executable_path/../Frameworks",
 					"@loader_path/../Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 13.3;
+				MACOSX_DEPLOYMENT_TARGET = 14.4;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = "oaVa-o.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";

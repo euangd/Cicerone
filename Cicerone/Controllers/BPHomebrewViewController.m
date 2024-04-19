@@ -1,6 +1,6 @@
 //
 //	HomebrewController.m
-//	Cakebrew – The Homebrew GUI App for OS X
+//	Cicerone – The Homebrew GUI App for OS X
 //
 //	Created by Vincent Saluzzo on 06/12/11.
 //	Copyright (c) 2014 Bruno Philipe. All rights reserved.
@@ -513,7 +513,7 @@ NSOpenSavePanelDelegate>
         [alert addButtonWithTitle:NSLocalizedString(@"Message_No_Homebrew_Title", nil)];
         [alert addButtonWithTitle:NSLocalizedString(@"Generic_Cancel", nil)];
         [alert setInformativeText:NSLocalizedString(@"Message_No_Homebrew_Body", nil)];
-        [alert.window setTitle:NSLocalizedString(@"Cakebrew", nil)];
+        [alert.window setTitle:NSLocalizedString(@"Cicerone", nil)];
         
         NSURL *brew_URL = [NSURL URLWithString:@"http://brew.sh"];
         
@@ -728,7 +728,7 @@ NSOpenSavePanelDelegate>
     [alert setInformativeText:[NSString stringWithFormat:NSLocalizedString(@"Confirmation_Install_Formula", nil),
                                formula.name]];
     
-    [alert.window setTitle:NSLocalizedString(@"Cakebrew", nil)];
+    [alert.window setTitle:NSLocalizedString(@"Cicerone", nil)];
     
     if ([alert runModal] == NSAlertFirstButtonReturn)
     {
@@ -767,7 +767,7 @@ NSOpenSavePanelDelegate>
     [alert addButtonWithTitle:NSLocalizedString(@"Generic_Cancel", nil)];
     [alert setInformativeText:[NSString stringWithFormat:NSLocalizedString(@"Confirmation_Uninstall_Formula", nil), formula.name]];
     
-    [alert.window setTitle:NSLocalizedString(@"Cakebrew", nil)];
+    [alert.window setTitle:NSLocalizedString(@"Cicerone", nil)];
     
     if ([alert runModal] == NSAlertFirstButtonReturn) {
         self.operationWindowController = [BPInstallationWindowController runWithOperation:kBPWindowOperationUninstall formulae:@[formula] options:nil];
@@ -792,7 +792,7 @@ NSOpenSavePanelDelegate>
     [alert addButtonWithTitle:NSLocalizedString(@"Generic_Cancel", nil)];
     [alert setInformativeText:[NSString stringWithFormat:NSLocalizedString(@"Message_Update_Formulae_Body", nil), formulaNames]];
     
-    [alert.window setTitle:NSLocalizedString(@"Cakebrew", nil)];
+    [alert.window setTitle:NSLocalizedString(@"Cicerone", nil)];
     if ([alert runModal] == NSAlertFirstButtonReturn)
     {
         self.operationWindowController = [BPInstallationWindowController runWithOperation:kBPWindowOperationUpgrade formulae:selectedFormulae options:nil];
@@ -817,7 +817,7 @@ NSOpenSavePanelDelegate>
     [alert addButtonWithTitle:NSLocalizedString(@"Generic_Cancel", nil)];
     [alert setInformativeText:[NSString stringWithFormat:NSLocalizedString(@"Message_Update_Formulae_Body", nil), formulaNames]];
     
-    [alert.window setTitle:NSLocalizedString(@"Cakebrew", nil)];
+    [alert.window setTitle:NSLocalizedString(@"Cicerone", nil)];
     if ([alert runModal] == NSAlertFirstButtonReturn)
     {
         self.operationWindowController = [BPInstallationWindowController runWithOperation:kBPWindowOperationUpgrade formulae:selectedCasks options:nil];
@@ -834,7 +834,7 @@ NSOpenSavePanelDelegate>
     [alert addButtonWithTitle:NSLocalizedString(@"Generic_Yes", nil)];
     [alert addButtonWithTitle:NSLocalizedString(@"Generic_Cancel", nil)];
     [alert setInformativeText:NSLocalizedString(@"Message_Update_All_Outdated_Body", nil)];
-    [alert.window setTitle:NSLocalizedString(@"Cakebrew", nil)];
+    [alert.window setTitle:NSLocalizedString(@"Cicerone", nil)];
     
     if ([alert runModal] == NSAlertFirstButtonReturn)
     {
@@ -851,7 +851,7 @@ NSOpenSavePanelDelegate>
     [alert addButtonWithTitle:NSLocalizedString(@"Generic_OK", nil)];
     [alert addButtonWithTitle:NSLocalizedString(@"Generic_Cancel", nil)];
     [alert setInformativeText:NSLocalizedString(@"Message_Tap_Body", nil)];
-    [alert.window setTitle:NSLocalizedString(@"Cakebrew", nil)];
+    [alert.window setTitle:NSLocalizedString(@"Cicerone", nil)];
     
     NSTextField *input = [[NSTextField alloc] initWithFrame:NSMakeRect(0,0,200,24)];
     [alert setAccessoryView:input];
@@ -886,7 +886,7 @@ NSOpenSavePanelDelegate>
     [alert addButtonWithTitle:NSLocalizedString(@"Generic_OK", nil)];
     [alert addButtonWithTitle:NSLocalizedString(@"Generic_Cancel", nil)];
     [alert setInformativeText:[NSString stringWithFormat:NSLocalizedString(@"Message_Untap_Body", nil), formula.name]];
-    [alert.window setTitle:NSLocalizedString(@"Cakebrew", nil)];
+    [alert.window setTitle:NSLocalizedString(@"Cicerone", nil)];
     
     if ([alert runModal] == NSAlertFirstButtonReturn)
     {

@@ -1,6 +1,6 @@
 //
 //  BPAutoScrollTextView.h
-//  Cakebrew
+//  Cicerone
 //
 //  Created by Bruno Philipe on 6/17/14.
 //  Copyright (c) 2014 Bruno Philipe. All rights reserved.

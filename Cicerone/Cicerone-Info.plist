@@ -33,7 +33,7 @@
 	<key>SUEnableSystemProfiling</key>
 	<true/>
 	<key>SUFeedURL</key>
-	<string>https://www.cakebrew.com/appcast/profileInfo.php</string>
+	<string>https://www.Cicerone.com/appcast/profileInfo.php</string>
 	<key>SUPublicDSAKeyFile</key>
 	<string>dsa_pub.pem</string>
 	<key>SUPublicEDKey</key>

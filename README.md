@@ -2,7 +2,7 @@
 
 A GUI for the `Brew` CLI tool found at [brew.sh](https://brew.sh). `Brew` is a build artifact and/or source code distribution tool similar to `Choco` and `WinGet`, but for macOS and Linux. This GUI tool aims to make it easier to use and control on macOS. See [the Features section](#Features).
 
-Cicerone is based on Bruno Philipe's [Cakebrew](https://github.com/brunophilipe/Cakebrew), which itself is based on Vincent Saluzzo's [Homebrew-GUI](https://github.com/vincentsaluzzo/Homebrew-GUI). The commit histories of both are still attached to this branch in Git.
+Cicerone is based on Bruno Philipe's [Cicerone](https://github.com/brunophilipe/Cicerone), which itself is based on Vincent Saluzzo's [Homebrew-GUI](https://github.com/vincentsaluzzo/Homebrew-GUI). The commit histories of both are still attached to this branch in Git.
 
 See [the Credits file](Credits.MD) for more information on the historical context of the source code and other content distributed with this file.
 
@@ -85,11 +85,11 @@ Feel free to contibute! See [the license](#License).
 
 #### Swift Version
 
-The intent with Cicerone is to write a fresh MIT-licensed version of Cakebrew, built on Swift and SwiftUI. The current source tree has some serious bloat (no shade!) for a CLI tool GUI, which can be solved with the more modern sensibilities aforementioned around choice of native macOS stack. This should make it easier to add features, which is the essential driver behind the existence of this fork, but the intent is to address some of the more trivial concerns with the current state of the source beforehand; it is not at all clear if or when the Swift version will be viable, hence the current QoL edits to the structure and meta files, and the current and future edits to the actual source code.
+The intent with Cicerone is to write a fresh MIT-licensed version of Cicerone, built on Swift and SwiftUI. The current source tree has some serious bloat (no shade!) for a CLI tool GUI, which can be solved with the more modern sensibilities aforementioned around choice of native macOS stack. This should make it easier to add features, which is the essential driver behind the existence of this fork, but the intent is to address some of the more trivial concerns with the current state of the source beforehand; it is not at all clear if or when the Swift version will be viable, hence the current QoL edits to the structure and meta files, and the current and future edits to the actual source code.
 
 ## Pictures
 
-![Home UI](https://www.cakebrew.com/assets/img/app-bg.png)
+![Home UI](https://www.Cicerone.com/assets/img/app-bg.png)
 
 ## Build and/or Install
 

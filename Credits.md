@@ -6,7 +6,7 @@ See [the Read-Me file](ReadMe.MD) for more information on the nature of the code
 
 ### Source Code
 
-[Cicerone](https://github.com/TheFanatr/Cicerone) is a fork of [Cakebrew](https://github.com/brunophilipe/Cakebrew), from author Bruno Philipe, which itself is a fork of [Homebrew-GUI](https://github.com/vincentsaluzzo/Homebrew-GUI), from author Vincent Saluzzo.
+[Cicerone](https://github.com/TheFanatr/Cicerone) is a fork of [Cicerone](https://github.com/brunophilipe/Cicerone), from author Bruno Philipe, which itself is a fork of [Homebrew-GUI](https://github.com/vincentsaluzzo/Homebrew-GUI), from author Vincent Saluzzo.
 
 All source code has been maintained with the critical aid of its contributors.
 

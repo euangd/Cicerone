@@ -1,5 +1,5 @@
 /* No comment provided by engineer. */
-"Cakebrew" = "Cakebrew";
+"Cicerone" = "Cicerone";
 
 /* No comment provided by engineer. */
 "Confirmation_Install_Formula" = "你确定你想安装'%@'这个formula?";
@@ -119,7 +119,7 @@
 "Message_BGTask_Title" = "激活后台任务!";
 
 /* No comment provided by engineer. */
-"Message_No_Homebrew_Body" = "Homebrew没有在你的系统中找到。请在使用Cakebrew之前安装Homebrew。您可以点击下面的按钮来打开自制的网站。";
+"Message_No_Homebrew_Body" = "Homebrew没有在你的系统中找到。请在使用Cicerone之前安装Homebrew。您可以点击下面的按钮来打开自制的网站。";
 
 /* No comment provided by engineer. */
 "Message_No_Homebrew_Title" = "Homebrew网站";

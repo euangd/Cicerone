@@ -1,6 +1,6 @@
 //
 //  BPDoctorViewController.m
-//  Cakebrew
+//  Cicerone
 //
 //  Created by Marek Hrusovsky on 21/08/14.
 //	Copyright (c) 2014 Bruno Philipe. All rights reserved.

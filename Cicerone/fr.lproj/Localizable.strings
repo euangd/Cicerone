@@ -1,5 +1,5 @@
 /* No comment provided by engineer. */
-"Cakebrew" = "Cakebrew";
+"Cicerone" = "Cicerone";
 
 /* No comment provided by engineer. */
 "Confirmation_Install_Formula" = "Êtes-vous sûr de vouloir installer la formule « %@ » ?";
@@ -119,7 +119,7 @@
 "Message_BGTask_Title" = "Tâche de fond active !";
 
 /* No comment provided by engineer. */
-"Message_No_Homebrew_Body" = "Homebrew n'est pas présent sur votre système. Veuillez installer Homebrew avant d'utiliser Cakebrew. Vous pouvez cliquer sur le bouton ci-dessous pour aller sur le site web de Homebrew.";
+"Message_No_Homebrew_Body" = "Homebrew n'est pas présent sur votre système. Veuillez installer Homebrew avant d'utiliser Cicerone. Vous pouvez cliquer sur le bouton ci-dessous pour aller sur le site web de Homebrew.";
 
 /* No comment provided by engineer. */
 "Message_No_Homebrew_Title" = "Site web de Homebrew";

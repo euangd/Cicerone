@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="21701" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="32700.99.1234" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="21701"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="22689"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -14,10 +14,10 @@
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <menu title="AMainMenu" systemMenu="main" id="29">
             <items>
-                <menuItem title="Cakebrew" id="56">
-                    <menu key="submenu" title="Cakebrew" systemMenu="apple" id="57">
+                <menuItem title="Cicerone" id="56">
+                    <menu key="submenu" title="Cicerone" systemMenu="apple" id="57">
                         <items>
-                            <menuItem title="About Cakebrew" id="58">
+                            <menuItem title="About Cicerone" id="58">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <connections>
                                     <action selector="showAboutWindow:" target="494" id="z48-Z9-LW3"/>
@@ -51,7 +51,7 @@
                             <menuItem isSeparatorItem="YES" id="144">
                                 <modifierMask key="keyEquivalentModifierMask" command="YES"/>
                             </menuItem>
-                            <menuItem title="Hide Cakebrew" keyEquivalent="h" id="134">
+                            <menuItem title="Hide Cicerone" keyEquivalent="h" id="134">
                                 <connections>
                                     <action selector="hide:" target="-1" id="367"/>
                                 </connections>
@@ -68,7 +68,7 @@
                                 </connections>
                             </menuItem>
                             <menuItem isSeparatorItem="YES" id="G6K-O4-GYJ"/>
-                            <menuItem title="Quit Cakebrew" keyEquivalent="q" id="136">
+                            <menuItem title="Quit Cicerone" keyEquivalent="q" id="136">
                                 <connections>
                                     <action selector="terminate:" target="-3" id="449"/>
                                 </connections>
@@ -571,7 +571,7 @@ CA
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <menu key="submenu" title="Help" systemMenu="help" id="491">
                         <items>
-                            <menuItem title="Cakebrew Help" keyEquivalent="?" id="492">
+                            <menuItem title="Cicerone Help" keyEquivalent="?" id="492">
                                 <connections>
                                     <action selector="showHelp:" target="-1" id="493"/>
                                 </connections>
@@ -779,11 +779,11 @@ CA
                         <scrollView focusRingType="none" borderType="none" autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" usesPredominantAxisScrolling="NO" horizontalScrollElasticity="none" scrollerKnobStyle="dark" translatesAutoresizingMaskIntoConstraints="NO" id="YpG-G5-bXX">
                             <rect key="frame" x="0.0" y="0.0" width="396" height="264"/>
                             <clipView key="contentView" focusRingType="none" copiesOnScroll="NO" id="6nf-zO-0ou">
-                                <rect key="frame" x="0.0" y="0.0" width="396" height="249"/>
+                                <rect key="frame" x="0.0" y="0.0" width="396" height="264"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <subviews>
                                     <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" alternatingRowBackgroundColors="YES" columnReordering="NO" multipleSelection="NO" autosaveColumns="NO" headerView="pLZ-e2-9bs" id="swO-GD-dpc" customClass="BPFormulaeTableView">
-                                        <rect key="frame" x="0.0" y="0.0" width="546" height="226"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="546" height="241"/>
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                         <size key="intercellSpacing" width="3" height="2"/>
                                         <color key="backgroundColor" white="1" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -845,7 +845,7 @@ CA
                                 </subviews>
                             </clipView>
                             <scroller key="horizontalScroller" wantsLayer="YES" verticalHuggingPriority="750" horizontal="YES" id="klu-B1-7Zh">
-                                <rect key="frame" x="0.0" y="249" width="396" height="15"/>
+                                <rect key="frame" x="0.0" y="248" width="396" height="16"/>
                                 <autoresizingMask key="autoresizingMask"/>
                             </scroller>
                             <scroller key="verticalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="NO" id="FFe-Uc-20x">
@@ -945,14 +945,14 @@ CA
             </constraints>
             <point key="canvasLocation" x="118" y="-308.5"/>
         </customView>
-        <scrollView borderType="none" autohidesScrollers="YES" horizontalLineScroll="28" horizontalPageScroll="10" verticalLineScroll="28" verticalPageScroll="10" usesPredominantAxisScrolling="NO" horizontalScrollElasticity="none" verticalScrollElasticity="none" id="bme-rl-6Ta">
+        <scrollView borderType="none" autohidesScrollers="YES" horizontalLineScroll="24" horizontalPageScroll="10" verticalLineScroll="24" verticalPageScroll="10" usesPredominantAxisScrolling="NO" horizontalScrollElasticity="none" verticalScrollElasticity="none" id="bme-rl-6Ta">
             <rect key="frame" x="0.0" y="0.0" width="210" height="275"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <clipView key="contentView" drawsBackground="NO" id="xPi-so-Sop">
                 <rect key="frame" x="0.0" y="0.0" width="210" height="275"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <outlineView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" selectionHighlightStyle="sourceList" columnReordering="NO" multipleSelection="NO" autosaveColumns="NO" rowHeight="28" rowSizeStyle="systemDefault" viewBased="YES" indentationPerLevel="13" outlineTableColumn="Dme-LE-cyv" id="9f4-xo-e1c" customClass="PXSourceList">
+                    <outlineView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" selectionHighlightStyle="sourceList" columnReordering="NO" multipleSelection="NO" autosaveColumns="NO" rowHeight="24" rowSizeStyle="systemDefault" viewBased="YES" indentationPerLevel="13" outlineTableColumn="Dme-LE-cyv" id="9f4-xo-e1c" customClass="PXSourceList">
                         <rect key="frame" x="0.0" y="0.0" width="210" height="275"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" name="_sourceListBackgroundColor" catalog="System" colorSpace="catalog"/>

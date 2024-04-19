@@ -1,13 +1,13 @@
 //
-// Prefix header for all source files of the 'Cakebrew' target in the 'Cakebrew' project
+// Prefix header for all source files of the 'Cicerone' target in the 'Cicerone' project
 //
 
 #ifdef __OBJC__
 	#import <Cocoa/Cocoa.h>
 #endif
 
-#ifndef __BP_CAKEBREW__
-	#define __BP_CAKEBREW__
+#ifndef __BP_Cicerone__
+	#define __BP_Cicerone__
 
 	#ifndef MAC_OS_X_VERSION_10_10
 		#define NSVisualEffectsView NSView

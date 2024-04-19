@@ -1,6 +1,6 @@
 //
 //  BPFormulaOptionsWindowController.m
-//  Cakebrew
+//  Cicerone
 //
 //  Created by Marek Hrusovsky on 21/08/14.
 //	Copyright (c) 2014 Bruno Philipe. All rights reserved.
@@ -141,7 +141,7 @@ static NSString * const kFormulaOptionsTitleColumnId = @"title";
 	[alert addButtonWithTitle:NSLocalizedString(@"Generic_Cancel", nil)];
 	[alert setInformativeText:[NSString stringWithFormat:NSLocalizedString(@"Formula_Options_Confirmation", nil),
 							   self.formula.name]];
-	[alert.window setTitle:NSLocalizedString(@"Cakebrew", nil)];
+	[alert.window setTitle:NSLocalizedString(@"Cicerone", nil)];
 	
 	
 	NSInteger returnValue = [alert runModal];

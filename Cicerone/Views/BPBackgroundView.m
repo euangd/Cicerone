@@ -1,6 +1,6 @@
 //
 //  BPBackgroundView.m
-//  Cakebrew
+//  Cicerone
 //
 //  Created by Bruno Philipe on 10/15/15.
 //  Copyright © 2015 Bruno Philipe. All rights reserved.
