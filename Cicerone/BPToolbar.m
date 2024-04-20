@@ -32,7 +32,7 @@ static NSString *kToolbarItemMultiActionIdentifier = @"toolbarItemMultiAction";
 
 @interface BPToolbar() <NSSearchFieldDelegate>
 
-@property (assign) CiOBarUserAccessIntent currentBarUAI;
+@property (assign) CiBarUses barUse;
 @property (strong) NSSearchField *searchField;
 
 @end
@@ -47,27 +47,27 @@ static NSString *kToolbarItemMultiActionIdentifier = @"toolbarItemMultiAction";
 	{
 		[self setSizeMode:[BPStyle toolbarSize]];
 		
-		_currentBarUAI = CiOBarUAINone;
+		_barUse = CiBarBlank;
         
-		[self setItemsOnIntent:CiOBarUAIBase];
-		[self freeze:YES];
+		[self setToolsWithUse:CiBarCore];
+		[self lock:YES];
 		[self setAllowsUserCustomization:YES];
 	}
     
 	return self;
 }
 
-- (void)setItemsOnIntent:(CiOBarUserAccessIntent)intent
+- (void)setToolsWithUse:(CiBarUses)intent
 {
-	if (self.currentBarUAI == intent)
+	if (self.barUse == intent)
 	{
 		return;
 	}
 	
-	self.currentBarUAI = intent;
+	self.barUse = intent;
 	NSToolbarItem *localInformationItem = [self informationItem];
 	
-	if (intent == CiOBarUAIActOnSourcesViewerVisible || intent == CiOBarUAIActOnInstalledSource || intent == CiOBarUAIActOnOldVersionsInstalled || intent == CiOBarUAIBase)
+	if (intent == CiBarAddTapMode || intent == CiBarTapMode || intent == CiOBarUAIActOnOldVersionsInstalled || intent == CiBarCore)
 	{
 		// will force toolbar to show empty nonclickable item
 		[self customizeItem:localInformationItem withVisual:nil withLabel:nil withAction:nil];
@@ -80,7 +80,7 @@ static NSString *kToolbarItemMultiActionIdentifier = @"toolbarItemMultiAction";
 	NSToolbarItem *localVariedActionsItem = [self variedActionsItem];
 
 	switch (intent) {
-        case CiOBarUAIBase:
+        case CiBarCore:
             [self customizeItem:localVariedActionsItem withVisual:nil withLabel:nil withAction:nil];
             break;
             
@@ -92,11 +92,11 @@ static NSString *kToolbarItemMultiActionIdentifier = @"toolbarItemMultiAction";
             [self customizeItem:localVariedActionsItem withVisual:[BPStyle toolbarImageForUninstall] withLabel:NSLocalizedString(@"Toolbar_Uninstall_Formula", nil) withAction:@selector(uninstallFormula:)];
             break;
             
-        case CiOBarUAIActOnSourcesViewerVisible:
+        case CiBarAddTapMode:
             [self customizeItem:localVariedActionsItem withVisual:[BPStyle toolbarImageForTap] withLabel:NSLocalizedString(@"Toolbar_Tap_Repo", nil) withAction:@selector(tapRepository:)];
             break;
             
-        case CiOBarUAIActOnInstalledSource:
+        case CiBarTapMode:
             [self customizeItem:localVariedActionsItem withVisual:[BPStyle toolbarImageForUntap] withLabel:NSLocalizedString(@"Toolbar_Untap_Repo", nil) withAction:@selector(untapRepository:)];
             break;
             
@@ -132,7 +132,7 @@ static NSString *kToolbarItemMultiActionIdentifier = @"toolbarItemMultiAction";
 	}];
 }
 
-- (void)freeze:(BOOL)shouldFreeze
+- (void)lock:(BOOL)shouldFreeze
 {
     [self setToolBarItemsController: shouldFreeze ? nil : _activeVisualContext];
     [self validateVisibleItems];
@@ -371,7 +371,7 @@ static NSString *kToolbarItemMultiActionIdentifier = @"toolbarItemMultiAction";
     return button;
 }
 
-- (void)startSearchEventCatch
+- (void)showSearch
 {
 	NSView *searchView;
 

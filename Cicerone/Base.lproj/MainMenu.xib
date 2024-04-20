@@ -925,7 +925,7 @@ CA
                         </tabViewItem>
                         <tabViewItem label="Update" identifier="3" id="7YD-ZM-31m">
                             <view key="view" id="Mgy-Bl-dCA">
-                                <rect key="frame" x="0.0" y="0.0" width="826" height="419"/>
+                                <rect key="frame" x="0.0" y="0.0" width="826" height="416"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             </view>
                         </tabViewItem>

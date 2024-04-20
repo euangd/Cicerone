@@ -233,7 +233,7 @@ NSOpenSavePanelDelegate>
     if (@available(macOS 11.0, *)) {
         [self.toolbar setDisplayMode:NSToolbarDisplayModeIconOnly];
     }
-    [self.toolbar freeze:YES];
+    [self.toolbar lock:YES];
 }
 
 - (void)addDisabledView
@@ -321,16 +321,16 @@ NSOpenSavePanelDelegate>
     
     BOOL showFormulaInfo = false;
     if (selectedSidebarRow == FormulaeSideBarItemRepositories) {
-        [self.toolbar setItemsOnIntent:CiOBarUAIActOnSourcesViewerVisible];
+        [self.toolbar setToolsWithUse:CiBarAddTapMode];
         if (selectedIndex != -1) {
-            [self.toolbar setItemsOnIntent:CiOBarUAIActOnInstalledSource];
+            [self.toolbar setToolsWithUse:CiBarTapMode];
         } else {
-            [self.toolbar setItemsOnIntent:CiOBarUAIActOnSourcesViewerVisible];
+            [self.toolbar setToolsWithUse:CiBarAddTapMode];
         }
     } else if (selectedSidebarRow == FormulaeSideBarItemDoctor) {
-        [self.toolbar setItemsOnIntent:CiOBarUAIBase];
+        [self.toolbar setToolsWithUse:CiOBarUAIBase];
     } else if (selectedSidebarRow == FormulaeSideBarItemUpdate) {
-        [self.toolbar setItemsOnIntent:CiOBarUAIBase];
+        [self.toolbar setToolsWithUse:CiOBarUAIBase];
     } else {
         showFormulaInfo = true;
         BPFormula *formula;
@@ -351,17 +351,17 @@ NSOpenSavePanelDelegate>
         switch (status) {
             case kBPFormulaInstalled:
                 //case kBPCaskInstalled:
-                [self.toolbar setItemsOnIntent:CiOBarUAIActOnInstalled];
+                [self.toolbar setToolsWithUse:CiOBarUAIActOnInstalled];
                 break;
                 
             case kBPFormulaOutdated:
                 //case kBPCaskOutdated:
-                [self.toolbar setItemsOnIntent:CiOBarUAIActOnOldVersionInstalled];
+                [self.toolbar setToolsWithUse:CiOBarUAIActOnOldVersionInstalled];
                 break;
                 
             case kBPFormulaNotInstalled:
                 //case kBPCaskNotInstalled:
-                [self.toolbar setItemsOnIntent:CiOBarUAIActOnInstallable];
+                [self.toolbar setToolsWithUse:CiOBarUAIActOnInstallable];
                 break;
         }
     }
@@ -473,8 +473,8 @@ NSOpenSavePanelDelegate>
         [self.mainWindowController setContentViewHidden:NO];
         [self.label_information setHidden:NO];
         
-        [self.toolbar setItemsOnIntent:CiOBarUAIBase];
-        [self.toolbar freeze:NO];
+        [self.toolbar setToolsWithUse:CiOBarUAIBase];
+        [self.toolbar lock:NO];
         [self.formulaeDataSource refreshBackingArray];
         [self.casksDataSource refreshBackingArray];
         
@@ -508,7 +508,7 @@ NSOpenSavePanelDelegate>
         [self addDisabledView];
         [self.label_information setHidden:YES];
         [self.mainWindowController setContentViewHidden:YES];
-        [self.toolbar freeze:YES];
+        [self.toolbar lock:YES];
         
         NSAlert *alert = [[NSAlert alloc] init];
         [alert setMessageText:NSLocalizedString(@"Generic_Error", nil)];
@@ -539,7 +539,7 @@ NSOpenSavePanelDelegate>
         [self.label_information setHidden:NO];
         [self.mainWindowController setContentViewHidden:NO];
         
-        [self.toolbar freeze:NO];
+        [self.toolbar lock:NO];
         
         [[BPHomebrewManager sharedManager] reloadFromInterfaceRebuildingCache:YES];
     }
@@ -928,7 +928,7 @@ NSOpenSavePanelDelegate>
 
 - (IBAction)beginFormulaSearch:(id)sender
 {
-    [self.toolbar startSearchEventCatch];
+    [self.toolbar showSearch];
 }
 
 - (IBAction)runHomebrewCleanup:(id)sender

@@ -38,11 +38,11 @@
 
 // user access intent, as in the intent the user would have to access bar controls with the current context
 
-typedef NS_ENUM(NSUInteger, CiOBarUserAccessIntent)
+typedef NS_ENUM(NSUInteger, CiBarUses)
 {
-	CiOBarUAINone,
+	CiBarBlank,
     
-	CiOBarUAIBase,
+	CiBarCore,
     
 	CiOBarUAIActOnInstallable,
 	CiOBarUAIActOnInstalled,
@@ -50,15 +50,15 @@ typedef NS_ENUM(NSUInteger, CiOBarUserAccessIntent)
 	CiOBarUAIActOnOldVersionInstalled,
 	CiOBarUAIActOnOldVersionsInstalled,
     
-	CiOBarUAIActOnSourcesViewerVisible,
-	CiOBarUAIActOnInstalledSource
+	CiBarAddTapMode,
+	CiBarTapMode
 };
 
 @property (nonatomic, weak) id activeVisualContext;
 
-- (void)setItemsOnIntent:(CiOBarUserAccessIntent)intent;
-- (void)freeze:(BOOL)shouldFreeze;
-- (void)startSearchEventCatch;
+- (void)setToolsWithUse:(CiBarUses)use;
+- (void)lock:(BOOL)shut;
+- (void)showSearch;
 - (NSSearchField*)searchField;
 
 @end
