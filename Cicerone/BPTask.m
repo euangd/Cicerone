@@ -177,7 +177,14 @@ NSString *const kDidEndBackgroundActivityNotification	= @"DidEndBackgroundActivi
 	[self configureErrorFileHandle];
 	[self beginActivity];
 	@try {
-		[self.task launch];
+        NSError *error = nil;
+        
+        if (![self.task launchAndReturnError:&error]) {
+            @throw [NSException exceptionWithName:@"MyCustomException"
+                                           reason:@"Something went wrong"
+                                         userInfo:@{ @"error": error }];
+        }
+        
 		[self.task waitUntilExit];
 		if (![self shouldUsePartialUpdates]) {
 //			#ifdef DEBUG
@@ -192,6 +199,17 @@ NSString *const kDidEndBackgroundActivityNotification	= @"DidEndBackgroundActivi
 	}
 	@catch (NSException *exception) {
 		NSLog(@"Exception: %@", exception);
+        
+        NSDictionary *userInfo = exception.userInfo;
+        
+        if (userInfo) {
+            NSError *error = userInfo[@"error"];
+            
+            if (error) {
+                NSLog(@"Error: %@", error);
+            }
+        }
+        
 		[self cleanup];
 		return -1;
 	}

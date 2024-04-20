@@ -172,6 +172,7 @@ NSOpenSavePanelDelegate>
     }
     
     self.casksDataSource = [[BPCasksDataSource alloc] initWithMode:kBPListAllCasks];
+    // todo - investigate population of a casksTableView (update `configureTableForListing:` if changed)
     
     //link casks tableview
     NSView *casksView = self.formulaeSplitView;
@@ -376,6 +377,7 @@ NSOpenSavePanelDelegate>
     [self.formulaeTableView deselectAll:nil];
     [self.formulaeDataSource setMode:mode];
     [self.casksDataSource setMode:mode];
+    // todo casksTableView
     [self.formulaeTableView setMode:mode];
     [self.formulaeTableView reloadData];
     
@@ -637,7 +639,7 @@ NSOpenSavePanelDelegate>
             tabIndex = kBPContentTabFormulae;
             [self configureTableForListing:kBPListAllFormulae];
             break;
-            
+        
         case FormulaeSideBarItemLeaves:	// Leaves
             tabIndex = kBPContentTabFormulae;
             [self configureTableForListing:kBPListLeaves];

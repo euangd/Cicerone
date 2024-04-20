@@ -1,8 +1,8 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="8191" systemVersion="15A284" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="32700.99.1234" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
-        <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="8191"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="22689"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="BPDisabledView">
@@ -21,7 +21,7 @@
                     <subviews>
                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="UjA-fX-S2a">
                             <rect key="frame" x="18" y="20" width="252" height="17"/>
-                            <animations/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Please visit brew.sh to install Homebrew" id="sdR-dW-MDv">
                                 <font key="font" metaFont="system"/>
                                 <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -30,7 +30,7 @@
                         </textField>
                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="dhD-Oz-BRl">
                             <rect key="frame" x="46" y="45" width="194" height="19"/>
-                            <animations/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Homebrew is not installed" id="RHr-Q0-PYi">
                                 <font key="font" metaFont="systemBold" size="15"/>
                                 <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -42,14 +42,13 @@
                         <constraint firstAttribute="height" constant="83" id="2Hp-UO-RTi"/>
                         <constraint firstAttribute="width" constant="288" id="FyL-yJ-lsE"/>
                     </constraints>
-                    <animations/>
                 </customView>
             </subviews>
             <constraints>
                 <constraint firstAttribute="centerX" secondItem="UsR-kB-xDb" secondAttribute="centerX" id="6F3-MA-Oga"/>
                 <constraint firstAttribute="centerY" secondItem="UsR-kB-xDb" secondAttribute="centerY" id="i5m-k2-As0"/>
             </constraints>
-            <animations/>
+            <point key="canvasLocation" x="98" y="-36"/>
         </customView>
     </objects>
 </document>

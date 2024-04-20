@@ -733,6 +733,7 @@ CA
             <connections>
                 <outlet property="delegate" destination="547" id="TTZ-f3-aNF"/>
             </connections>
+            <point key="canvasLocation" x="-475" y="-187"/>
         </menu>
         <customObject id="494" customClass="BPAppDelegate">
             <connections>
@@ -950,7 +951,7 @@ CA
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <clipView key="contentView" drawsBackground="NO" id="xPi-so-Sop">
                 <rect key="frame" x="0.0" y="0.0" width="210" height="275"/>
-                <autoresizingMask key="autoresizingMask"/>
+                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                 <subviews>
                     <outlineView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" selectionHighlightStyle="sourceList" columnReordering="NO" multipleSelection="NO" autosaveColumns="NO" rowHeight="24" rowSizeStyle="systemDefault" viewBased="YES" indentationPerLevel="13" outlineTableColumn="Dme-LE-cyv" id="9f4-xo-e1c" customClass="PXSourceList">
                         <rect key="frame" x="0.0" y="0.0" width="210" height="275"/>
