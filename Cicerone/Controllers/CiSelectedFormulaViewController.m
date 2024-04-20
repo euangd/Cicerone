@@ -7,7 +7,7 @@
 //
 
 #import "CiSelectedFormulaViewController.h"
-#import "CiTimedDispatch.h"
+#import "BPTimedDispatch.h"
 
 @interface CiSelectedFormulaViewController ()
 

@@ -9,7 +9,7 @@
 #import "CiFormulaPopoverViewController.h"
 #import "CiFormula.h"
 #import "CiHomebrewInterface.h"
-#import "CiTimedDispatch.h"
+#import "BPTimedDispatch.h"
 #import "CiStyle.h"
 
 @interface CiFormulaPopoverViewController ()

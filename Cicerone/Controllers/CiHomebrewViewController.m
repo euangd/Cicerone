@@ -328,9 +328,9 @@ NSOpenSavePanelDelegate>
             [self.toolbar setToolsWithUse:CiBarAddTapMode];
         }
     } else if (selectedSidebarRow == FormulaeSideBarItemDoctor) {
-        [self.toolbar setToolsWithUse:CiOBarUAIBase];
+        [self.toolbar setToolsWithUse:CiBarBlank];
     } else if (selectedSidebarRow == FormulaeSideBarItemUpdate) {
-        [self.toolbar setToolsWithUse:CiOBarUAIBase];
+        [self.toolbar setToolsWithUse:CiBarBlank];
     } else {
         showFormulaInfo = true;
         CiFormula *formula;
@@ -473,7 +473,7 @@ NSOpenSavePanelDelegate>
         [self.mainWindowController setContentViewHidden:NO];
         [self.label_information setHidden:NO];
         
-        [self.toolbar setToolsWithUse:CiOBarUAIBase];
+        [self.toolbar setToolsWithUse:CiBarBlank];
         [self.toolbar lock:NO];
         [self.formulaeDataSource refreshBackingArray];
         [self.casksDataSource refreshBackingArray];

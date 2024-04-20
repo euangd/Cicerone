@@ -6,7 +6,7 @@
 //  Copyright (c) 2015 Bruno Philipe. All rights reserved.
 //
 
-#import "CiTimedDispatch.h"
+#import "BPTimedDispatch.h"
 
 @interface CiTimedDispatch ()
 
