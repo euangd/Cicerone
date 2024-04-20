@@ -1,24 +1,24 @@
 //
-//  BPCasksDataSource.m
+//  CiCasksDataSource.m
 //  Cicerone
 //
 
-#import "BPCasksDataSource.h"
-#import "BPHomebrewManager.h"
-#import "BPFormulaeTableView.h"
+#import "CiCasksDataSource.h"
+#import "CiHomebrewManager.h"
+#import "CiFormulaeTableView.h"
 
-@interface BPCasksDataSource()
+@interface CiCasksDataSource()
 @property (nonatomic, strong) NSArray *CasksArray;
 @end
 
-@implementation BPCasksDataSource
+@implementation CiCasksDataSource
 
 - (instancetype)init
 {
-	return [self initWithMode:kBPListAllCasks];
+	return [self initWithMode:kCiListAllCasks];
 }
 
-- (instancetype)initWithMode:(BPListMode)aMode
+- (instancetype)initWithMode:(CiListMode)aMode
 {
 	self = [super init];
 	if (self) {
@@ -28,7 +28,7 @@
 	return self;
 }
 
-- (void)setMode:(BPListMode)mode
+- (void)setMode:(CiListMode)mode
 {
 	_mode = mode;
 	[self refreshBackingArray];
@@ -37,20 +37,20 @@
 - (void)refreshBackingArray
 {
 	switch (self.mode) {
-		case kBPListAllCasks:
-			_CasksArray = [[BPHomebrewManager sharedManager] allCasks];
+		case kCiListAllCasks:
+			_CasksArray = [[CiHomebrewManager sharedManager] allCasks];
 			break;
 			
-		case kBPListInstalledCasks:
-			_CasksArray = [[BPHomebrewManager sharedManager] installedCasks];
+		case kCiListInstalledCasks:
+			_CasksArray = [[CiHomebrewManager sharedManager] installedCasks];
 			break;
 			
-		case kBPListOutdatedCasks:
-			_CasksArray = [[BPHomebrewManager sharedManager] outdatedCasks];
+		case kCiListOutdatedCasks:
+			_CasksArray = [[CiHomebrewManager sharedManager] outdatedCasks];
 			break;
 			
-		case kBPListSearchCasks:
-			_CasksArray = [[BPHomebrewManager sharedManager] searchCasks];
+		case kCiListSearchCasks:
+			_CasksArray = [[CiHomebrewManager sharedManager] searchCasks];
 			break;
 			
 		default:
@@ -66,7 +66,7 @@
 	return [self.CasksArray count];
 }
 
-- (BPFormula *)caskAtIndex:(NSInteger)index
+- (CiFormula *)caskAtIndex:(NSInteger)index
 {
 	if ([self.CasksArray count] > index && index >= 0) {
 		return [self.CasksArray objectAtIndex:index];
@@ -91,33 +91,33 @@
 		// Compare each column identifier and set the return value to
 		// the Person field value appropriate for the column.
 		if ([columnIdentifer isEqualToString:kColumnIdentifierName]) {
-			if ([element isKindOfClass:[BPFormula class]]) {
-				return [(BPFormula*)element name];
+			if ([element isKindOfClass:[CiFormula class]]) {
+				return [(CiFormula*)element name];
 			} else {
 				return element;
 			}
 		} else if ([columnIdentifer isEqualToString:kColumnIdentifierVersion]) {
-			if ([element isKindOfClass:[BPFormula class]]) {
-				return [(BPFormula*)element version];
+			if ([element isKindOfClass:[CiFormula class]]) {
+				return [(CiFormula*)element version];
 			} else {
 				return element;
 			}
 		} else if ([columnIdentifer isEqualToString:kColumnIdentifierLatestVersion]) {
-			if ([element isKindOfClass:[BPFormula class]]) {
-				return [(BPFormula*)element shortLatestVersion];
+			if ([element isKindOfClass:[CiFormula class]]) {
+				return [(CiFormula*)element shortLatestVersion];
 			} else {
 				return element;
 			}
 		} else if ([columnIdentifer isEqualToString:kColumnIdentifierStatus]) {
-			if ([element isKindOfClass:[BPFormula class]]) {
-				switch ([[BPHomebrewManager sharedManager] statusForCask:element]) {
-					case kBPFormulaInstalled:
+			if ([element isKindOfClass:[CiFormula class]]) {
+				switch ([[CiHomebrewManager sharedManager] statusForCask:element]) {
+					case kCiFormulaInstalled:
 						return NSLocalizedString(@"Formula_Status_Installed", nil);
 						
-					case kBPFormulaNotInstalled:
+					case kCiFormulaNotInstalled:
 						return NSLocalizedString(@"Formula_Status_Not_Installed", nil);
 						
-					case kBPFormulaOutdated:
+					case kCiFormulaOutdated:
 						return NSLocalizedString(@"Formula_Status_Outdated", nil);
 						
 					default:

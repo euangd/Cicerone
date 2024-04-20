@@ -1,5 +1,5 @@
 //
-//  BPUpdateViewController.h
+//  CiUpdateViewController.h
 //  Cicerone
 //
 //  Created by Marek Hrusovsky on 24/08/14.
@@ -8,7 +8,7 @@
 
 #import <Cocoa/Cocoa.h>
 
-@interface BPUpdateViewController : NSViewController
+@interface CiUpdateViewController : NSViewController
 
 - (IBAction)runStopUpdate:(id)sender;
 

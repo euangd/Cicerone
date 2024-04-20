@@ -5,7 +5,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
-        <customObject id="-2" userLabel="File's Owner" customClass="BPInstallationWindowController">
+        <customObject id="-2" userLabel="File's Owner" customClass="CiInstallationWindowController">
             <connections>
                 <outlet property="formulaNameLabel" destination="357-7Y-dv7" id="3sl-x0-Xya"/>
                 <outlet property="okButton" destination="peQ-d6-b4t" id="wUc-PY-t6P"/>
@@ -71,7 +71,7 @@
                                     <rect key="frame" x="1" y="1" width="344" height="162"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
-                                        <textView editable="NO" importsGraphics="NO" richText="NO" verticallyResizable="YES" findStyle="bar" allowsNonContiguousLayout="YES" id="coD-Fc-WwQ" customClass="BPAutoScrollTextView">
+                                        <textView editable="NO" importsGraphics="NO" richText="NO" verticallyResizable="YES" findStyle="bar" allowsNonContiguousLayout="YES" id="coD-Fc-WwQ" customClass="CiAutoScrollTextView">
                                             <rect key="frame" x="0.0" y="0.0" width="344" height="162"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>

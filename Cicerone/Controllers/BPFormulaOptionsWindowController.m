@@ -1,5 +1,5 @@
 //
-//  BPFormulaOptionsWindowController.m
+//  CiFormulaOptionsWindowController.m
 //  Cicerone
 //
 //  Created by Marek Hrusovsky on 21/08/14.
@@ -19,9 +19,9 @@
 //	along with this program.	If not, see <http://www.gnu.org/licenses/>.
 //
 
-#import "BPFormulaOptionsWindowController.h"
-#import "BPFormula.h"
-#import "BPAppDelegate.h"
+#import "CiFormulaOptionsWindowController.h"
+#import "CiFormula.h"
+#import "CiAppDelegate.h"
 
 //these constants must match arraycontroller in XIB (array controller + binding on table columns)
 static NSString * const kFormulaOptionCommand = @"formulaOptionCommand";
@@ -30,7 +30,7 @@ static NSString * const kFormulaOptionDescription = @"formulaOptionDescription";
 
 static NSString * const kFormulaOptionsTitleColumnId = @"title";
 
-@interface BPFormulaOptionsWindowController () <NSTableViewDelegate>
+@interface CiFormulaOptionsWindowController () <NSTableViewDelegate>
 
 @property (weak) IBOutlet NSTextField *userHelpLabel;
 @property (weak) IBOutlet NSTextField *formulaNameLabel;
@@ -39,11 +39,11 @@ static NSString * const kFormulaOptionsTitleColumnId = @"title";
 @property (strong) IBOutlet NSArrayController *formulasArrayController;
 
 @property (nonatomic, strong) NSMutableArray *availableOptions;
-@property (strong) BPFormula *formula;
+@property (strong) CiFormula *formula;
 
 @end
 
-@implementation BPFormulaOptionsWindowController
+@implementation CiFormulaOptionsWindowController
 
 - (void)awakeFromNib {
 	
@@ -64,15 +64,15 @@ static NSString * const kFormulaOptionsTitleColumnId = @"title";
 	[self.formulaOptionsTableView setAccessibilityLabel:NSLocalizedString(@"Formula_Options_VoiceOver", nil)];
 }
 
-+ (BPFormulaOptionsWindowController *)runFormula:(BPFormula *)formula withCompletionBlock:(InstalWithOptionsBlock_t)completionBlock
++ (CiFormulaOptionsWindowController *)runFormula:(CiFormula *)formula withCompletionBlock:(InstalWithOptionsBlock_t)completionBlock
 {
-	BPFormulaOptionsWindowController *formulaOptionsWindowController;
-	formulaOptionsWindowController = [[BPFormulaOptionsWindowController alloc] initWithWindowNibName:@"BPFormulaOptionsWindow"];
+	CiFormulaOptionsWindowController *formulaOptionsWindowController;
+	formulaOptionsWindowController = [[CiFormulaOptionsWindowController alloc] initWithWindowNibName:@"CiFormulaOptionsWindow"];
 	formulaOptionsWindowController.formula = formula;
 	formulaOptionsWindowController.installWithOptionsBlock = completionBlock;
 	NSMutableArray *availableOptions = [[NSMutableArray alloc] init];
 	
-	for (BPFormulaOption *option in [formula options]) {
+	for (CiFormulaOption *option in [formula options]) {
 		id optionCommand = option.name;
 		id optionDescription = option.explanation ? : @"";
 		if (optionCommand) {
@@ -88,14 +88,14 @@ static NSString * const kFormulaOptionsTitleColumnId = @"title";
 	
 	
 	NSWindow *formulaWindow = formulaOptionsWindowController.window;
-	[BPAppDelegateRef setRunningBackgroundTask:YES];
+	[CiAppDelegateRef setRunningBackgroundTask:YES];
 	
 	[[NSApp mainWindow] beginSheet:formulaWindow completionHandler:^(NSModalResponse returnCode) {
 		if (returnCode == NSModalResponseStop) {
 			NSArray *options = [formulaOptionsWindowController allSelectedOptions];
 			formulaOptionsWindowController.installWithOptionsBlock(options);
 		} else {
-			[BPAppDelegateRef setRunningBackgroundTask:NO];
+			[CiAppDelegateRef setRunningBackgroundTask:NO];
 		}
 
 	}];
@@ -111,7 +111,7 @@ static NSString * const kFormulaOptionsTitleColumnId = @"title";
 		NSArray *options = [self allSelectedOptions];
 		self.installWithOptionsBlock(options);
 	} else {
-		[BPAppDelegateRef setRunningBackgroundTask:NO];
+		[CiAppDelegateRef setRunningBackgroundTask:NO];
 	}
 }
 

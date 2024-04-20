@@ -1,5 +1,5 @@
 //
-//  BPToolbar.m
+//  CiToolbar.m
 //  Cicerone
 //
 //  Created by Marek Hrusovsky on 16/08/15.
@@ -19,9 +19,9 @@
 //	along with this program.	If not, see <http://www.gnu.org/licenses/>.
 //
 
-#import "BPToolbar.h"
-#import "BPStyle.h"
-#import "BPAppDelegate.h"
+#import "CiToolbar.h"
+#import "CiStyle.h"
+#import "CiAppDelegate.h"
 
 static NSString *kToolbarIdentifier = @"toolbarIdentifier";
 
@@ -30,14 +30,14 @@ static NSString *kToolbarItemInformationIdentifier = @"toolbarItemInformation";
 static NSString *kToolbarItemSearchIdentifier = @"toolbarItemSearch";
 static NSString *kToolbarItemMultiActionIdentifier = @"toolbarItemMultiAction";
 
-@interface BPToolbar() <NSSearchFieldDelegate>
+@interface CiToolbar() <NSSearchFieldDelegate>
 
 @property (assign) CiBarUses barUse;
 @property (strong) NSSearchField *searchField;
 
 @end
 
-@implementation BPToolbar
+@implementation CiToolbar
 
 - (instancetype)initWithIdentifier:(NSString *)identifier
 {
@@ -45,7 +45,7 @@ static NSString *kToolbarItemMultiActionIdentifier = @"toolbarItemMultiAction";
     
 	if (self)
 	{
-		[self setSizeMode:[BPStyle toolbarSize]];
+		[self setSizeMode:[CiStyle toolbarSize]];
 		
 		_barUse = CiBarBlank;
         
@@ -74,7 +74,7 @@ static NSString *kToolbarItemMultiActionIdentifier = @"toolbarItemMultiAction";
 	}
 	else
 	{
-		[self customizeItem:localInformationItem withVisual:[BPStyle toolbarImageForMoreInformation] withLabel:NSLocalizedString(@"Toolbar_More_Information", nil) withAction:@selector(showFormulaInfo:)];
+		[self customizeItem:localInformationItem withVisual:[CiStyle toolbarImageForMoreInformation] withLabel:NSLocalizedString(@"Toolbar_More_Information", nil) withAction:@selector(showFormulaInfo:)];
 	}
 	
 	NSToolbarItem *localVariedActionsItem = [self variedActionsItem];
@@ -85,27 +85,27 @@ static NSString *kToolbarItemMultiActionIdentifier = @"toolbarItemMultiAction";
             break;
             
         case CiOBarUAIActOnInstallable:
-            [self customizeItem:localVariedActionsItem withVisual:[BPStyle toolbarImageForInstall] withLabel:NSLocalizedString(@"Toolbar_Install_Formula", nil) withAction:@selector(installFormula:)];
+            [self customizeItem:localVariedActionsItem withVisual:[CiStyle toolbarImageForInstall] withLabel:NSLocalizedString(@"Toolbar_Install_Formula", nil) withAction:@selector(installFormula:)];
             break;
             
         case CiOBarUAIActOnInstalled:
-            [self customizeItem:localVariedActionsItem withVisual:[BPStyle toolbarImageForUninstall] withLabel:NSLocalizedString(@"Toolbar_Uninstall_Formula", nil) withAction:@selector(uninstallFormula:)];
+            [self customizeItem:localVariedActionsItem withVisual:[CiStyle toolbarImageForUninstall] withLabel:NSLocalizedString(@"Toolbar_Uninstall_Formula", nil) withAction:@selector(uninstallFormula:)];
             break;
             
         case CiBarAddTapMode:
-            [self customizeItem:localVariedActionsItem withVisual:[BPStyle toolbarImageForTap] withLabel:NSLocalizedString(@"Toolbar_Tap_Repo", nil) withAction:@selector(tapRepository:)];
+            [self customizeItem:localVariedActionsItem withVisual:[CiStyle toolbarImageForTap] withLabel:NSLocalizedString(@"Toolbar_Tap_Repo", nil) withAction:@selector(tapRepository:)];
             break;
             
         case CiBarTapMode:
-            [self customizeItem:localVariedActionsItem withVisual:[BPStyle toolbarImageForUntap] withLabel:NSLocalizedString(@"Toolbar_Untap_Repo", nil) withAction:@selector(untapRepository:)];
+            [self customizeItem:localVariedActionsItem withVisual:[CiStyle toolbarImageForUntap] withLabel:NSLocalizedString(@"Toolbar_Untap_Repo", nil) withAction:@selector(untapRepository:)];
             break;
             
         case CiOBarUAIActOnOldVersionInstalled:
-            [self customizeItem:localVariedActionsItem withVisual:[BPStyle toolbarImageForUpdate] withLabel:NSLocalizedString(@"Toolbar_Update_Formula", nil) withAction:@selector( upgradeSelectedFormulae:)];
+            [self customizeItem:localVariedActionsItem withVisual:[CiStyle toolbarImageForUpdate] withLabel:NSLocalizedString(@"Toolbar_Update_Formula", nil) withAction:@selector( upgradeSelectedFormulae:)];
             break;
             
         case CiOBarUAIActOnOldVersionsInstalled:
-            [self customizeItem:localVariedActionsItem withVisual:[BPStyle toolbarImageForUpdate] withLabel:NSLocalizedString(@"Toolbar_Update_Selected", nil) withAction:@selector(upgradeSelectedFormulae:)];
+            [self customizeItem:localVariedActionsItem withVisual:[CiStyle toolbarImageForUpdate] withLabel:NSLocalizedString(@"Toolbar_Update_Selected", nil) withAction:@selector(upgradeSelectedFormulae:)];
             break;
             
         default:
@@ -233,7 +233,7 @@ static NSString *kToolbarItemMultiActionIdentifier = @"toolbarItemMultiAction";
     
 	if (!toolbarItemHomebrewUpdate)
 	{
-		toolbarItemHomebrewUpdate = [self toolbarItemWithIdentifier:kToolbarItemHomebrewUpdateIdentifier image:[BPStyle toolbarImageForUpgrade] label:NSLocalizedString(@"Toolbar_Homebrew_Update", nil) action:@selector(updateHomebrew:)];
+		toolbarItemHomebrewUpdate = [self toolbarItemWithIdentifier:kToolbarItemHomebrewUpdateIdentifier image:[CiStyle toolbarImageForUpgrade] label:NSLocalizedString(@"Toolbar_Homebrew_Update", nil) action:@selector(updateHomebrew:)];
 	}
     
 	return toolbarItemHomebrewUpdate;
@@ -245,7 +245,7 @@ static NSString *kToolbarItemMultiActionIdentifier = @"toolbarItemMultiAction";
     
 	if (!toolbarItemInformation)
 	{
-		toolbarItemInformation = [self toolbarItemWithIdentifier:kToolbarItemInformationIdentifier image:[BPStyle toolbarImageForMoreInformation] label:NSLocalizedString(@"Toolbar_More_Information", nil) action:@selector(showFormulaInfo:)];
+		toolbarItemInformation = [self toolbarItemWithIdentifier:kToolbarItemInformationIdentifier image:[CiStyle toolbarImageForMoreInformation] label:NSLocalizedString(@"Toolbar_More_Information", nil) action:@selector(showFormulaInfo:)];
 	}
     
 	return toolbarItemInformation;

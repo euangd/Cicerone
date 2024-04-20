@@ -1,5 +1,5 @@
 //
-//  BPDoctorViewController.m
+//  CiDoctorViewController.m
 //  Cicerone
 //
 //  Created by Marek Hrusovsky on 21/08/14.
@@ -19,12 +19,12 @@
 //	along with this program.	If not, see <http://www.gnu.org/licenses/>.
 //
 
-#import "BPDoctorViewController.h"
-#import "BPHomebrewInterface.h"
-#import "BPAppDelegate.h"
-#import "BPStyle.h"
+#import "CiDoctorViewController.h"
+#import "CiHomebrewInterface.h"
+#import "CiAppDelegate.h"
+#import "CiStyle.h"
 
-@interface BPDoctorViewController ()
+@interface CiDoctorViewController ()
 
 @property (unsafe_unretained, nonatomic) IBOutlet NSTextView *doctorTextView;
 @property (weak, nonatomic) IBOutlet NSProgressIndicator *progressIndicator;
@@ -32,20 +32,20 @@
 
 @end
 
-@implementation BPDoctorViewController
+@implementation CiDoctorViewController
 
 - (void)awakeFromNib {
-	NSFont *font = [BPStyle defaultFixedWidthFont];
+	NSFont *font = [CiStyle defaultFixedWidthFont];
 	[self.doctorTextView setFont:font];
 	self.isPerformingDoctor = NO;
 }
 
 - (NSString *)nibName {
-	return @"BPDoctorView";
+	return @"CiDoctorView";
 }
 
 - (IBAction)runStopDoctor:(id)sender {
-	BPAppDelegate *appDelegate = BPAppDelegateRef;
+	CiAppDelegate *appDelegate = CiAppDelegateRef;
 	
 	if (appDelegate.isRunningBackgroundTask)
 	{
@@ -61,7 +61,7 @@
 	NSString *previousString = [self.doctorTextView string];
 	
 	dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
-		[[BPHomebrewInterface sharedInterface] runDoctorWithReturnBlock:^(NSString *output) {
+		[[CiHomebrewInterface sharedInterface] runDoctorWithReturnBlock:^(NSString *output) {
 			[self.doctorTextView performSelectorOnMainThread:@selector(setString:)
 												  withObject:[previousString stringByAppendingString:output]
 											   waitUntilDone:YES];
@@ -75,7 +75,7 @@
 			
 			NSString *title = [NSLocalizedString(@"Homebrew_Task_Finished", nil) capitalizedString];
 			NSString *desc = NSLocalizedString(@"Notification_Update", nil);
-			[BPAppDelegateRef requestUserAttentionWithMessageTitle:title andDescription:desc];
+			[CiAppDelegateRef requestUserAttentionWithMessageTitle:title andDescription:desc];
 		});
 	});
 }

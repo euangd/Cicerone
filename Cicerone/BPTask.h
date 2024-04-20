@@ -24,13 +24,13 @@
 extern NSString * _Nonnull const kDidBeginBackgroundActivityNotification;
 extern NSString * _Nonnull const kDidEndBackgroundActivityNotification;
 
-@class BPTask;
+@class CiTask;
 
-@protocol BPTaskCompleted <NSObject>
-- (void)task:(BPTask * _Nonnull)task didFinishWithOutput:(NSString * _Nonnull)output error:(NSString * _Nonnull)error;
+@protocol CiTaskCompleted <NSObject>
+- (void)task:(CiTask * _Nonnull)task didFinishWithOutput:(NSString * _Nonnull)output error:(NSString * _Nonnull)error;
 @end
 
-@interface BPTask : NSObject
+@interface CiTask : NSObject
 
 - (_Nonnull instancetype)initWithPath:(NSString * _Nonnull)path
 							arguments:(NSArray * _Nonnull)arguments;
@@ -41,6 +41,6 @@ extern NSString * _Nonnull const kDidEndBackgroundActivityNotification;
 @property (nonatomic, nullable) dispatch_queue_t updateBlockQueue;
 @property (readonly, nonnull) NSString *output;
 @property (readonly, nonnull) NSString *error;
-@property (weak, nullable) id<BPTaskCompleted> delegate;
+@property (weak, nullable) id<CiTaskCompleted> delegate;
 
 @end

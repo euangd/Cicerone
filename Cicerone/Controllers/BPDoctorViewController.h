@@ -1,5 +1,5 @@
 //
-//  BPDoctorViewController.h
+//  CiDoctorViewController.h
 //  Cicerone
 //
 //  Created by Marek Hrusovsky on 24/08/14.
@@ -8,7 +8,7 @@
 
 #import <Cocoa/Cocoa.h>
 
-@interface BPDoctorViewController : NSViewController
+@interface CiDoctorViewController : NSViewController
 
 - (IBAction)runStopDoctor:(id)sender;
 

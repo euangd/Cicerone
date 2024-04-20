@@ -5,7 +5,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
-        <customObject id="-2" userLabel="File's Owner" customClass="BPBundleWindowController">
+        <customObject id="-2" userLabel="File's Owner" customClass="CiBundleWindowController">
             <connections>
                 <outlet property="buttonClose" destination="3aA-K6-Trh" id="6mx-AO-ftm"/>
                 <outlet property="progressIndicator" destination="Oja-gH-ddJ" id="YAM-Sh-4cf"/>
@@ -151,7 +151,7 @@
                         <rect key="frame" x="1" y="1" width="373" height="198"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <textView editable="NO" importsGraphics="NO" richText="NO" verticallyResizable="YES" findStyle="bar" allowsNonContiguousLayout="YES" spellingCorrection="YES" id="pen-1k-tKW" customClass="BPAutoScrollTextView">
+                            <textView editable="NO" importsGraphics="NO" richText="NO" verticallyResizable="YES" findStyle="bar" allowsNonContiguousLayout="YES" spellingCorrection="YES" id="pen-1k-tKW" customClass="CiAutoScrollTextView">
                                 <rect key="frame" x="0.0" y="0.0" width="373" height="198"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>

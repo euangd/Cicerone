@@ -21,13 +21,13 @@
 
 #import <Cocoa/Cocoa.h>
 
-#define BPAppDelegateRef ((BPAppDelegate*)[[NSApplication sharedApplication] delegate])
+#define CiAppDelegateRef ((CiAppDelegate*)[[NSApplication sharedApplication] delegate])
 
-extern NSString *const kBP_HOMEBREW_PATH;
-extern NSString *const kBP_HOMEBREW_PATH_KEY;
-extern NSString *const kBP_HOMEBREW_WEBSITE;
+extern NSString *const kCi_HOMEBREW_PATH;
+extern NSString *const kCi_HOMEBREW_PATH_KEY;
+extern NSString *const kCi_HOMEBREW_WEBSITE;
 
-@interface BPAppDelegate : NSObject <NSApplicationDelegate>
+@interface CiAppDelegate : NSObject <NSApplicationDelegate>
 
 @property (assign) IBOutlet NSWindow *window;
 

@@ -1,14 +1,14 @@
 //
-//  BPBackgroundView.m
+//  CiBackgroundView.m
 //  Cicerone
 //
 //  Created by Bruno Philipe on 10/15/15.
 //  Copyright © 2015 Bruno Philipe. All rights reserved.
 //
 
-#import "BPBackgroundView.h"
+#import "CiBackgroundView.h"
 
-@implementation BPBackgroundView
+@implementation CiBackgroundView
 
 - (id)init
 {

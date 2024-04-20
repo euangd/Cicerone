@@ -1,5 +1,5 @@
 //
-//  BPBackgroundView.h
+//  CiBackgroundView.h
 //  Cicerone
 //
 //  Created by Bruno Philipe on 10/15/15.
@@ -9,7 +9,7 @@
 #import <Cocoa/Cocoa.h>
 
 IB_DESIGNABLE
-@interface BPBackgroundView : NSView
+@interface CiBackgroundView : NSView
 
 IBInspectable
 @property (strong) NSColor *backgroundColor;

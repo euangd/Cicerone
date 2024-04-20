@@ -1,21 +1,21 @@
 //
-//  BPDisabledView.m
+//  CiDisabledView.m
 //
 //
 //  Created by Marek Hrusovsky on 26/08/15.
 //
 //
 
-#import "BPDisabledView.h"
+#import "CiDisabledView.h"
 
-@interface BPDisabledView()
+@interface CiDisabledView()
 
 @property (strong) IBOutlet NSView *view;
 
 @end
 
 
-@implementation BPDisabledView
+@implementation CiDisabledView
 
 - (instancetype)initWithFrame:(NSRect)frameRect
 {

@@ -1,14 +1,14 @@
 //
-//  BPTimedDispatch.m
+//  CiTimedDispatch.m
 //  Cicerone
 //
 //  Created by Bruno Philipe on 4/17/15.
 //  Copyright (c) 2015 Bruno Philipe. All rights reserved.
 //
 
-#import "BPTimedDispatch.h"
+#import "CiTimedDispatch.h"
 
-@interface BPTimedDispatch ()
+@interface CiTimedDispatch ()
 
 @property (nonatomic, copy) void (^schedulledBlock)(void);
 @property (atomic, strong) NSTimer *dispatchTimer;
@@ -16,7 +16,7 @@
 
 @end
 
-@implementation BPTimedDispatch
+@implementation CiTimedDispatch
 
 - (void)scheduleDispatchAfterTimeInterval:(NSTimeInterval)interval ofBlock:(void (^)(void))block
 {

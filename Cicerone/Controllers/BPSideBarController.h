@@ -1,5 +1,5 @@
 //
-//  BPSideBarController.h
+//  CiSideBarController.h
 //  Cicerone
 //
 //  Created by Marek Hrusovsky on 05/09/14.
@@ -29,15 +29,15 @@ typedef NS_ENUM(NSUInteger, FormulaeSideBarItem)
 	
 };
 
-@protocol BPSideBarControllerDelegate <NSObject>
+@protocol CiSideBarControllerDelegate <NSObject>
 - (void)sourceListSelectionDidChange;
 @end
 
-@interface BPSideBarController : NSObject <PXSourceListDataSource, PXSourceListDelegate>
+@interface CiSideBarController : NSObject <PXSourceListDataSource, PXSourceListDelegate>
 
 @property (assign) IBOutlet PXSourceList *sidebar;
 
-@property (weak) id <BPSideBarControllerDelegate>delegate;
+@property (weak) id <CiSideBarControllerDelegate>delegate;
 
 - (void)refreshSidebarBadges;
 - (void)configureSidebarSettings;

@@ -1,21 +1,21 @@
 //
-//  BPLoadingView.m
+//  CiLoadingView.m
 //  Cicerone
 //
 //  Created by Bruno Philipe on 3/13/15.
 //  Copyright (c) 2015 Bruno Philipe. All rights reserved.
 //
 
-#import "BPLoadingView.h"
+#import "CiLoadingView.h"
 
-@interface BPLoadingView()
+@interface CiLoadingView()
 
 @property (strong) IBOutlet NSView *view;
 @property (weak) IBOutlet NSProgressIndicator *progressIndicator;
 
 @end
 
-@implementation BPLoadingView
+@implementation CiLoadingView
 
 - (void)awakeFromNib
 {

@@ -1,5 +1,5 @@
 //
-//  BPBundleWindowController.h
+//  CiBundleWindowController.h
 //  Cicerone
 //
 //  Created by Bruno Philipe on 20/02/16.
@@ -8,9 +8,9 @@
 
 #import <Cocoa/Cocoa.h>
 
-@interface BPBundleWindowController : NSWindowController
+@interface CiBundleWindowController : NSWindowController
 
-+ (BPBundleWindowController*)runImportOperationWithFile:(NSURL*)fileURL;
-+ (BPBundleWindowController*)runExportOperationWithFile:(NSURL*)fileURL;
++ (CiBundleWindowController*)runImportOperationWithFile:(NSURL*)fileURL;
++ (CiBundleWindowController*)runExportOperationWithFile:(NSURL*)fileURL;
 
 @end

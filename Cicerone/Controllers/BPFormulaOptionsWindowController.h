@@ -1,5 +1,5 @@
 //
-//  BPFormulaOptionsWindowController.h
+//  CiFormulaOptionsWindowController.h
 //  Cicerone
 //
 //  Created by Marek Hrusovsky on 21/08/14.
@@ -20,15 +20,15 @@
 //
 
 #import <Cocoa/Cocoa.h>
-@class BPFormula;
+@class CiFormula;
 
 typedef void (^InstalWithOptionsBlock_t)(NSArray *options);
 
-@interface BPFormulaOptionsWindowController : NSWindowController
+@interface CiFormulaOptionsWindowController : NSWindowController
 
 @property (nonatomic, copy) InstalWithOptionsBlock_t installWithOptionsBlock;
 
-+ (BPFormulaOptionsWindowController *)runFormula:(BPFormula *)formula
++ (CiFormulaOptionsWindowController *)runFormula:(CiFormula *)formula
                                  withCompletionBlock:(InstalWithOptionsBlock_t)completionBlock;
 
 @end

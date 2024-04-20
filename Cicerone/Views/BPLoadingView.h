@@ -1,5 +1,5 @@
 //
-//  BPLoadingView.h
+//  CiLoadingView.h
 //  Cicerone
 //
 //  Created by Bruno Philipe on 3/13/15.
@@ -8,6 +8,6 @@
 
 #import <Cocoa/Cocoa.h>
 
-@interface BPLoadingView : NSView
+@interface CiLoadingView : NSView
 
 @end

@@ -1,5 +1,5 @@
 //
-//  BPSelectedFormulaViewController.h
+//  CiSelectedFormulaViewController.h
 //  Cicerone
 //
 //  Created by Marek Hrusovsky on 05/09/14.
@@ -8,19 +8,19 @@
 
 #import <Cocoa/Cocoa.h>
 
-#import "BPFormula.h"
+#import "CiFormula.h"
 
-@protocol BPSelectedFormulaViewControllerDelegate <NSObject>
+@protocol CiSelectedFormulaViewControllerDelegate <NSObject>
 
-- (void)selectedFormulaViewDidUpdateFormulaInfoForFormula:(BPFormula*)formula;
+- (void)selectedFormulaViewDidUpdateFormulaInfoForFormula:(CiFormula*)formula;
 
 @end
 
-@interface BPSelectedFormulaViewController : NSViewController
+@interface CiSelectedFormulaViewController : NSViewController
 
 @property (strong, nonatomic) NSArray *formulae;
 
-@property (weak) id<BPSelectedFormulaViewControllerDelegate> delegate;
+@property (weak) id<CiSelectedFormulaViewControllerDelegate> delegate;
 
 @property (weak) IBOutlet NSTextField *formulaDescriptionLabel;
 @property (weak) IBOutlet NSTextField *formulaPathLabel;

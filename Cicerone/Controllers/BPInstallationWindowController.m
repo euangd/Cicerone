@@ -1,5 +1,5 @@
 //
-//  BPInstallationWindowController.m
+//  CiInstallationWindowController.m
 //  Cicerone
 //
 //  Created by Marek Hrusovsky on 21/08/14.
@@ -19,13 +19,13 @@
 //	along with this program.	If not, see <http://www.gnu.org/licenses/>.
 //
 
-#import "BPInstallationWindowController.h"
-#import "BPHomebrewInterface.h"
-#import "BPHomebrewManager.h"
-#import "BPStyle.h"
-#import "BPAppDelegate.h"
+#import "CiInstallationWindowController.h"
+#import "CiHomebrewInterface.h"
+#import "CiHomebrewManager.h"
+#import "CiStyle.h"
+#import "CiAppDelegate.h"
 
-@interface BPInstallationWindowController ()
+@interface CiInstallationWindowController ()
 
 @property (weak) IBOutlet NSTextField *windowTitleLabel;
 @property (weak) IBOutlet NSTextField *formulaNameLabel;
@@ -33,7 +33,7 @@
 @property (weak) IBOutlet NSButton *okButton;
 @property (weak) IBOutlet NSProgressIndicator *progressIndicator;
 
-@property (nonatomic) BPWindowOperation windowOperation;
+@property (nonatomic) CiWindowOperation windowOperation;
 @property (strong, nonatomic) NSArray *formulae;
 @property (strong, nonatomic) NSArray *options;
 
@@ -42,7 +42,7 @@
 
 @end
 
-@implementation BPInstallationWindowController
+@implementation CiInstallationWindowController
 
 + (NSDictionary*)sharedTaskMessagesMap
 {
@@ -50,12 +50,12 @@
 	
 	if (!taskMessages)
 	{
-		taskMessages   = @{@(kBPWindowOperationInstall)		: NSLocalizedString(@"Installation_Window_Operation_Install", nil),
-						   @(kBPWindowOperationUninstall)	: NSLocalizedString(@"Installation_Window_Operation_Uninstall", nil),
-						   @(kBPWindowOperationUpgrade)		: NSLocalizedString(@"Installation_Window_Operation_Update", nil),
-						   @(kBPWindowOperationTap)			: NSLocalizedString(@"Installation_Window_Operation_Tap", nil),
-						   @(kBPWindowOperationUntap)		: NSLocalizedString(@"Installation_Window_Operation_Untap", nil),
-						   @(kBPWindowOperationCleanup)		: NSLocalizedString(@"Installation_Window_Operation_Cleanup", nil)};
+		taskMessages   = @{@(kCiWindowOperationInstall)		: NSLocalizedString(@"Installation_Window_Operation_Install", nil),
+						   @(kCiWindowOperationUninstall)	: NSLocalizedString(@"Installation_Window_Operation_Uninstall", nil),
+						   @(kCiWindowOperationUpgrade)		: NSLocalizedString(@"Installation_Window_Operation_Update", nil),
+						   @(kCiWindowOperationTap)			: NSLocalizedString(@"Installation_Window_Operation_Tap", nil),
+						   @(kCiWindowOperationUntap)		: NSLocalizedString(@"Installation_Window_Operation_Untap", nil),
+						   @(kCiWindowOperationCleanup)		: NSLocalizedString(@"Installation_Window_Operation_Cleanup", nil)};
 	}
 	
 	return taskMessages;
@@ -69,7 +69,7 @@
 - (void)setupUI
 {
 	NSDictionary *messagesMap = [self.class sharedTaskMessagesMap];
-	NSFont *font = [BPStyle defaultFixedWidthFont];
+	NSFont *font = [CiStyle defaultFixedWidthFont];
 	
 	[self.recordTextView setFont:font];
 	self.windowTitleLabel.stringValue = messagesMap[@(self.windowOperation)] ?: @"";
@@ -82,7 +82,7 @@
 		self.formulaNameLabel.stringValue = formulaeNames;
 	}
 	else {
-		if (self.windowOperation != kBPWindowOperationCleanup)
+		if (self.windowOperation != kCiWindowOperationCleanup)
 		{
 			self.formulaNameLabel.stringValue = NSLocalizedString(@"Installation_Window_All_Formulae", nil);
 		}
@@ -95,25 +95,25 @@
 	[self setOperationStatus:NO];
 }
 
-+ (BPInstallationWindowController *)runWithOperation:(BPWindowOperation)windowOperation
++ (CiInstallationWindowController *)runWithOperation:(CiWindowOperation)windowOperation
 											formulae:(NSArray *)formulae
 											 options:(NSArray *)options
 {
 	return [self runWithOperation:windowOperation formulae:formulae options:options completion:nil];
 }
 
-+ (BPInstallationWindowController *)runWithOperation:(BPWindowOperation)windowOperation
++ (CiInstallationWindowController *)runWithOperation:(CiWindowOperation)windowOperation
 											formulae:(NSArray *)formulae
 											 options:(NSArray *)options
 										  completion:(void (^)(BOOL))completionBlock
 {
-	BPInstallationWindowController *operationWindowController;
-	operationWindowController = [[BPInstallationWindowController alloc] initWithWindowNibName:@"BPInstallationWindow"];
+	CiInstallationWindowController *operationWindowController;
+	operationWindowController = [[CiInstallationWindowController alloc] initWithWindowNibName:@"CiInstallationWindow"];
 	operationWindowController.windowOperation = windowOperation;
 	operationWindowController.formulae = formulae;
 	operationWindowController.options = options;
 	operationWindowController.completionBlock = completionBlock;
-	[BPAppDelegateRef setRunningBackgroundTask:YES];
+	[CiAppDelegateRef setRunningBackgroundTask:YES];
 	
 	
 	NSWindow *operationWindow = operationWindowController.window;
@@ -133,7 +133,7 @@
 
 - (void)cleanupAfterTask
 {
-	[BPAppDelegateRef setRunningBackgroundTask:NO];
+	[CiAppDelegateRef setRunningBackgroundTask:NO];
 	
 	if (self.completionBlock)
 	{
@@ -153,7 +153,7 @@
 	
 	dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
 		NSString __block *outputValue;
-		__weak BPInstallationWindowController *weakSelf = self;
+		__weak CiInstallationWindowController *weakSelf = self;
 		
 		void (^displayTerminalOutput)(NSString *outputValue) = ^(NSString *output) {
 			if (outputValue)
@@ -169,21 +169,21 @@
 												   waitUntilDone:YES];
 		};
 		
-		BPHomebrewInterface *homebrewInterface = [BPHomebrewInterface sharedInterface];
-		if (self.windowOperation == kBPWindowOperationInstall)
+		CiHomebrewInterface *homebrewInterface = [CiHomebrewInterface sharedInterface];
+		if (self.windowOperation == kCiWindowOperationInstall)
 		{
 			NSString *name = [[self.formulae firstObject] name];
 			self.operationStatus = [homebrewInterface installFormula:name
 														 withOptions:self.options
 													  andReturnBlock:displayTerminalOutput];
 		}
-		else if (self.windowOperation == kBPWindowOperationUninstall)
+		else if (self.windowOperation == kCiWindowOperationUninstall)
 		{
 			NSString *name = [[self.formulae firstObject] name];
 			self.operationStatus = [homebrewInterface uninstallFormula:name
 													   withReturnBlock:displayTerminalOutput];
 		}
-		else if (self.windowOperation == kBPWindowOperationUpgrade)
+		else if (self.windowOperation == kCiWindowOperationUpgrade)
 		{
 			if (self.formulae)
 			{
@@ -198,7 +198,7 @@
 														  withReturnBlock:displayTerminalOutput];
 			}
 		}
-		else if (self.windowOperation == kBPWindowOperationTap)
+		else if (self.windowOperation == kCiWindowOperationTap)
 		{
 			if (self.formulae)
 			{
@@ -206,18 +206,18 @@
 				self.operationStatus = [homebrewInterface tapRepository:name withReturnsBlock:displayTerminalOutput];
 			}
 		}
-		else if (self.windowOperation == kBPWindowOperationUntap)
+		else if (self.windowOperation == kCiWindowOperationUntap)
 		{
 			if (self.formulae)
 			{
 				NSString *name = [[self.formulae firstObject] name];
-				self.operationStatus = [[BPHomebrewInterface sharedInterface] untapRepository:name
+				self.operationStatus = [[CiHomebrewInterface sharedInterface] untapRepository:name
 																			 withReturnsBlock:displayTerminalOutput];
 			}
 		}
-		else if (self.windowOperation == kBPWindowOperationCleanup)
+		else if (self.windowOperation == kCiWindowOperationCleanup)
 		{
-			self.operationStatus = [[BPHomebrewInterface sharedInterface] runCleanupWithReturnBlock:displayTerminalOutput];
+			self.operationStatus = [[CiHomebrewInterface sharedInterface] runCleanupWithReturnBlock:displayTerminalOutput];
 		}
 		
 		[self finishTask];
@@ -236,7 +236,7 @@
 						  self.windowTitleLabel.stringValue,
 						  self.formulaNameLabel.stringValue];
 		
-		[BPAppDelegateRef requestUserAttentionWithMessageTitle:title andDescription:desc];
+		[CiAppDelegateRef requestUserAttentionWithMessageTitle:title andDescription:desc];
 	});
 }
 

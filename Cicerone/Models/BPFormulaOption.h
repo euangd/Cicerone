@@ -1,5 +1,5 @@
 //
-//  BPFormulaOption.h
+//  CiFormulaOption.h
 //  Cicerone
 //
 //  Created by Marek Hrusovsky on 09/10/14.
@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface BPFormulaOption : NSObject <NSSecureCoding, NSCopying>
+@interface CiFormulaOption : NSObject <NSSecureCoding, NSCopying>
 
 @property (copy) NSString *explanation;
 @property (copy) NSString *name;

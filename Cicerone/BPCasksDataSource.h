@@ -1,18 +1,18 @@
 //
-//  BPCasksDataSource.h
+//  CiCasksDataSource.h
 //  Cicerone
 //
 
 #import <Foundation/Foundation.h>
-#import "BPHomebrewInterface.h"
-#import "BPFormula.h"
+#import "CiHomebrewInterface.h"
+#import "CiFormula.h"
 
-@interface BPCasksDataSource : NSObject <NSTableViewDataSource>
+@interface CiCasksDataSource : NSObject <NSTableViewDataSource>
 
-@property (nonatomic, assign) BPListMode mode;
+@property (nonatomic, assign) CiListMode mode;
 
-- (instancetype)initWithMode:(BPListMode)aMode;
-- (BPFormula *)caskAtIndex:(NSInteger)index;
+- (instancetype)initWithMode:(CiListMode)aMode;
+- (CiFormula *)caskAtIndex:(NSInteger)index;
 - (NSArray *)casksAtIndexSet:(NSIndexSet *)indexSet;
 - (void)refreshBackingArray;
 @end

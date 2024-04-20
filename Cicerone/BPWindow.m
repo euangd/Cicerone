@@ -1,14 +1,14 @@
 //
-//  BPWindow.m
+//  CiWindow.m
 //  Cicerone
 //
 //  Created by Bruno on 06.02.21.
 //  Copyright © 2021 Bruno Philipe. All rights reserved.
 //
 
-#import "BPWindow.h"
+#import "CiWindow.h"
 
-@implementation BPWindow
+@implementation CiWindow
 
 - (instancetype)initWithContentRect:(NSRect)contentRect styleMask:(NSWindowStyleMask)style backing:(NSBackingStoreType)backingStoreType defer:(BOOL)flag
 {

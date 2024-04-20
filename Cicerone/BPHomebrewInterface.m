@@ -19,8 +19,8 @@
 //	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-#import "BPHomebrewInterface.h"
-#import "BPTask.h"
+#import "CiHomebrewInterface.h"
+#import "CiTask.h"
 
 NSString *brewPath = @"";
 
@@ -33,42 +33,42 @@ Installing and upgrading formulas is not advised in DEBUG mode!\n\n"
 
 static NSString *CiceroneOutputIdentifier = @"+++++Cicerone+++++";
 
-@interface BPHomebrewInterfaceListCall : NSObject
+@interface CiHomebrewInterfaceListCall : NSObject
 
 @property (strong, readonly) NSArray *arguments;
 
 - (instancetype)initWithArguments:(NSArray *)arguments;
 - (NSArray *)parseData:(NSString *)data;
-- (BPFormula *)parseFormulaItem:(NSString *)item;
+- (CiFormula *)parseFormulaItem:(NSString *)item;
 
 @end
 
-@interface BPHomebrewInterfaceListCallInstalledFormulae : BPHomebrewInterfaceListCall
+@interface CiHomebrewInterfaceListCallInstalledFormulae : CiHomebrewInterfaceListCall
 @end
 
-@interface BPHomebrewInterfaceListCallInstalledCasks : BPHomebrewInterfaceListCall
+@interface CiHomebrewInterfaceListCallInstalledCasks : CiHomebrewInterfaceListCall
 @end
 
-@interface BPHomebrewInterfaceListCallAllFormulae : BPHomebrewInterfaceListCall
+@interface CiHomebrewInterfaceListCallAllFormulae : CiHomebrewInterfaceListCall
 @end
 
-@interface BPHomebrewInterfaceListCallAllCasks : BPHomebrewInterfaceListCall
+@interface CiHomebrewInterfaceListCallAllCasks : CiHomebrewInterfaceListCall
 @end
 
-@interface BPHomebrewInterfaceListCallUpgradeableFormulae : BPHomebrewInterfaceListCall
+@interface CiHomebrewInterfaceListCallUpgradeableFormulae : CiHomebrewInterfaceListCall
 @end
 
-@interface BPHomebrewInterfaceListCallUpgradeableCasks : BPHomebrewInterfaceListCall
+@interface CiHomebrewInterfaceListCallUpgradeableCasks : CiHomebrewInterfaceListCall
 @end
 
-@interface BPHomebrewInterfaceListCallLeaves : BPHomebrewInterfaceListCall
+@interface CiHomebrewInterfaceListCallLeaves : CiHomebrewInterfaceListCall
 @end
 
 
-@interface BPHomebrewInterfaceListCallRepositories: BPHomebrewInterfaceListCall
+@interface CiHomebrewInterfaceListCallRepositories: CiHomebrewInterfaceListCall
 @end
 
-@interface BPHomebrewInterface () <BPTaskCompleted>
+@interface CiHomebrewInterface () <CiTaskCompleted>
 
 @property (strong) NSString *path_cellar;
 @property (strong) NSString *path_shell;
@@ -77,15 +77,15 @@ static NSString *CiceroneOutputIdentifier = @"+++++Cicerone+++++";
 
 @end
 
-@implementation BPHomebrewInterface
+@implementation CiHomebrewInterface
 
 + (instancetype)sharedInterface
 {
 	@synchronized(self)
 	{
 		static dispatch_once_t once;
-		static BPHomebrewInterface *instance;
-		dispatch_once(&once, ^ { instance = [[BPHomebrewInterface alloc] initUniqueInstance]; });
+		static CiHomebrewInterface *instance;
+		dispatch_once(&once, ^ { instance = [[CiHomebrewInterface alloc] initUniqueInstance]; });
 		return instance;
 	}
 }
@@ -106,14 +106,14 @@ static NSString *CiceroneOutputIdentifier = @"+++++Cicerone+++++";
 			attributes = DISPATCH_QUEUE_CONCURRENT;
 		}
 
-		_taskOperationsQueue = dispatch_queue_create("com.brunophilipe.Cicerone.BPHomebrewInterface.Tasks", attributes);
+		_taskOperationsQueue = dispatch_queue_create("com.brunophilipe.Cicerone.CiHomebrewInterface.Tasks", attributes);
 	}
 	return self;
 }
 
 - (void)cleanup
 {
-	[self.tasks enumerateKeysAndObjectsWithOptions:NSEnumerationConcurrent usingBlock:^(NSString *key, BPTask *task, BOOL *stop){
+	[self.tasks enumerateKeysAndObjectsWithOptions:NSEnumerationConcurrent usingBlock:^(NSString *key, CiTask *task, BOOL *stop){
 		[task cleanup];
 	}];
 }
@@ -122,7 +122,7 @@ static NSString *CiceroneOutputIdentifier = @"+++++Cicerone+++++";
 {
 	if (!self.path_shell) return NO;
 	
-	BPTask *task = [[BPTask alloc] initWithPath:self.path_shell arguments:@[@"-l", @"-c", @"which brew"]];
+	CiTask *task = [[CiTask alloc] initWithPath:self.path_shell arguments:@[@"-l", @"-c", @"which brew"]];
 	task.delegate = self;
 	[task execute];
 	
@@ -136,7 +136,7 @@ static NSString *CiceroneOutputIdentifier = @"+++++Cicerone+++++";
 	return output.length != 0;
 }
 
-- (void)setDelegate:(id<BPHomebrewInterfaceDelegate>)delegate
+- (void)setDelegate:(id<CiHomebrewInterfaceDelegate>)delegate
 {
 	if (_delegate != delegate) {
 		_delegate = delegate;
@@ -197,7 +197,7 @@ static NSString *CiceroneOutputIdentifier = @"+++++Cicerone+++++";
 
 - (NSString *)getUserCellarPath
 {
-	NSString __block *path = [[NSUserDefaults standardUserDefaults] objectForKey:@"BPBrewCellarPath"];
+	NSString __block *path = [[NSUserDefaults standardUserDefaults] objectForKey:@"CiBrewCellarPath"];
 	
 	if (!path) {
 		NSString *brew_config = [self performSyncBrewCommandWithArguments:@[@"config"]];
@@ -208,7 +208,7 @@ static NSString *CiceroneOutputIdentifier = @"+++++Cicerone+++++";
 			}
 		}];
 		
-		[[NSUserDefaults standardUserDefaults] setObject:path forKey:@"BPBrewCellarPath"];
+		[[NSUserDefaults standardUserDefaults] setObject:path forKey:@"CiBrewCellarPath"];
 	}
 	
 	return path;
@@ -240,7 +240,7 @@ static NSString *CiceroneOutputIdentifier = @"+++++Cicerone+++++";
 	}
 }
 
-- (void)task:(BPTask *)task didFinishWithOutput:(NSString *)output error:(NSString *)error
+- (void)task:(CiTask *)task didFinishWithOutput:(NSString *)output error:(NSString *)error
 {
 	[self.tasks removeObjectForKey:[NSString stringWithFormat:@"%p",task]];
 }
@@ -263,7 +263,7 @@ static NSString *CiceroneOutputIdentifier = @"+++++Cicerone+++++";
 		return NO;
 	}
 	
-	BPTask *task = [[BPTask alloc] initWithPath:self.path_shell arguments:arguments];
+	CiTask *task = [[CiTask alloc] initWithPath:self.path_shell arguments:arguments];
 	task.delegate = self;
 	task.updateBlock = block;
 	task.updateBlockQueue = queue;
@@ -301,7 +301,7 @@ static NSString *CiceroneOutputIdentifier = @"+++++Cicerone+++++";
 								wrapRequest:(BOOL)wrap
 {
 	arguments = [self formatArguments:arguments sendOutputId:wrap];
-	BPTask *task = [[BPTask alloc] initWithPath:self.path_shell arguments:arguments];
+	CiTask *task = [[CiTask alloc] initWithPath:self.path_shell arguments:arguments];
 	int status =  [task execute];
 	NSString *output = [task output];
 	if (wrap) {
@@ -333,41 +333,41 @@ static NSString *CiceroneOutputIdentifier = @"+++++Cicerone+++++";
 
 #pragma mark - Operations that return on finish
 
-- (NSArray<BPFormula *> *)listMode:(BPListMode)mode
+- (NSArray<CiFormula *> *)listMode:(CiListMode)mode
 {
-	BPHomebrewInterfaceListCall *listCall = nil;
+	CiHomebrewInterfaceListCall *listCall = nil;
 
 	switch (mode) {
-		case kBPListInstalledFormulae:
-			listCall = [[BPHomebrewInterfaceListCallInstalledFormulae alloc] init];
+		case kCiListInstalledFormulae:
+			listCall = [[CiHomebrewInterfaceListCallInstalledFormulae alloc] init];
 			break;
 			
-		case kBPListInstalledCasks:
-			listCall = [[BPHomebrewInterfaceListCallInstalledCasks alloc] init];
+		case kCiListInstalledCasks:
+			listCall = [[CiHomebrewInterfaceListCallInstalledCasks alloc] init];
 			break;
 			
-		case kBPListAllFormulae:
-			listCall = [[BPHomebrewInterfaceListCallAllFormulae alloc] init];
+		case kCiListAllFormulae:
+			listCall = [[CiHomebrewInterfaceListCallAllFormulae alloc] init];
 			break;
 			
-		case kBPListAllCasks:
-			listCall = [[BPHomebrewInterfaceListCallAllCasks alloc] init];
+		case kCiListAllCasks:
+			listCall = [[CiHomebrewInterfaceListCallAllCasks alloc] init];
 			break;
 
-		case kBPListOutdatedFormulae:
-			listCall = [[BPHomebrewInterfaceListCallUpgradeableFormulae alloc] init];
+		case kCiListOutdatedFormulae:
+			listCall = [[CiHomebrewInterfaceListCallUpgradeableFormulae alloc] init];
 			break;
 			
-		case kBPListOutdatedCasks:
-			listCall = [[BPHomebrewInterfaceListCallUpgradeableCasks alloc] init];
+		case kCiListOutdatedCasks:
+			listCall = [[CiHomebrewInterfaceListCallUpgradeableCasks alloc] init];
 			break;
 			
-		case kBPListLeaves:
-			listCall = [[BPHomebrewInterfaceListCallLeaves alloc] init];
+		case kCiListLeaves:
+			listCall = [[CiHomebrewInterfaceListCallLeaves alloc] init];
 			break;
 
-		case kBPListRepositories:
-			listCall = [[BPHomebrewInterfaceListCallRepositories alloc] init];
+		case kCiListRepositories:
+			listCall = [[CiHomebrewInterfaceListCallRepositories alloc] init];
 			break;
 
 		default:
@@ -538,7 +538,7 @@ static NSString *CiceroneOutputIdentifier = @"+++++Cicerone+++++";
 
 #pragma mark - Homebrew Interface List Calls
 
-@implementation BPHomebrewInterfaceListCall
+@implementation CiHomebrewInterfaceListCall
 
 - (instancetype)initWithArguments:(NSArray *)arguments
 {
@@ -549,15 +549,15 @@ static NSString *CiceroneOutputIdentifier = @"+++++Cicerone+++++";
 	return self;
 }
 
-- (NSArray<BPFormula *> *)parseData:(NSString *)data
+- (NSArray<CiFormula *> *)parseData:(NSString *)data
 {
 	NSMutableArray<NSString *> *dataLines = [[data componentsSeparatedByString:@"\n"] mutableCopy];
 	[dataLines removeLastObject];
 	
-	NSMutableArray<BPFormula *> *formulae = [NSMutableArray arrayWithCapacity:dataLines.count];
+	NSMutableArray<CiFormula *> *formulae = [NSMutableArray arrayWithCapacity:dataLines.count];
 	
 	for (NSString *item in dataLines) {
-		BPFormula *formula = [self parseFormulaItem:item];
+		CiFormula *formula = [self parseFormulaItem:item];
 		if (formula) {
 			[formulae addObject:formula];
 		}
@@ -565,73 +565,73 @@ static NSString *CiceroneOutputIdentifier = @"+++++Cicerone+++++";
 	return formulae;
 }
 
-- (BPFormula *)parseFormulaItem:(NSString *)item
+- (CiFormula *)parseFormulaItem:(NSString *)item
 {
-	return [BPFormula formulaWithName:item];
+	return [CiFormula formulaWithName:item];
 }
 
 @end
 
-@implementation BPHomebrewInterfaceListCallInstalledFormulae
+@implementation CiHomebrewInterfaceListCallInstalledFormulae
 
 - (instancetype)init
 {
-	return (BPHomebrewInterfaceListCallInstalledFormulae *)[super initWithArguments:@[@"list", @"--versions", @"--formulae"]];
+	return (CiHomebrewInterfaceListCallInstalledFormulae *)[super initWithArguments:@[@"list", @"--versions", @"--formulae"]];
 }
 
-- (BPFormula *)parseFormulaItem:(NSString *)item
+- (CiFormula *)parseFormulaItem:(NSString *)item
 {
 	NSArray *aux = [item componentsSeparatedByString:@" "];
-	return [BPFormula formulaWithName:[aux firstObject] andVersion:[aux lastObject]];
+	return [CiFormula formulaWithName:[aux firstObject] andVersion:[aux lastObject]];
 }
 
 @end
 
-@implementation BPHomebrewInterfaceListCallInstalledCasks
+@implementation CiHomebrewInterfaceListCallInstalledCasks
 
 - (instancetype)init
 {
-	return (BPHomebrewInterfaceListCallInstalledCasks *)[super initWithArguments:@[@"list", @"--versions", @"--casks"]];
+	return (CiHomebrewInterfaceListCallInstalledCasks *)[super initWithArguments:@[@"list", @"--versions", @"--casks"]];
 }
 
-- (BPFormula *)parseFormulaItem:(NSString *)item
+- (CiFormula *)parseFormulaItem:(NSString *)item
 {
 	NSArray *aux = [item componentsSeparatedByString:@" "];
-	return [BPFormula formulaWithName:[aux firstObject] andVersion:[aux lastObject]];
+	return [CiFormula formulaWithName:[aux firstObject] andVersion:[aux lastObject]];
 }
 
 @end
 
-@implementation BPHomebrewInterfaceListCallAllFormulae
+@implementation CiHomebrewInterfaceListCallAllFormulae
 
 - (instancetype)init
 {
-	return (BPHomebrewInterfaceListCallAllFormulae *)[super initWithArguments:@[@"formulae"]];
+	return (CiHomebrewInterfaceListCallAllFormulae *)[super initWithArguments:@[@"formulae"]];
 }
 
 @end
 
-@implementation BPHomebrewInterfaceListCallAllCasks
+@implementation CiHomebrewInterfaceListCallAllCasks
 
 - (instancetype)init
 {
-	return (BPHomebrewInterfaceListCallAllCasks *)[super initWithArguments:@[@"casks"]];
+	return (CiHomebrewInterfaceListCallAllCasks *)[super initWithArguments:@[@"casks"]];
 }
 
 @end
 
-@implementation BPHomebrewInterfaceListCallUpgradeableFormulae
+@implementation CiHomebrewInterfaceListCallUpgradeableFormulae
 
 - (instancetype)init
 {
-	return (BPHomebrewInterfaceListCallUpgradeableFormulae *)[super initWithArguments:@[@"outdated", @"--verbose", @"--formulae"]];
+	return (CiHomebrewInterfaceListCallUpgradeableFormulae *)[super initWithArguments:@[@"outdated", @"--verbose", @"--formulae"]];
 }
 
-- (BPFormula *)parseFormulaItem:(NSString *)item
+- (CiFormula *)parseFormulaItem:(NSString *)item
 {
 	static NSString *regexString = @"(\\S+)\\s\\(((.*, )*(.*))\\) < (\\S+)";
 	
-	BPFormula __block *formula = nil;
+	CiFormula __block *formula = nil;
 	NSError *error = nil;
 	NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:regexString options:NSRegularExpressionCaseInsensitive error:&error];
 	
@@ -644,14 +644,14 @@ static NSString *CiceroneOutputIdentifier = @"+++++Cicerone+++++";
 			NSString *installedVersion = [item substringWithRange:[result rangeAtIndex:[result numberOfRanges] - 2]];
 			NSString *latestVersion = [item substringWithRange:[result rangeAtIndex:[result numberOfRanges] - 1]];
 
-			formula = [BPFormula formulaWithName:formulaName
+			formula = [CiFormula formulaWithName:formulaName
 										 version:installedVersion
 								andLatestVersion:latestVersion];
 		}
 	}];
 	
 	if (!formula) {
-		formula = [BPFormula formulaWithName:item];
+		formula = [CiFormula formulaWithName:item];
 	}
 	
 	return formula;
@@ -660,18 +660,18 @@ static NSString *CiceroneOutputIdentifier = @"+++++Cicerone+++++";
 @end
 
 
-@implementation BPHomebrewInterfaceListCallUpgradeableCasks
+@implementation CiHomebrewInterfaceListCallUpgradeableCasks
 
 - (instancetype)init
 {
-	return (BPHomebrewInterfaceListCallUpgradeableCasks *)[super initWithArguments:@[@"outdated", @"--verbose", @"--casks"]];
+	return (CiHomebrewInterfaceListCallUpgradeableCasks *)[super initWithArguments:@[@"outdated", @"--verbose", @"--casks"]];
 }
 
-- (BPFormula *)parseFormulaItem:(NSString *)item
+- (CiFormula *)parseFormulaItem:(NSString *)item
 {
 	static NSString *regexString = @"(\\S+)\\s\\(((.*, )*(.*))\\) < (\\S+)";
 	
-	BPFormula __block *formula = nil;
+	CiFormula __block *formula = nil;
 	NSError *error = nil;
 	NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:regexString options:NSRegularExpressionCaseInsensitive error:&error];
 	
@@ -684,14 +684,14 @@ static NSString *CiceroneOutputIdentifier = @"+++++Cicerone+++++";
 			NSString *installedVersion = [item substringWithRange:[result rangeAtIndex:[result numberOfRanges] - 2]];
 			NSString *latestVersion = [item substringWithRange:[result rangeAtIndex:[result numberOfRanges] - 1]];
 
-			formula = [BPFormula formulaWithName:formulaName
+			formula = [CiFormula formulaWithName:formulaName
 										 version:installedVersion
 								andLatestVersion:latestVersion];
 		}
 	}];
 	
 	if (!formula) {
-		formula = [BPFormula formulaWithName:item];
+		formula = [CiFormula formulaWithName:item];
 	}
 	
 	return formula;
@@ -700,21 +700,21 @@ static NSString *CiceroneOutputIdentifier = @"+++++Cicerone+++++";
 @end
 
 
-@implementation BPHomebrewInterfaceListCallLeaves
+@implementation CiHomebrewInterfaceListCallLeaves
 
 - (instancetype)init
 {
-	return (BPHomebrewInterfaceListCallLeaves *)[super initWithArguments:@[@"leaves"]];
+	return (CiHomebrewInterfaceListCallLeaves *)[super initWithArguments:@[@"leaves"]];
 }
 
 @end
 
 
-@implementation BPHomebrewInterfaceListCallRepositories
+@implementation CiHomebrewInterfaceListCallRepositories
 
 - (instancetype)init
 {
-	return (BPHomebrewInterfaceListCallRepositories *)[super initWithArguments:@[@"tap"]];
+	return (CiHomebrewInterfaceListCallRepositories *)[super initWithArguments:@[@"tap"]];
 }
 
 @end

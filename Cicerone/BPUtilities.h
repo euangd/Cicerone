@@ -1,5 +1,5 @@
 //
-//  BPUtilities.h
+//  CiUtilities.h
 //  Cicerone
 //
 //  Created by Marek Hrusovsky on 25/08/15.
@@ -21,7 +21,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface BPUtilities : NSObject
+@interface CiUtilities : NSObject
 
 + (BOOL)isRunningYosemiteOrLater;
 

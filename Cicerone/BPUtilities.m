@@ -1,5 +1,5 @@
 //
-//  BPUtilities.m
+//  CiUtilities.m
 //  Cicerone
 //
 //  Created by Marek Hrusovsky on 25/08/15.
@@ -19,12 +19,12 @@
 //	along with this program.	If not, see <http://www.gnu.org/licenses/>.
 //
 
-#import "BPUtilities.h"
+#import "CiUtilities.h"
 
 NSInteger const OSX_YOSEMITE = 10;
 NSInteger const MACOS_BIGSUR = 11;
 
-@implementation BPUtilities
+@implementation CiUtilities
 
 + (BOOL)isRunningYosemiteOrLater
 {

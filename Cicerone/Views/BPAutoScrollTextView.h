@@ -1,5 +1,5 @@
 //
-//  BPAutoScrollTextView.h
+//  CiAutoScrollTextView.h
 //  Cicerone
 //
 //  Created by Bruno Philipe on 6/17/14.
@@ -8,6 +8,6 @@
 
 #import <Cocoa/Cocoa.h>
 
-@interface BPAutoScrollTextView : NSTextView
+@interface CiAutoScrollTextView : NSTextView
 
 @end

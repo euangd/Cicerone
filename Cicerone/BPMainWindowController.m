@@ -1,21 +1,21 @@
 //
-//  BPMainWindowController.m
+//  CiMainWindowController.m
 //  Cicerone
 //
 //  Created by Bruno on 06.02.21.
 //  Copyright © 2021 Bruno Philipe. All rights reserved.
 //
 
-#import "BPMainWindowController.h"
+#import "CiMainWindowController.h"
 #import "NSLayoutConstraint+Shims.h"
 
-@interface BPMainWindowController ()
+@interface CiMainWindowController ()
 
 @property (strong) NSSplitViewController *splitViewController;
 
 @end
 
-@implementation BPMainWindowController
+@implementation CiMainWindowController
 
 - (void)setUpViews
 {

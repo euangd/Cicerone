@@ -1,27 +1,27 @@
 //
-//  BPFormulaeDataSource.m
+//  CiFormulaeDataSource.m
 //  Cicerone
 //
 //  Created by Marek Hrusovsky on 04/09/14.
 //  Copyright (c) 2014 Bruno Philipe. All rights reserved.
 //
 
-#import "BPFormulaeDataSource.h"
-#import "BPHomebrewManager.h"
-#import "BPFormulaeTableView.h"
+#import "CiFormulaeDataSource.h"
+#import "CiHomebrewManager.h"
+#import "CiFormulaeTableView.h"
 
-@interface BPFormulaeDataSource()
+@interface CiFormulaeDataSource()
 @property (nonatomic, strong) NSArray *formulaeArray;
 @end
 
-@implementation BPFormulaeDataSource
+@implementation CiFormulaeDataSource
 
 - (instancetype)init
 {
-	return [self initWithMode:kBPListAllFormulae];
+	return [self initWithMode:kCiListAllFormulae];
 }
 
-- (instancetype)initWithMode:(BPListMode)aMode
+- (instancetype)initWithMode:(CiListMode)aMode
 {
 	self = [super init];
 	if (self) {
@@ -31,7 +31,7 @@
 	return self;
 }
 
-- (void)setMode:(BPListMode)mode
+- (void)setMode:(CiListMode)mode
 {
 	_mode = mode;
 	[self refreshBackingArray];
@@ -40,28 +40,28 @@
 - (void)refreshBackingArray
 {
 	switch (self.mode) {
-		case kBPListAllFormulae:
-			_formulaeArray = [[BPHomebrewManager sharedManager] allFormulae];
+		case kCiListAllFormulae:
+			_formulaeArray = [[CiHomebrewManager sharedManager] allFormulae];
 			break;
 			
-		case kBPListInstalledFormulae:
-			_formulaeArray = [[BPHomebrewManager sharedManager] installedFormulae];
+		case kCiListInstalledFormulae:
+			_formulaeArray = [[CiHomebrewManager sharedManager] installedFormulae];
 			break;
 			
-		case kBPListLeaves:
-			_formulaeArray = [[BPHomebrewManager sharedManager] leavesFormulae];
+		case kCiListLeaves:
+			_formulaeArray = [[CiHomebrewManager sharedManager] leavesFormulae];
 			break;
 			
-		case kBPListOutdatedFormulae:
-			_formulaeArray = [[BPHomebrewManager sharedManager] outdatedFormulae];
+		case kCiListOutdatedFormulae:
+			_formulaeArray = [[CiHomebrewManager sharedManager] outdatedFormulae];
 			break;
 			
-		case kBPListSearchFormulae:
-			_formulaeArray = [[BPHomebrewManager sharedManager] searchFormulae];
+		case kCiListSearchFormulae:
+			_formulaeArray = [[CiHomebrewManager sharedManager] searchFormulae];
 			break;
 			
-		case kBPListRepositories:
-			_formulaeArray = [[BPHomebrewManager sharedManager] repositoriesFormulae];
+		case kCiListRepositories:
+			_formulaeArray = [[CiHomebrewManager sharedManager] repositoriesFormulae];
 			
 		default:
 			break;
@@ -76,7 +76,7 @@
 	return [self.formulaeArray count];
 }
 
-- (BPFormula *)formulaAtIndex:(NSInteger)index
+- (CiFormula *)formulaAtIndex:(NSInteger)index
 {
 	if ([self.formulaeArray count] > index && index >= 0) {
 		return [self.formulaeArray objectAtIndex:index];
@@ -101,33 +101,33 @@
 		// Compare each column identifier and set the return value to
 		// the Person field value appropriate for the column.
 		if ([columnIdentifer isEqualToString:kColumnIdentifierName]) {
-			if ([element isKindOfClass:[BPFormula class]]) {
-				return [(BPFormula*)element name];
+			if ([element isKindOfClass:[CiFormula class]]) {
+				return [(CiFormula*)element name];
 			} else {
 				return element;
 			}
 		} else if ([columnIdentifer isEqualToString:kColumnIdentifierVersion]) {
-			if ([element isKindOfClass:[BPFormula class]]) {
-				return [(BPFormula*)element version];
+			if ([element isKindOfClass:[CiFormula class]]) {
+				return [(CiFormula*)element version];
 			} else {
 				return element;
 			}
 		} else if ([columnIdentifer isEqualToString:kColumnIdentifierLatestVersion]) {
-			if ([element isKindOfClass:[BPFormula class]]) {
-				return [(BPFormula*)element shortLatestVersion];
+			if ([element isKindOfClass:[CiFormula class]]) {
+				return [(CiFormula*)element shortLatestVersion];
 			} else {
 				return element;
 			}
 		} else if ([columnIdentifer isEqualToString:kColumnIdentifierStatus]) {
-			if ([element isKindOfClass:[BPFormula class]]) {
-				switch ([[BPHomebrewManager sharedManager] statusForFormula:element]) {
-					case kBPFormulaInstalled:
+			if ([element isKindOfClass:[CiFormula class]]) {
+				switch ([[CiHomebrewManager sharedManager] statusForFormula:element]) {
+					case kCiFormulaInstalled:
 						return NSLocalizedString(@"Formula_Status_Installed", nil);
 						
-					case kBPFormulaNotInstalled:
+					case kCiFormulaNotInstalled:
 						return NSLocalizedString(@"Formula_Status_Not_Installed", nil);
 						
-					case kBPFormulaOutdated:
+					case kCiFormulaOutdated:
 						return NSLocalizedString(@"Formula_Status_Outdated", nil);
 						
 					default:

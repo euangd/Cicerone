@@ -1,21 +1,21 @@
 //
-//  BPSelectedFormulaViewController.m
+//  CiSelectedFormulaViewController.m
 //  Cicerone
 //
 //  Created by Marek Hrusovsky on 05/09/14.
 //  Copyright (c) 2014 Bruno Philipe. All rights reserved.
 //
 
-#import "BPSelectedFormulaViewController.h"
-#import "BPTimedDispatch.h"
+#import "CiSelectedFormulaViewController.h"
+#import "CiTimedDispatch.h"
 
-@interface BPSelectedFormulaViewController ()
+@interface CiSelectedFormulaViewController ()
 
-@property (strong) BPTimedDispatch *timedDispatch;
+@property (strong) CiTimedDispatch *timedDispatch;
 
 @end
 
-@implementation BPSelectedFormulaViewController
+@implementation CiSelectedFormulaViewController
 
 - (void)awakeFromNib
 {
@@ -24,7 +24,7 @@
 												 name:NSViewFrameDidChangeNotification
 											   object:self.view];
 	
-	[self setTimedDispatch:[BPTimedDispatch new]];
+	[self setTimedDispatch:[CiTimedDispatch new]];
 }
 
 - (void)dealloc
@@ -47,21 +47,21 @@
 
 - (NSString *)nibName
 {
-	return @"BPSelectedFormula";
+	return @"CiSelectedFormula";
 }
 
 - (void)setFormulae:(NSArray *)formulae
 {
-	for (BPFormula *formula in _formulae) {
+	for (CiFormula *formula in _formulae) {
 		[[NSNotificationCenter defaultCenter] removeObserver:self
-														name:BPFormulaDidUpdateNotification
+														name:CiFormulaDidUpdateNotification
 													  object:formula];
 	}
 	_formulae = formulae;
-	for (BPFormula *formula in formulae) {
+	for (CiFormula *formula in formulae) {
 		[[NSNotificationCenter defaultCenter] addObserver:self
 												 selector:@selector(updateFormulaInformation:)
-													 name:BPFormulaDidUpdateNotification
+													 name:CiFormulaDidUpdateNotification
 												   object:formula];
 	}
 	[self displayInformationForFormulae];
@@ -69,7 +69,7 @@
 												  inQueue:dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0)
 												  ofBlock:^
 	 {
-		 BPFormula *formula = [self.formulae firstObject];
+		 CiFormula *formula = [self.formulae firstObject];
 		 [formula setNeedsInformation:YES];
 	 }];
 }
@@ -98,7 +98,7 @@
 	
 	if ([self.formulae count] == 1)
 	{
-		BPFormula *formula = [self.formulae firstObject];
+		CiFormula *formula = [self.formulae firstObject];
 		
 		if (formula.isInstalled)
 		{

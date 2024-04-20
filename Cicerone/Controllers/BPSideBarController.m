@@ -1,15 +1,15 @@
 //
-//  BPSideBarController.m
+//  CiSideBarController.m
 //  Cicerone
 //
 //  Created by Marek Hrusovsky on 05/09/14.
 //  Copyright (c) 2014 Bruno Philipe. All rights reserved.
 //
 
-#import "BPSideBarController.h"
-#import "BPHomebrewManager.h"
+#import "CiSideBarController.h"
+#import "CiHomebrewManager.h"
 
-@interface BPSideBarController()
+@interface CiSideBarController()
 
 @property (strong, nonatomic) PXSourceListItem *rootSidebarCategory;
 
@@ -25,7 +25,7 @@
 
 @end
 
-@implementation BPSideBarController
+@implementation CiSideBarController
 
 - (instancetype)init
 {
@@ -187,15 +187,15 @@
 
 - (void)refreshSidebarBadges
 {
-	self.instaledFormulaeSidebarItem.badgeValue		= @([[[BPHomebrewManager sharedManager] installedFormulae] count]);
-	self.outdatedFormulaeSidebarItem.badgeValue		= @([[[BPHomebrewManager sharedManager] outdatedFormulae] count]);
-	self.allFormulaeSidebarItem.badgeValue			= @([[[BPHomebrewManager sharedManager] allFormulae] count]);
-	self.leavesFormulaeSidebarItem.badgeValue		= @([[[BPHomebrewManager sharedManager] leavesFormulae] count]);
-	self.repositoriesFormulaeSidebarItem.badgeValue = @([[[BPHomebrewManager sharedManager] repositoriesFormulae] count]);
+	self.instaledFormulaeSidebarItem.badgeValue		= @([[[CiHomebrewManager sharedManager] installedFormulae] count]);
+	self.outdatedFormulaeSidebarItem.badgeValue		= @([[[CiHomebrewManager sharedManager] outdatedFormulae] count]);
+	self.allFormulaeSidebarItem.badgeValue			= @([[[CiHomebrewManager sharedManager] allFormulae] count]);
+	self.leavesFormulaeSidebarItem.badgeValue		= @([[[CiHomebrewManager sharedManager] leavesFormulae] count]);
+	self.repositoriesFormulaeSidebarItem.badgeValue = @([[[CiHomebrewManager sharedManager] repositoriesFormulae] count]);
 	
-	self.instaledCasksSidebarItem.badgeValue		= @([[[BPHomebrewManager sharedManager] installedCasks] count]);
-	self.outdatedCasksSidebarItem.badgeValue		= @([[[BPHomebrewManager sharedManager] outdatedCasks] count]);
-	self.allCasksSidebarItem.badgeValue				= @([[[BPHomebrewManager sharedManager] allCasks] count]);
+	self.instaledCasksSidebarItem.badgeValue		= @([[[CiHomebrewManager sharedManager] installedCasks] count]);
+	self.outdatedCasksSidebarItem.badgeValue		= @([[[CiHomebrewManager sharedManager] outdatedCasks] count]);
+	self.allCasksSidebarItem.badgeValue				= @([[[CiHomebrewManager sharedManager] allCasks] count]);
 	
 }
 

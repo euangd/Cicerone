@@ -1,5 +1,5 @@
 //
-//  BPWindow.h
+//  CiWindow.h
 //  Cicerone
 //
 //  Created by Bruno on 06.02.21.
@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface BPWindow : NSWindow
+@interface CiWindow : NSWindow
 
 @end
 

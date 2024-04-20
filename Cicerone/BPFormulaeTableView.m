@@ -1,13 +1,13 @@
 //
-//  BPFormulaeTableView.m
+//  CiFormulaeTableView.m
 //  Cicerone
 //
 //  Created by Marek Hrusovsky on 04/09/14.
 //  Copyright (c) 2014 Bruno Philipe. All rights reserved.
 //
 
-#import "BPFormulaeTableView.h"
-static void * BPFormulaeTableViewContext = &BPFormulaeTableViewContext;
+#import "CiFormulaeTableView.h"
+static void * CiFormulaeTableViewContext = &CiFormulaeTableViewContext;
 NSString * const kColumnIdentifierVersion = @"Version";
 NSString * const kColumnIdentifierLatestVersion = @"LatestVersion";
 NSString * const kColumnIdentifierStatus = @"Status";
@@ -15,21 +15,21 @@ NSString * const kColumnIdentifierName = @"Name";
 
 unichar SPACE_CHARACTER = 0x0020;
 
-@implementation BPFormulaeTableView
+@implementation CiFormulaeTableView
 
 - (void)awakeFromNib
 {
 	[self addObserver:self
 		   forKeyPath:NSStringFromSelector(@selector(mode))
 			  options:NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew
-			  context:BPFormulaeTableViewContext];
+			  context:CiFormulaeTableViewContext];
 }
 
 - (instancetype)initWithFrame:(NSRect)frameRect
 {
 	self = [super initWithFrame:frameRect];
 	if (self) {
-		_mode = kBPListAllFormulae;
+		_mode = kCiListAllFormulae;
 	}
 	return self;
 }
@@ -48,7 +48,7 @@ unichar SPACE_CHARACTER = 0x0020;
 	}
 	
 	switch (self.mode) {
-		case kBPListAllFormulae:
+		case kCiListAllFormulae:
 			titleWidth = (NSInteger)(totalWidth - 125);
 			[[self tableColumnWithIdentifier:kColumnIdentifierVersion] setHidden:YES];
 			[[self tableColumnWithIdentifier:kColumnIdentifierLatestVersion] setHidden:YES];
@@ -57,7 +57,7 @@ unichar SPACE_CHARACTER = 0x0020;
 			[self setAllowsMultipleSelection:NO];
 			break;
 			
-		case kBPListInstalledFormulae:
+		case kCiListInstalledFormulae:
 			titleWidth = (NSInteger)(totalWidth * 0.4);
 			[[self tableColumnWithIdentifier:kColumnIdentifierLatestVersion] setHidden:YES];
 			[[self tableColumnWithIdentifier:kColumnIdentifierStatus] setHidden:YES];
@@ -66,7 +66,7 @@ unichar SPACE_CHARACTER = 0x0020;
 			[self setAllowsMultipleSelection:NO];
 			break;
 			
-		case kBPListLeaves:
+		case kCiListLeaves:
 			titleWidth = totalWidth - 1;
 			[[self tableColumnWithIdentifier:kColumnIdentifierVersion] setHidden:YES];
 			[[self tableColumnWithIdentifier:kColumnIdentifierLatestVersion] setHidden:YES];
@@ -74,7 +74,7 @@ unichar SPACE_CHARACTER = 0x0020;
 			[self setAllowsMultipleSelection:NO];
 			break;
 			
-		case kBPListOutdatedFormulae:
+		case kCiListOutdatedFormulae:
 			titleWidth = (NSInteger)(totalWidth * 0.4);
 			[[self tableColumnWithIdentifier:kColumnIdentifierStatus] setHidden:YES];
 			[[self tableColumnWithIdentifier:kColumnIdentifierVersion] setHidden:NO];
@@ -84,7 +84,7 @@ unichar SPACE_CHARACTER = 0x0020;
 			[self setAllowsMultipleSelection:YES];
 			break;
 			
-		case kBPListSearchFormulae:
+		case kCiListSearchFormulae:
 			titleWidth = (NSInteger)(totalWidth - 90);
 			[[self tableColumnWithIdentifier:kColumnIdentifierVersion] setHidden:YES];
 			[[self tableColumnWithIdentifier:kColumnIdentifierLatestVersion] setHidden:YES];
@@ -93,7 +93,7 @@ unichar SPACE_CHARACTER = 0x0020;
 			[self setAllowsMultipleSelection:NO];
 			break;
 			
-		case kBPListRepositories:
+		case kCiListRepositories:
 			titleWidth = totalWidth - 1;
 			[[self tableColumnWithIdentifier:kColumnIdentifierVersion] setHidden:YES];
 			[[self tableColumnWithIdentifier:kColumnIdentifierLatestVersion] setHidden:YES];
@@ -101,7 +101,7 @@ unichar SPACE_CHARACTER = 0x0020;
 			[self setAllowsMultipleSelection:NO];
 			break;
 			
-		case kBPListAllCasks:
+		case kCiListAllCasks:
 			titleWidth = (NSInteger)(totalWidth - 125);
 			[[self tableColumnWithIdentifier:kColumnIdentifierVersion] setHidden:YES];
 			[[self tableColumnWithIdentifier:kColumnIdentifierLatestVersion] setHidden:YES];
@@ -110,7 +110,7 @@ unichar SPACE_CHARACTER = 0x0020;
 			[self setAllowsMultipleSelection:NO];
 			break;
 			
-		case kBPListInstalledCasks:
+		case kCiListInstalledCasks:
 			titleWidth = (NSInteger)(totalWidth * 0.4);
 			[[self tableColumnWithIdentifier:kColumnIdentifierLatestVersion] setHidden:YES];
 			[[self tableColumnWithIdentifier:kColumnIdentifierStatus] setHidden:YES];
@@ -119,7 +119,7 @@ unichar SPACE_CHARACTER = 0x0020;
 			[self setAllowsMultipleSelection:NO];
 			break;
 			
-		case kBPListOutdatedCasks:
+		case kCiListOutdatedCasks:
 			titleWidth = (NSInteger)(totalWidth * 0.4);
 			[[self tableColumnWithIdentifier:kColumnIdentifierStatus] setHidden:YES];
 			[[self tableColumnWithIdentifier:kColumnIdentifierVersion] setHidden:NO];
@@ -129,7 +129,7 @@ unichar SPACE_CHARACTER = 0x0020;
 			[self setAllowsMultipleSelection:YES];
 			break;
 			
-		case kBPListSearchCasks:
+		case kCiListSearchCasks:
 			titleWidth = (NSInteger)(totalWidth - 90);
 			[[self tableColumnWithIdentifier:kColumnIdentifierVersion] setHidden:YES];
 			[[self tableColumnWithIdentifier:kColumnIdentifierLatestVersion] setHidden:YES];
@@ -148,7 +148,7 @@ unichar SPACE_CHARACTER = 0x0020;
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
-	if (context == BPFormulaeTableViewContext) {
+	if (context == CiFormulaeTableViewContext) {
 		if ([object isEqualTo:self]) {
 			if([keyPath isEqualToString:NSStringFromSelector(@selector(mode))]){
 				[self configureTableForListing];
@@ -221,7 +221,7 @@ unichar SPACE_CHARACTER = 0x0020;
 {
 	[self removeObserver:self
 			  forKeyPath:NSStringFromSelector(@selector(mode))
-				 context:BPFormulaeTableViewContext];
+				 context:CiFormulaeTableViewContext];
 }
 
 @end

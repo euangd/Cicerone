@@ -19,30 +19,30 @@
 //	along with this program.	If not, see <http://www.gnu.org/licenses/>.
 //
 
-#import "BPHomebrewManager.h"
+#import "CiHomebrewManager.h"
 #import "DCOAboutWindowController.h"
-#import "BPAppDelegate.h"
+#import "CiAppDelegate.h"
 
-NSString *const kBP_HOMEBREW_WEBSITE = @"https://github.com/TheFanatr/Cicerone";
+NSString *const kCi_HOMEBREW_WEBSITE = @"https://github.com/TheFanatr/Cicerone";
 
 
-@interface BPAppDelegate () <NSUserNotificationCenterDelegate>
+@interface CiAppDelegate () <NSUserNotificationCenterDelegate>
 
 @property (nonatomic, strong) DCOAboutWindowController *aboutWindowController;
 
 @end
 
-@interface BPAppDelegate (SignalHandler)
+@interface CiAppDelegate (SignalHandler)
 - (void)setupSignalHandler;
 @end
 
-@implementation BPAppDelegate
+@implementation CiAppDelegate
 
 - (DCOAboutWindowController *)aboutWindowController
 {
 	if (!_aboutWindowController){
 		_aboutWindowController = [[DCOAboutWindowController alloc] init];
-		[_aboutWindowController setAppWebsiteURL:[NSURL URLWithString:kBP_HOMEBREW_WEBSITE]];
+		[_aboutWindowController setAppWebsiteURL:[NSURL URLWithString:kCi_HOMEBREW_WEBSITE]];
 	}
 	return _aboutWindowController;
 }
@@ -53,7 +53,7 @@ NSString *const kBP_HOMEBREW_WEBSITE = @"https://github.com/TheFanatr/Cicerone";
 {	
 	[self setupSignalHandler];
 	
-	[[BPHomebrewManager sharedManager] reloadFromInterfaceRebuildingCache:NO];
+	[[CiHomebrewManager sharedManager] reloadFromInterfaceRebuildingCache:NO];
 	
 	[[NSUserNotificationCenter defaultUserNotificationCenter] setDelegate:self];
 }
@@ -72,7 +72,7 @@ NSString *const kBP_HOMEBREW_WEBSITE = @"https://github.com/TheFanatr/Cicerone";
 
 - (NSApplicationTerminateReply)applicationShouldTerminate:(NSApplication *)sender
 {
-	[[BPHomebrewManager sharedManager] cleanUp];
+	[[CiHomebrewManager sharedManager] cleanUp];
 	return NSTerminateNow;
 }
 
@@ -171,7 +171,7 @@ NSString *const kBP_HOMEBREW_WEBSITE = @"https://github.com/TheFanatr/Cicerone";
 
 - (IBAction)openWebsite:(id)sender
 {
-	[[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:kBP_HOMEBREW_WEBSITE]];
+	[[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:kCi_HOMEBREW_WEBSITE]];
 }
 
 #pragma mark - User Notification Center Delegate
@@ -184,7 +184,7 @@ NSString *const kBP_HOMEBREW_WEBSITE = @"https://github.com/TheFanatr/Cicerone";
 
 @end
 
-@implementation BPAppDelegate (SignalHandler)
+@implementation CiAppDelegate (SignalHandler)
 void signalHandler(int sig);
 
 - (void)setupSignalHandler
@@ -195,7 +195,7 @@ void signalHandler(int sig);
 void signalHandler(int sig) {
 	if (sig == SIGTERM) {
 		// Force Quit
-		[[BPHomebrewManager sharedManager] cleanUp];
+		[[CiHomebrewManager sharedManager] cleanUp];
 	}
 
 	signal(sig, SIG_DFL);

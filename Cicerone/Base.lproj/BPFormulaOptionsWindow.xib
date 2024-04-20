@@ -6,7 +6,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
-        <customObject id="-2" userLabel="File's Owner" customClass="BPFormulaOptionsWindowController">
+        <customObject id="-2" userLabel="File's Owner" customClass="CiFormulaOptionsWindowController">
             <connections>
                 <outlet property="formulaNameLabel" destination="LOq-R6-Hka" id="Y1G-Pi-RkC"/>
                 <outlet property="formulaOptionsTableView" destination="5A9-PF-xAL" id="XuD-y9-MPw"/>

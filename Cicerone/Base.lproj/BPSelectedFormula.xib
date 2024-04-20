@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="17701" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="32700.99.1234" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
-        <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="17701"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="22689"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
-        <customObject id="-2" userLabel="File's Owner" customClass="BPSelectedFormulaViewController">
+        <customObject id="-2" userLabel="File's Owner" customClass="CiSelectedFormulaViewController">
             <connections>
                 <outlet property="formulaConflictsLabel" destination="zEv-zT-rkr" id="9NW-cy-0Rn"/>
                 <outlet property="formulaDependenciesLabel" destination="0zJ-9h-wR5" id="4JG-ym-yKI"/>
@@ -38,7 +37,7 @@
                                 <textField horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="usF-Bi-e2e">
                                     <rect key="frame" x="-2" y="0.0" width="88" height="14"/>
                                     <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Description:" id="y6Q-3P-Z8p">
-                                        <font key="font" metaFont="systemBold" size="11"/>
+                                        <font key="font" metaFont="smallSystemBold"/>
                                         <color key="textColor" name="secondaryLabelColor" catalog="System" colorSpace="catalog"/>
                                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                     </textFieldCell>
@@ -67,7 +66,7 @@
                                 <textField horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="Cd6-mA-TjE">
                                     <rect key="frame" x="-2" y="0.0" width="88" height="14"/>
                                     <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Location:" id="Vpa-gA-Haq">
-                                        <font key="font" metaFont="systemBold" size="11"/>
+                                        <font key="font" metaFont="smallSystemBold"/>
                                         <color key="textColor" name="secondaryLabelColor" catalog="System" colorSpace="catalog"/>
                                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                     </textFieldCell>
@@ -96,7 +95,7 @@
                                 <textField horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="BJs-EC-wJG">
                                     <rect key="frame" x="-2" y="0.0" width="88" height="14"/>
                                     <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Version:" id="0oO-wP-SOX">
-                                        <font key="font" metaFont="systemBold" size="11"/>
+                                        <font key="font" metaFont="smallSystemBold"/>
                                         <color key="textColor" name="secondaryLabelColor" catalog="System" colorSpace="catalog"/>
                                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                     </textFieldCell>
@@ -125,7 +124,7 @@
                                 <textField horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="6Du-gV-h2P">
                                     <rect key="frame" x="-2" y="0.0" width="88" height="14"/>
                                     <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Dependencies:" id="v3f-Nd-iQs">
-                                        <font key="font" metaFont="systemBold" size="11"/>
+                                        <font key="font" metaFont="smallSystemBold"/>
                                         <color key="textColor" name="secondaryLabelColor" catalog="System" colorSpace="catalog"/>
                                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                     </textFieldCell>
@@ -154,7 +153,7 @@
                                 <textField horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="qga-yy-j75">
                                     <rect key="frame" x="-2" y="0.0" width="88" height="14"/>
                                     <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Conflicts:" id="jTd-ja-Dck">
-                                        <font key="font" metaFont="systemBold" size="11"/>
+                                        <font key="font" metaFont="smallSystemBold"/>
                                         <color key="textColor" name="secondaryLabelColor" catalog="System" colorSpace="catalog"/>
                                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                     </textFieldCell>

@@ -19,14 +19,14 @@
 //	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-#import "BPTask.h"
+#import "CiTask.h"
 
 static BOOL systemHasAppNap;
 
 NSString *const kDidBeginBackgroundActivityNotification	= @"DidBeginBackgroundActivityNotification";
 NSString *const kDidEndBackgroundActivityNotification	= @"DidEndBackgroundActivityNotification";
 
-@interface BPTask()
+@interface CiTask()
 {
 	id activity;
 	NSPipe *outputPipe;
@@ -49,7 +49,7 @@ NSString *const kDidEndBackgroundActivityNotification	= @"DidEndBackgroundActivi
 
 @end
 
-@implementation BPTask
+@implementation CiTask
 
 + (void)load
 {

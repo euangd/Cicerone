@@ -1,5 +1,5 @@
 //
-//  BPInstallationWindowController.h
+//  CiInstallationWindowController.h
 //  Cicerone
 //
 //  Created by Marek Hrusovsky on 21/08/14.
@@ -20,17 +20,17 @@
 //
 
 #import <Cocoa/Cocoa.h>
-#import "BPHomebrewViewController.h"
+#import "CiHomebrewViewController.h"
 
-@interface BPInstallationWindowController : NSWindowController
+@interface CiInstallationWindowController : NSWindowController
 
 - (void)executeInstallation;
 
-+ (BPInstallationWindowController *)runWithOperation:(BPWindowOperation)windowOperation
++ (CiInstallationWindowController *)runWithOperation:(CiWindowOperation)windowOperation
                                             formulae:(NSArray *)formulae
                                              options:(NSArray *)options;
 
-+ (BPInstallationWindowController *)runWithOperation:(BPWindowOperation)windowOperation
++ (CiInstallationWindowController *)runWithOperation:(CiWindowOperation)windowOperation
 											formulae:(NSArray *)formulae
 											 options:(NSArray *)options
 										  completion:(void (^)(BOOL))completionBlock;

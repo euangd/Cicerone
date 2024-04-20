@@ -1,16 +1,16 @@
 //
-//  BPBundleWindowController.m
+//  CiBundleWindowController.m
 //  Cicerone
 //
 //  Created by Bruno Philipe on 20/02/16.
 //  Copyright © 2016 Bruno Philipe. All rights reserved.
 //
 
-#import "BPBundleWindowController.h"
-#import "BPAppDelegate.h"
-#import "BPHomebrewInterface.h"
+#import "CiBundleWindowController.h"
+#import "CiAppDelegate.h"
+#import "CiHomebrewInterface.h"
 
-@interface BPBundleWindowController ()
+@interface CiBundleWindowController ()
 
 @property (strong) IBOutlet NSView *viewOperationContainer;
 
@@ -33,18 +33,18 @@
 
 @end
 
-@implementation BPBundleWindowController
+@implementation CiBundleWindowController
 
-+ (BPBundleWindowController*)runImportOperationWithFile:(NSURL*)fileURL
++ (CiBundleWindowController*)runImportOperationWithFile:(NSURL*)fileURL
 {
-	BPBundleWindowController *controller = [self createWindow];
-	__weak BPBundleWindowController *weakController = controller;
+	CiBundleWindowController *controller = [self createWindow];
+	__weak CiBundleWindowController *weakController = controller;
 	
 	[controller setWindowLoadedBlock:^{
 		[weakController embedView:[weakController viewImportProgress]];
 	}];
 	
-	[BPAppDelegateRef setRunningBackgroundTask:YES];
+	[CiAppDelegateRef setRunningBackgroundTask:YES];
 	
 	[controller startSheetOnMainWindow];
 	[controller runImportOperationWithFile:fileURL];
@@ -52,16 +52,16 @@
 	return controller;
 }
 
-+ (BPBundleWindowController*)runExportOperationWithFile:(NSURL*)fileURL
++ (CiBundleWindowController*)runExportOperationWithFile:(NSURL*)fileURL
 {
-	BPBundleWindowController *controller = [self createWindow];
-	__weak BPBundleWindowController *weakController = controller;
+	CiBundleWindowController *controller = [self createWindow];
+	__weak CiBundleWindowController *weakController = controller;
 	
 	[controller setWindowLoadedBlock:^{
 		[weakController embedView:[weakController viewExportProgress]];
 	}];
 	
-	[BPAppDelegateRef setRunningBackgroundTask:YES];
+	[CiAppDelegateRef setRunningBackgroundTask:YES];
 	
 	[controller startSheetOnMainWindow];
 	[controller runExportOperationWithFile:fileURL];
@@ -69,9 +69,9 @@
 	return controller;
 }
 
-+ (BPBundleWindowController*)createWindow
++ (CiBundleWindowController*)createWindow
 {
-	return [[BPBundleWindowController alloc] initWithWindowNibName:@"BPBundleWindow"];
+	return [[CiBundleWindowController alloc] initWithWindowNibName:@"CiBundleWindow"];
 }
 
 - (void)windowDidLoad
@@ -88,16 +88,16 @@
 - (void)startSheetOnMainWindow
 {
 	[[NSApp mainWindow] beginSheet:self.window completionHandler:^(NSModalResponse returnCode) {
-		[BPAppDelegateRef setRunningBackgroundTask:NO];
+		[CiAppDelegateRef setRunningBackgroundTask:NO];
 	}];
 }
 
 - (void)runImportOperationWithFile:(NSURL*)fileURL
 {
 	self.importOutputString = [NSMutableString new];
-	__weak BPBundleWindowController *weakSelf = self;
+	__weak CiBundleWindowController *weakSelf = self;
 	
-	[[BPHomebrewInterface sharedInterface] runBrewImportToolWithPath:[fileURL path]
+	[[CiHomebrewInterface sharedInterface] runBrewImportToolWithPath:[fileURL path]
 													withReturnsBlock:^(NSString *output)
 	{
 		[self.importOutputString appendString:output];
@@ -113,7 +113,7 @@
 
 - (void)runExportOperationWithFile:(NSURL*)fileURL
 {
-	NSError *error = [[BPHomebrewInterface sharedInterface] runBrewExportToolWithPath:[fileURL path]];
+	NSError *error = [[CiHomebrewInterface sharedInterface] runBrewExportToolWithPath:[fileURL path]];
 	
 	if (error)
 	{
@@ -138,7 +138,7 @@
 - (void)windowOperationSheetDidEnd:(NSWindow *)sheet returnCode:(NSInteger)returnCode contextInfo:(void *)contextInfo;
 {
 	[sheet orderOut:self];
-	[BPAppDelegateRef setRunningBackgroundTask:NO];
+	[CiAppDelegateRef setRunningBackgroundTask:NO];
 }
 
 - (void)embedView:(NSView*)view

@@ -1,5 +1,5 @@
 //
-//  BPFormulaTests.m
+//  CiFormulaTests.m
 //
 //
 //  Created by Marek Hrusovsky on 19/08/15.
@@ -8,14 +8,14 @@
 
 #import <Cocoa/Cocoa.h>
 #import <XCTest/XCTest.h>
-#import "BPFormula.h"
-#import "BPHomebrewInterface.h"
+#import "CiFormula.h"
+#import "CiHomebrewInterface.h"
 
-@interface BPFormulaDataProvider : NSObject <BPFormulaDataProvider>
+@interface CiFormulaDataProvider : NSObject <CiFormulaDataProvider>
 - (NSString *)informationForFormulaName:(NSString *)name;
 @end
 
-@implementation BPFormulaDataProvider
+@implementation CiFormulaDataProvider
 
 - (NSString *)informationForFormulaName:(NSString *)name
 {
@@ -53,18 +53,18 @@
 
 @end
 
-@interface BPCustomFormula : BPFormula {
+@interface CiCustomFormula : CiFormula {
 @public
 	BOOL observerAdded;
 }
 - (void)addObserver:(NSObject *)observer forKeyPath:(NSString *)keyPath options:(NSKeyValueObservingOptions)options context:(void *)context;
 @end
 
-@implementation BPCustomFormula
+@implementation CiCustomFormula
 
-- (id<BPFormulaDataProvider>)dataProvider
+- (id<CiFormulaDataProvider>)dataProvider
 {
-	return [[BPFormulaDataProvider alloc] init];
+	return [[CiFormulaDataProvider alloc] init];
 }
 - (void)addObserver:(NSObject *)observer forKeyPath:(NSString *)keyPath
 			options:(NSKeyValueObservingOptions)options
@@ -74,55 +74,55 @@
 }
 @end
 
-static BPCustomFormula *ffmpegFormula;
-static BPCustomFormula *mysqlFormula;
-static BPCustomFormula *perconaFormula;
-static BPCustomFormula *acmeFormula;
-static BPCustomFormula *bfgFormula;
-static BPCustomFormula *bisonFormula;
-static BPCustomFormula *sbtenvFormula;
-static BPCustomFormula *nmapFormula;
+static CiCustomFormula *ffmpegFormula;
+static CiCustomFormula *mysqlFormula;
+static CiCustomFormula *perconaFormula;
+static CiCustomFormula *acmeFormula;
+static CiCustomFormula *bfgFormula;
+static CiCustomFormula *bisonFormula;
+static CiCustomFormula *sbtenvFormula;
+static CiCustomFormula *nmapFormula;
 
-@interface BPFormulaTests : XCTestCase {
-	BPFormula *formula;
+@interface CiFormulaTests : XCTestCase {
+	CiFormula *formula;
 }
 @end
 
 
-@implementation BPFormulaTests
+@implementation CiFormulaTests
 
 + (void)initialize {
 	if (!ffmpegFormula) {
-		ffmpegFormula = [BPCustomFormula formulaWithName:@"ffmpeg"];
+		ffmpegFormula = [CiCustomFormula formulaWithName:@"ffmpeg"];
 		[ffmpegFormula setNeedsInformation:YES];
 	}
 	
 	if (!mysqlFormula){
-		mysqlFormula = [BPCustomFormula formulaWithName:@"mysql"];
+		mysqlFormula = [CiCustomFormula formulaWithName:@"mysql"];
 		[mysqlFormula setNeedsInformation:YES];
 	}
 	if (!perconaFormula) {
-		perconaFormula = [BPCustomFormula formulaWithName:@"percona-server"];
+		perconaFormula = [CiCustomFormula formulaWithName:@"percona-server"];
 		[perconaFormula setNeedsInformation:YES];
 	}
 	if(!acmeFormula){
-		acmeFormula = [BPCustomFormula formulaWithName:@"acme"];
+		acmeFormula = [CiCustomFormula formulaWithName:@"acme"];
 		[acmeFormula setNeedsInformation:YES];
 	}
 	if(!bfgFormula){
-		bfgFormula = [BPCustomFormula formulaWithName:@"bfg"];
+		bfgFormula = [CiCustomFormula formulaWithName:@"bfg"];
 		[bfgFormula setNeedsInformation:YES];
 	}
 	if(!bisonFormula){
-		bisonFormula = [BPCustomFormula formulaWithName:@"bison"];
+		bisonFormula = [CiCustomFormula formulaWithName:@"bison"];
 		[bisonFormula setNeedsInformation:YES];
 	}
 	if(!sbtenvFormula){
-		sbtenvFormula = [BPCustomFormula formulaWithName:@"sbtenv"];
+		sbtenvFormula = [CiCustomFormula formulaWithName:@"sbtenv"];
 		[sbtenvFormula setNeedsInformation:YES];
 	}
 	if(!nmapFormula){
-		nmapFormula = [BPCustomFormula formulaWithName:@"nmap"];
+		nmapFormula = [CiCustomFormula formulaWithName:@"nmap"];
 		[nmapFormula setNeedsInformation:YES];
 	}
 }
@@ -133,7 +133,7 @@ static BPCustomFormula *nmapFormula;
 
 - (void)testFormulaCreation
 {
-	formula = [BPFormula formulaWithName:@"abcde" version:@"1" andLatestVersion:@"2"];
+	formula = [CiFormula formulaWithName:@"abcde" version:@"1" andLatestVersion:@"2"];
 	XCTAssertNotNil(formula, @"Formula failed to initialize");
 	XCTAssertTrue([formula.name isEqualToString:@"abcde"], @"Formula has invalid name");
 	XCTAssertTrue([formula.version isEqualToString:@"1"], @"Formula has invalid name");
@@ -142,9 +142,9 @@ static BPCustomFormula *nmapFormula;
 
 - (void)testFormulaFullCopy
 {
-	formula = [BPCustomFormula formulaWithName:@"fakeformula" version:@"1" andLatestVersion:@"2"];
+	formula = [CiCustomFormula formulaWithName:@"fakeformula" version:@"1" andLatestVersion:@"2"];
 	[formula setNeedsInformation:YES];
-	BPFormula *copiedFormula = [formula copy];
+	CiFormula *copiedFormula = [formula copy];
 	XCTAssertTrue([formula.name isEqualToString:copiedFormula.name] && [copiedFormula.name length] > 0, @"Name failed to copy");
 	XCTAssertTrue([formula.version isEqualToString:copiedFormula.version] && [copiedFormula.version length] > 0, @"Version failed to copy");
 	XCTAssertTrue([formula.latestVersion isEqualToString:copiedFormula.latestVersion] && [copiedFormula.latestVersion length] > 0, @"LatestVersion failed to copy");
@@ -160,7 +160,7 @@ static BPCustomFormula *nmapFormula;
 
 - (void)testFormulaConsoleInformation
 {
-	BPFormulaDataProvider *provider = [[BPFormulaDataProvider alloc] init];
+	CiFormulaDataProvider *provider = [[CiFormulaDataProvider alloc] init];
 	NSString *ffmpegOutput = [provider informationForFormulaName:@"ffmpeg"];
 	XCTAssertEqualObjects(ffmpegFormula.information, ffmpegOutput);
 	NSString *mysqlOutput = [provider informationForFormulaName:@"mysql"];
@@ -281,24 +281,24 @@ static BPCustomFormula *nmapFormula;
 	NSArray *options;
 	options = perconaFormula.options;
 	if ([options count] >= 5) {
-		XCTAssertEqualObjects([(BPFormulaOption *)options[0] name], @"--universal");
-		XCTAssertEqualObjects([(BPFormulaOption *)options[0] explanation], @"Build a universal binary");
-		XCTAssertEqualObjects([(BPFormulaOption *)options[4] name], @"--with-tests");
-		XCTAssertEqualObjects([(BPFormulaOption *)options[4] explanation], @"Build with unit tests");
+		XCTAssertEqualObjects([(CiFormulaOption *)options[0] name], @"--universal");
+		XCTAssertEqualObjects([(CiFormulaOption *)options[0] explanation], @"Build a universal binary");
+		XCTAssertEqualObjects([(CiFormulaOption *)options[4] name], @"--with-tests");
+		XCTAssertEqualObjects([(CiFormulaOption *)options[4] explanation], @"Build with unit tests");
 	}
 	options = ffmpegFormula.options;
 	if ([options count] >= 33) {
-		XCTAssertEqualObjects([(BPFormulaOption *)options[0] name], @"--with-faac");
-		XCTAssertEqualObjects([(BPFormulaOption *)options[0] explanation], @"Build with faac support");
-		XCTAssertEqualObjects([(BPFormulaOption *)options[32] name], @"--HEAD");
-		XCTAssertEqualObjects([(BPFormulaOption *)options[32] explanation], @"Install HEAD version");
+		XCTAssertEqualObjects([(CiFormulaOption *)options[0] name], @"--with-faac");
+		XCTAssertEqualObjects([(CiFormulaOption *)options[0] explanation], @"Build with faac support");
+		XCTAssertEqualObjects([(CiFormulaOption *)options[32] name], @"--HEAD");
+		XCTAssertEqualObjects([(CiFormulaOption *)options[32] explanation], @"Install HEAD version");
 	}
 	options = mysqlFormula.options;
 	if ([options count] >= 8) {
-		XCTAssertEqualObjects([(BPFormulaOption *)options[0] name], @"--universal");
-		XCTAssertEqualObjects([(BPFormulaOption *)options[0] explanation], @"Build a universal binary");
-		XCTAssertEqualObjects([(BPFormulaOption *)options[7] name], @"--with-tests");
-		XCTAssertEqualObjects([(BPFormulaOption *)options[7] explanation], @"Build with unit tests");
+		XCTAssertEqualObjects([(CiFormulaOption *)options[0] name], @"--universal");
+		XCTAssertEqualObjects([(CiFormulaOption *)options[0] explanation], @"Build a universal binary");
+		XCTAssertEqualObjects([(CiFormulaOption *)options[7] name], @"--with-tests");
+		XCTAssertEqualObjects([(CiFormulaOption *)options[7] explanation], @"Build with unit tests");
 	}
 	
 	
@@ -306,16 +306,16 @@ static BPCustomFormula *nmapFormula;
 
 - (void)testFormulaObserverAddition
 {
-	BPCustomFormula *observerFormula = [BPCustomFormula formulaWithName:@"acme"];
+	CiCustomFormula *observerFormula = [CiCustomFormula formulaWithName:@"acme"];
 	XCTAssertTrue(observerFormula->observerAdded);
-	BPCustomFormula *formulaCopy = [observerFormula copy];
+	CiCustomFormula *formulaCopy = [observerFormula copy];
 	XCTAssertTrue(formulaCopy->observerAdded);
 }
 
 - (void)testFormulaNotificationUpdate
 {
-	BPCustomFormula *customFormula = [BPCustomFormula formulaWithName:@"acme"];
-	XCTestExpectation __block *expectation = [self expectationForNotification:BPFormulaDidUpdateNotification
+	CiCustomFormula *customFormula = [CiCustomFormula formulaWithName:@"acme"];
+	XCTestExpectation __block *expectation = [self expectationForNotification:CiFormulaDidUpdateNotification
 																	   object:customFormula
 																	  handler:^BOOL(NSNotification *notification)
 		{

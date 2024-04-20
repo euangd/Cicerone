@@ -1,5 +1,5 @@
 //
-//	BPFormula.h
+//	CiFormula.h
 //	Cicerone – The Homebrew GUI App for OS X 
 //
 //	Created by Bruno Philipe on 4/3/14.
@@ -20,16 +20,16 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "BPFormulaOption.h"
+#import "CiFormulaOption.h"
 
-extern NSString *const BPFormulaDidUpdateNotification;
+extern NSString *const CiFormulaDidUpdateNotification;
 
-@protocol BPFormulaDataProvider <NSObject>
+@protocol CiFormulaDataProvider <NSObject>
 @required
 - (NSString *)informationForFormulaName:(NSString *)name;
 @end
 
-@interface BPFormula : NSObject <NSSecureCoding, NSCopying>
+@interface CiFormula : NSObject <NSSecureCoding, NSCopying>
 
 @property (copy, readonly) NSString *name;
 @property (copy, readonly) NSString *version;

@@ -1,5 +1,5 @@
 //
-//  BPMainWindowController.h
+//  CiMainWindowController.h
 //  Cicerone
 //
 //  Created by Bruno on 06.02.21.
@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface BPMainWindowController : NSWindowController
+@interface CiMainWindowController : NSWindowController
 
 @property (weak) IBOutlet NSScrollView *sidebarView;
 @property (weak) IBOutlet NSView *windowContentView;

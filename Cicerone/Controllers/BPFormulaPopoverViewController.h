@@ -1,5 +1,5 @@
 //
-//  BPFormulaPopoverViewController.h
+//  CiFormulaPopoverViewController.h
 //  Cicerone
 //
 //  Created by Marek Hrusovsky on 05/09/14.
@@ -7,22 +7,22 @@
 //
 
 #import <Cocoa/Cocoa.h>
-#import "BPFormula.h"
+#import "CiFormula.h"
 
-typedef NS_ENUM(NSInteger, BPFormulaInfoType) {
-	kBPFormulaInfoTypeGeneral,
-	kBPFormulaInfoTypeInstalledDependents,
-	kBPFormulaInfoTypeAllDependents
+typedef NS_ENUM(NSInteger, CiFormulaInfoType) {
+	kCiFormulaInfoTypeGeneral,
+	kCiFormulaInfoTypeInstalledDependents,
+	kCiFormulaInfoTypeAllDependents
 };
 
-@interface BPFormulaPopoverViewController : NSViewController
+@interface CiFormulaPopoverViewController : NSViewController
 
 @property (strong) IBOutlet NSTextView *formulaTextView;
 @property (weak) IBOutlet NSTextField *formulaTitleLabel;
-@property (weak, nonatomic) BPFormula *formula;
+@property (weak, nonatomic) CiFormula *formula;
 @property (weak) IBOutlet NSPopover *formulaPopover;
 @property (weak) IBOutlet NSProgressIndicator *progressIndicator;
 
-@property BPFormulaInfoType infoType;
+@property CiFormulaInfoType infoType;
 
 @end

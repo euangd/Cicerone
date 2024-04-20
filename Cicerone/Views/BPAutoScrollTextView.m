@@ -1,14 +1,14 @@
 //
-//  BPAutoScrollTextView.m
+//  CiAutoScrollTextView.m
 //  Cicerone
 //
 //  Created by Bruno Philipe on 6/17/14.
 //  Copyright (c) 2014 Bruno Philipe. All rights reserved.
 //
 
-#import "BPAutoScrollTextView.h"
+#import "CiAutoScrollTextView.h"
 
-@implementation BPAutoScrollTextView
+@implementation CiAutoScrollTextView
 
 - (void)setString:(NSString *)string
 {

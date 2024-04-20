@@ -20,49 +20,49 @@
 //
 
 
-#import "BPFormula.h"
-#import "BPFormulaOptionsWindowController.h"
-#import "BPFormulaeDataSource.h"
-#import "BPSelectedFormulaViewController.h"
+#import "CiFormula.h"
+#import "CiFormulaOptionsWindowController.h"
+#import "CiFormulaeDataSource.h"
+#import "CiSelectedFormulaViewController.h"
 
 
-//#import "BPCask.h"
-//#import "BPCaskOptionsWindowController.h"
-#import "BPCasksDataSource.h"
-//#import "BPSelectedCaskViewController.h"
+//#import "CiCask.h"
+//#import "CiCaskOptionsWindowController.h"
+#import "CiCasksDataSource.h"
+//#import "CiSelectedCaskViewController.h"
 
-#import "BPHomebrewViewController.h"
-#import "BPHomebrewManager.h"
-#import "BPHomebrewInterface.h"
-#import "BPInstallationWindowController.h"
-#import "BPUpdateViewController.h"
-#import "BPDoctorViewController.h"
-#import "BPToolbar.h"
-#import "BPAppDelegate.h"
-#import "BPStyle.h"
-#import "BPLoadingView.h"
-#import "BPDisabledView.h"
-#import "BPBundleWindowController.h"
-#import "BPTask.h"
-#import "BPMainWindowController.h"
+#import "CiHomebrewViewController.h"
+#import "CiHomebrewManager.h"
+#import "CiHomebrewInterface.h"
+#import "CiInstallationWindowController.h"
+#import "CiUpdateViewController.h"
+#import "CiDoctorViewController.h"
+#import "CiToolbar.h"
+#import "CiAppDelegate.h"
+#import "CiStyle.h"
+#import "CiLoadingView.h"
+#import "CiDisabledView.h"
+#import "CiBundleWindowController.h"
+#import "CiTask.h"
+#import "CiMainWindowController.h"
 #import "NSLayoutConstraint+Shims.h"
 
-typedef NS_ENUM(NSUInteger, BPContentTab) {
-    kBPContentTabFormulae,
-    kBPContentTabCasks,
-    kBPContentTabDoctor,
-    kBPContentTabUpdate
+typedef NS_ENUM(NSUInteger, CiContentTab) {
+    kCiContentTabFormulae,
+    kCiContentTabCasks,
+    kCiContentTabDoctor,
+    kCiContentTabUpdate
 };
 
-@interface BPHomebrewViewController () <NSTableViewDelegate,
-BPSideBarControllerDelegate,
-BPSelectedFormulaViewControllerDelegate,
-BPHomebrewManagerDelegate,
-BPToolbarProtocol,
+@interface CiHomebrewViewController () <NSTableViewDelegate,
+CiSideBarControllerDelegate,
+CiSelectedFormulaViewControllerDelegate,
+CiHomebrewManagerDelegate,
+CiToolbarProtocol,
 NSMenuDelegate,
 NSOpenSavePanelDelegate>
 
-@property (weak) BPAppDelegate *appDelegate;
+@property (weak) CiAppDelegate *appDelegate;
 
 @property NSInteger lastSelectedSidebarIndex;
 
@@ -70,35 +70,35 @@ NSOpenSavePanelDelegate>
 @property (getter=isHomebrewInstalled)	BOOL homebrewInstalled;
 
 
-@property (strong, nonatomic) BPFormulaeDataSource				*formulaeDataSource;
-@property (strong, nonatomic) BPCasksDataSource					*casksDataSource;
-@property (strong, nonatomic) BPFormulaOptionsWindowController	*formulaOptionsWindowController;
+@property (strong, nonatomic) CiFormulaeDataSource				*formulaeDataSource;
+@property (strong, nonatomic) CiCasksDataSource					*casksDataSource;
+@property (strong, nonatomic) CiFormulaOptionsWindowController	*formulaOptionsWindowController;
 @property (strong, nonatomic) NSWindowController				*operationWindowController;
-@property (strong, nonatomic) BPUpdateViewController			*updateViewController;
-@property (strong, nonatomic) BPDoctorViewController			*doctorViewController;
-@property (strong, nonatomic) BPFormulaPopoverViewController	*formulaPopoverViewController;
-@property (strong, nonatomic) BPSelectedFormulaViewController	*selectedFormulaeViewController;
-@property (strong, nonatomic) BPToolbar							*toolbar;
-@property (strong, nonatomic) BPDisabledView					*disabledView;
-@property (strong, nonatomic) BPLoadingView						*loadingView;
+@property (strong, nonatomic) CiUpdateViewController			*updateViewController;
+@property (strong, nonatomic) CiDoctorViewController			*doctorViewController;
+@property (strong, nonatomic) CiFormulaPopoverViewController	*formulaPopoverViewController;
+@property (strong, nonatomic) CiSelectedFormulaViewController	*selectedFormulaeViewController;
+@property (strong, nonatomic) CiToolbar							*toolbar;
+@property (strong, nonatomic) CiDisabledView					*disabledView;
+@property (strong, nonatomic) CiLoadingView						*loadingView;
 
 @property (weak) IBOutlet NSSplitView				*formulaeSplitView;
 @property (weak) IBOutlet NSView					*selectedFormulaView;
 @property (weak) IBOutlet NSProgressIndicator		*backgroundActivityIndicator;
-@property (weak) IBOutlet BPMainWindowController	*mainWindowController;
+@property (weak) IBOutlet CiMainWindowController	*mainWindowController;
 
 
 @end
 
-@implementation BPHomebrewViewController
+@implementation CiHomebrewViewController
 {
-    BPHomebrewManager *_homebrewManager;
+    CiHomebrewManager *_homebrewManager;
 }
 
-- (BPFormulaPopoverViewController *)formulaPopoverViewController
+- (CiFormulaPopoverViewController *)formulaPopoverViewController
 {
     if (!_formulaPopoverViewController) {
-        _formulaPopoverViewController = [[BPFormulaPopoverViewController alloc] init];
+        _formulaPopoverViewController = [[CiFormulaPopoverViewController alloc] init];
         //this will force initialize controller with its view
         __unused NSView *view = _formulaPopoverViewController.view;
     }
@@ -125,10 +125,10 @@ NSOpenSavePanelDelegate>
 
 - (void)commonInit
 {
-    _homebrewManager = [BPHomebrewManager sharedManager];
+    _homebrewManager = [CiHomebrewManager sharedManager];
     [_homebrewManager setDelegate:self];
     
-    self.selectedFormulaeViewController = [[BPSelectedFormulaViewController alloc] init];
+    self.selectedFormulaeViewController = [[CiSelectedFormulaViewController alloc] init];
     [self.selectedFormulaeViewController setDelegate:self];
     
     self.homebrewInstalled = YES;
@@ -158,7 +158,7 @@ NSOpenSavePanelDelegate>
     [self.mainWindowController setUpViews];
     [self.mainWindowController setContentViewHidden:YES];
     
-    self.formulaeDataSource = [[BPFormulaeDataSource alloc] initWithMode:kBPListAllFormulae];
+    self.formulaeDataSource = [[CiFormulaeDataSource alloc] initWithMode:kCiListAllFormulae];
     self.formulaeTableView.dataSource = self.formulaeDataSource;
     self.formulaeTableView.delegate = self;
     [self.formulaeTableView setAccessibilityLabel:NSLocalizedString(@"Formulae", nil)];
@@ -166,34 +166,34 @@ NSOpenSavePanelDelegate>
     
     //link formulae tableview
     NSView *formulaeView = self.formulaeSplitView;
-    if ([[self.tabView tabViewItems] count] > kBPContentTabFormulae) {
-        NSTabViewItem *formulaeTab = [self.tabView tabViewItemAtIndex:kBPContentTabFormulae];
+    if ([[self.tabView tabViewItems] count] > kCiContentTabFormulae) {
+        NSTabViewItem *formulaeTab = [self.tabView tabViewItemAtIndex:kCiContentTabFormulae];
         [formulaeTab setView:formulaeView];
     }
     
-    self.casksDataSource = [[BPCasksDataSource alloc] initWithMode:kBPListAllCasks];
+    self.casksDataSource = [[CiCasksDataSource alloc] initWithMode:kCiListAllCasks];
     // todo - investigate population of a casksTableView (update `configureTableForListing:` if changed)
     
     //link casks tableview
     NSView *casksView = self.formulaeSplitView;
-    if ([[self.tabView tabViewItems] count] > kBPContentTabCasks) {
-        NSTabViewItem *casksTab = [self.tabView tabViewItemAtIndex:kBPContentTabCasks];
+    if ([[self.tabView tabViewItems] count] > kCiContentTabCasks) {
+        NSTabViewItem *casksTab = [self.tabView tabViewItemAtIndex:kCiContentTabCasks];
         [casksTab setView:casksView];
     }
     
     //Creating view for update tab
-    self.updateViewController = [[BPUpdateViewController alloc] initWithNibName:nil bundle:nil];
+    self.updateViewController = [[CiUpdateViewController alloc] initWithNibName:nil bundle:nil];
     NSView *updateView = [self.updateViewController view];
-    if ([[self.tabView tabViewItems] count] > kBPContentTabUpdate) {
-        NSTabViewItem *updateTab = [self.tabView tabViewItemAtIndex:kBPContentTabUpdate];
+    if ([[self.tabView tabViewItems] count] > kCiContentTabUpdate) {
+        NSTabViewItem *updateTab = [self.tabView tabViewItemAtIndex:kCiContentTabUpdate];
         [updateTab setView:updateView];
     }
     
     //Creating view for doctor tab
-    self.doctorViewController = [[BPDoctorViewController alloc] initWithNibName:nil bundle:nil];
+    self.doctorViewController = [[CiDoctorViewController alloc] initWithNibName:nil bundle:nil];
     NSView *doctorView = [self.doctorViewController view];
-    if ([[self.tabView tabViewItems] count] > kBPContentTabDoctor) {
-        NSTabViewItem *doctorTab = [self.tabView tabViewItemAtIndex:kBPContentTabDoctor];
+    if ([[self.tabView tabViewItems] count] > kCiContentTabDoctor) {
+        NSTabViewItem *doctorTab = [self.tabView tabViewItemAtIndex:kCiContentTabDoctor];
         [doctorTab setView:doctorView];
     }
     
@@ -221,12 +221,12 @@ NSOpenSavePanelDelegate>
     [self addToolbar];
     [self addLoadingView];
     
-    _appDelegate = BPAppDelegateRef;
+    _appDelegate = CiAppDelegateRef;
 }
 
 - (void)addToolbar
 {
-    self.toolbar = [[BPToolbar alloc] initWithIdentifier:@"MainToolbar"];
+    self.toolbar = [[CiToolbar alloc] initWithIdentifier:@"MainToolbar"];
     self.toolbar.delegate = self.toolbar;
     self.toolbar.activeVisualContext = self;
     [[[self view] window] setToolbar:self.toolbar];
@@ -238,7 +238,7 @@ NSOpenSavePanelDelegate>
 
 - (void)addDisabledView
 {
-    BPDisabledView *disabledView = [[BPDisabledView alloc] initWithFrame:NSZeroRect];
+    CiDisabledView *disabledView = [[CiDisabledView alloc] initWithFrame:NSZeroRect];
     disabledView.translatesAutoresizingMaskIntoConstraints = NO;
     [self.view addSubview:disabledView];
     
@@ -270,7 +270,7 @@ NSOpenSavePanelDelegate>
 
 - (void)addLoadingView
 {
-    BPLoadingView *loadingView = [[BPLoadingView alloc] initWithFrame:NSZeroRect];
+    CiLoadingView *loadingView = [[CiLoadingView alloc] initWithFrame:NSZeroRect];
     loadingView.translatesAutoresizingMaskIntoConstraints = NO;
     [self.view addSubview:loadingView];
     
@@ -333,34 +333,34 @@ NSOpenSavePanelDelegate>
         [self.toolbar setToolsWithUse:CiOBarUAIBase];
     } else {
         showFormulaInfo = true;
-        BPFormula *formula;
-        BPFormulaStatus status;
+        CiFormula *formula;
+        CiFormulaStatus status;
         if (selectedSidebarRow > FormulaeSideBarItemCasksCategory) {
             self.formulaeTableView.dataSource = self.casksDataSource;
             [self.formulaeTableView setAccessibilityLabel:NSLocalizedString(@"Casks", nil)];
             formula = [self.casksDataSource caskAtIndex:selectedIndex];
             [self.selectedFormulaeViewController setFormulae:selectedCasks];
-            status = [[BPHomebrewManager sharedManager] statusForFormula:formula];
+            status = [[CiHomebrewManager sharedManager] statusForFormula:formula];
         } else {
             self.formulaeTableView.dataSource = self.formulaeDataSource;
             [self.formulaeTableView setAccessibilityLabel:NSLocalizedString(@"Formulae", nil)];
             formula = [self.formulaeDataSource formulaAtIndex:selectedIndex];
             [self.selectedFormulaeViewController setFormulae:selectedFormulae];
-            status = [[BPHomebrewManager sharedManager] statusForCask:formula];
+            status = [[CiHomebrewManager sharedManager] statusForCask:formula];
         }
         switch (status) {
-            case kBPFormulaInstalled:
-                //case kBPCaskInstalled:
+            case kCiFormulaInstalled:
+                //case kCiCaskInstalled:
                 [self.toolbar setToolsWithUse:CiOBarUAIActOnInstalled];
                 break;
                 
-            case kBPFormulaOutdated:
-                //case kBPCaskOutdated:
+            case kCiFormulaOutdated:
+                //case kCiCaskOutdated:
                 [self.toolbar setToolsWithUse:CiOBarUAIActOnOldVersionInstalled];
                 break;
                 
-            case kBPFormulaNotInstalled:
-                //case kBPCaskNotInstalled:
+            case kCiFormulaNotInstalled:
+                //case kCiCaskNotInstalled:
                 [self.toolbar setToolsWithUse:CiOBarUAIActOnInstallable];
                 break;
         }
@@ -372,7 +372,7 @@ NSOpenSavePanelDelegate>
     }
 }
 
-- (void)configureTableForListing:(BPListMode)mode
+- (void)configureTableForListing:(CiListMode)mode
 {
     [self.formulaeTableView deselectAll:nil];
     [self.formulaeDataSource setMode:mode];
@@ -458,7 +458,7 @@ NSOpenSavePanelDelegate>
 
 #pragma mark - Homebrew Manager Delegate
 
-- (void)homebrewManagerFinishedUpdating:(BPHomebrewManager *)manager
+- (void)homebrewManagerFinishedUpdating:(CiHomebrewManager *)manager
 {
     [self.loadingView removeFromSuperview];
     self.loadingView = nil;
@@ -484,7 +484,7 @@ NSOpenSavePanelDelegate>
         [self.sidebarController refreshSidebarBadges];
         [self.sidebarController.sidebar reloadData];
         
-        [self setEnableUpgradeFormulasMenu:([[BPHomebrewManager sharedManager] outdatedFormulae].count > 0)];
+        [self setEnableUpgradeFormulasMenu:([[CiHomebrewManager sharedManager] outdatedFormulae].count > 0)];
         
         if (shouldReselectFirstRow) {
             [self.sidebarController.sidebar selectRowIndexes:[NSIndexSet indexSetWithIndex:FormulaeSideBarItemInstalled] byExtendingSelection:NO];
@@ -494,12 +494,12 @@ NSOpenSavePanelDelegate>
     }
 }
 
-- (void)homebrewManager:(BPHomebrewManager *)manager didUpdateSearchResults:(NSArray *)searchResults
+- (void)homebrewManager:(CiHomebrewManager *)manager didUpdateSearchResults:(NSArray *)searchResults
 {
     [self loadSearchResults];
 }
 
-- (void)homebrewManager:(BPHomebrewManager *)manager shouldDisplayNoBrewMessage:(BOOL)yesOrNo
+- (void)homebrewManager:(CiHomebrewManager *)manager shouldDisplayNoBrewMessage:(BOOL)yesOrNo
 {
     [self setHomebrewInstalled:!yesOrNo];
     
@@ -541,11 +541,11 @@ NSOpenSavePanelDelegate>
         
         [self.toolbar lock:NO];
         
-        [[BPHomebrewManager sharedManager] reloadFromInterfaceRebuildingCache:YES];
+        [[CiHomebrewManager sharedManager] reloadFromInterfaceRebuildingCache:YES];
     }
 }
 
-- (void)showFormulaInfoForCurrentlySelectedFormulaUsingInfoType:(BPFormulaInfoType)type
+- (void)showFormulaInfoForCurrentlySelectedFormulaUsingInfoType:(CiFormulaInfoType)type
 {
     NSPopover *popover = self.formulaPopoverViewController.formulaPopover;
     if ([popover isShown])
@@ -554,7 +554,7 @@ NSOpenSavePanelDelegate>
     }
     
     NSInteger selectedIndex = [self.formulaeTableView selectedRow];
-    BPFormula *formula = [self selectedFormula];
+    CiFormula *formula = [self selectedFormula];
     
     if (!formula)
     {
@@ -577,14 +577,14 @@ NSOpenSavePanelDelegate>
     [self.sidebarController.sidebar selectRowIndexes:[NSIndexSet indexSetWithIndex:FormulaeSideBarItemAll]
                                 byExtendingSelection:NO];
     [self setSearching:YES];
-    [self configureTableForListing:kBPListSearchFormulae];
+    [self configureTableForListing:kCiListSearchFormulae];
 }
 
 - (void)endSearchAndCleanup
 {
     [self.toolbar.searchField setStringValue:@""];
     [self setSearching:NO];
-    [self configureTableForListing:kBPListAllFormulae];
+    [self configureTableForListing:kCiListAllFormulae];
     [self updateInfoLabelWithSidebarSelection];
 }
 
@@ -595,18 +595,18 @@ NSOpenSavePanelDelegate>
     [self updateInterfaceItems];
 }
 
-#pragma mark - BPSelectedFormulaViewController Delegate
+#pragma mark - CiSelectedFormulaViewController Delegate
 
-- (void)selectedFormulaViewDidUpdateFormulaInfoForFormula:(BPFormula *)formula
+- (void)selectedFormulaViewDidUpdateFormulaInfoForFormula:(CiFormula *)formula
 {
     if (formula) [self setCurrentFormula:formula];
 }
 
-#pragma mark - BPSideBarDelegate Delegate
+#pragma mark - CiSideBarDelegate Delegate
 
 - (void)sourceListSelectionDidChange
 {
-    BPContentTab tabIndex;
+    CiContentTab tabIndex;
     NSInteger selectedSidebarRow = [self.sidebarController.sidebar selectedRow];
     
     if ([self isSearching])
@@ -626,55 +626,55 @@ NSOpenSavePanelDelegate>
     
     switch (selectedSidebarRow) {
         case FormulaeSideBarItemInstalled: // Installed Formulae
-            tabIndex = kBPContentTabFormulae;
-            [self configureTableForListing:kBPListInstalledFormulae];
+            tabIndex = kCiContentTabFormulae;
+            [self configureTableForListing:kCiListInstalledFormulae];
             break;
             
         case FormulaeSideBarItemOutdated: // Outdated Formulae
-            tabIndex = kBPContentTabFormulae;
-            [self configureTableForListing:kBPListOutdatedFormulae];
+            tabIndex = kCiContentTabFormulae;
+            [self configureTableForListing:kCiListOutdatedFormulae];
             break;
             
         case FormulaeSideBarItemAll: // All Formulae
-            tabIndex = kBPContentTabFormulae;
-            [self configureTableForListing:kBPListAllFormulae];
+            tabIndex = kCiContentTabFormulae;
+            [self configureTableForListing:kCiListAllFormulae];
             break;
         
         case FormulaeSideBarItemLeaves:	// Leaves
-            tabIndex = kBPContentTabFormulae;
-            [self configureTableForListing:kBPListLeaves];
+            tabIndex = kCiContentTabFormulae;
+            [self configureTableForListing:kCiListLeaves];
             break;
             
         case FormulaeSideBarItemRepositories: // Repositories
-            tabIndex = kBPContentTabFormulae;
-            [self configureTableForListing:kBPListRepositories];
+            tabIndex = kCiContentTabFormulae;
+            [self configureTableForListing:kCiListRepositories];
             break;
             
         case FormulaeSideBarItemDoctor: // Doctor
-            tabIndex = kBPContentTabDoctor;
+            tabIndex = kCiContentTabDoctor;
             break;
             
         case FormulaeSideBarItemUpdate: // Update Tool
-            tabIndex = kBPContentTabUpdate;
+            tabIndex = kCiContentTabUpdate;
             break;
             
         case CasksSideBarItemInstalled: // Installed Casks
-            tabIndex = kBPContentTabCasks;
-            [self configureTableForListing:kBPListInstalledCasks];
+            tabIndex = kCiContentTabCasks;
+            [self configureTableForListing:kCiListInstalledCasks];
             break;
             
         case CasksSideBarItemOutdated: // Outdated Casks
-            tabIndex = kBPContentTabCasks;
-            [self configureTableForListing:kBPListOutdatedCasks];
+            tabIndex = kCiContentTabCasks;
+            [self configureTableForListing:kCiListOutdatedCasks];
             break;
             
         case CasksSideBarItemAll: // All Casks
-            tabIndex = kBPContentTabCasks;
-            [self configureTableForListing:kBPListAllCasks];
+            tabIndex = kCiContentTabCasks;
+            [self configureTableForListing:kCiListAllCasks];
             break;
             
         default:
-            tabIndex = kBPContentTabFormulae;
+            tabIndex = kCiContentTabFormulae;
             break;
     }
     
@@ -694,7 +694,7 @@ NSOpenSavePanelDelegate>
 
 - (IBAction)showFormulaInfo:(id)sender
 {
-    [self showFormulaInfoForCurrentlySelectedFormulaUsingInfoType:kBPFormulaInfoTypeGeneral];
+    [self showFormulaInfoForCurrentlySelectedFormulaUsingInfoType:kCiFormulaInfoTypeGeneral];
 }
 
 - (IBAction)showFormulaDependents:(id)sender
@@ -706,9 +706,9 @@ NSOpenSavePanelDelegate>
         onlyInstalledFormulae = ![sender isAlternate];
     }
     
-    BPFormulaInfoType type = onlyInstalledFormulae ?
-    kBPFormulaInfoTypeInstalledDependents :
-    kBPFormulaInfoTypeAllDependents;
+    CiFormulaInfoType type = onlyInstalledFormulae ?
+    kCiFormulaInfoTypeInstalledDependents :
+    kCiFormulaInfoTypeAllDependents;
     
     [self showFormulaInfoForCurrentlySelectedFormulaUsingInfoType:type];
 }
@@ -717,7 +717,7 @@ NSOpenSavePanelDelegate>
 {
     [self checkForBackgroundTask];
     
-    BPFormula *formula = [self selectedFormula];
+    CiFormula *formula = [self selectedFormula];
     if (!formula)
     {
         return;
@@ -734,7 +734,7 @@ NSOpenSavePanelDelegate>
     
     if ([alert runModal] == NSAlertFirstButtonReturn)
     {
-        self.operationWindowController = [BPInstallationWindowController runWithOperation:kBPWindowOperationInstall formulae:@[formula] options:nil];
+        self.operationWindowController = [CiInstallationWindowController runWithOperation:kCiWindowOperationInstall formulae:@[formula] options:nil];
     }
 }
 
@@ -742,14 +742,14 @@ NSOpenSavePanelDelegate>
 {
     [self checkForBackgroundTask];
     
-    BPFormula *formula = [self selectedFormula];
+    CiFormula *formula = [self selectedFormula];
     if (!formula)
     {
         return;
     }
     
-    self.formulaOptionsWindowController = [BPFormulaOptionsWindowController runFormula:formula withCompletionBlock:^(NSArray *options) {
-        self.operationWindowController = [BPInstallationWindowController runWithOperation:kBPWindowOperationInstall formulae:@[formula] options:options];
+    self.formulaOptionsWindowController = [CiFormulaOptionsWindowController runFormula:formula withCompletionBlock:^(NSArray *options) {
+        self.operationWindowController = [CiInstallationWindowController runWithOperation:kCiWindowOperationInstall formulae:@[formula] options:options];
     }];
 }
 
@@ -757,7 +757,7 @@ NSOpenSavePanelDelegate>
 {
     [self checkForBackgroundTask];
     
-    BPFormula *formula = [self selectedFormula];
+    CiFormula *formula = [self selectedFormula];
     if (!formula)
     {
         return;
@@ -772,7 +772,7 @@ NSOpenSavePanelDelegate>
     [alert.window setTitle:NSLocalizedString(@"Cicerone", nil)];
     
     if ([alert runModal] == NSAlertFirstButtonReturn) {
-        self.operationWindowController = [BPInstallationWindowController runWithOperation:kBPWindowOperationUninstall formulae:@[formula] options:nil];
+        self.operationWindowController = [CiInstallationWindowController runWithOperation:kCiWindowOperationUninstall formulae:@[formula] options:nil];
     }
 }
 
@@ -797,7 +797,7 @@ NSOpenSavePanelDelegate>
     [alert.window setTitle:NSLocalizedString(@"Cicerone", nil)];
     if ([alert runModal] == NSAlertFirstButtonReturn)
     {
-        self.operationWindowController = [BPInstallationWindowController runWithOperation:kBPWindowOperationUpgrade formulae:selectedFormulae options:nil];
+        self.operationWindowController = [CiInstallationWindowController runWithOperation:kCiWindowOperationUpgrade formulae:selectedFormulae options:nil];
     }
 }
 
@@ -822,7 +822,7 @@ NSOpenSavePanelDelegate>
     [alert.window setTitle:NSLocalizedString(@"Cicerone", nil)];
     if ([alert runModal] == NSAlertFirstButtonReturn)
     {
-        self.operationWindowController = [BPInstallationWindowController runWithOperation:kBPWindowOperationUpgrade formulae:selectedCasks options:nil];
+        self.operationWindowController = [CiInstallationWindowController runWithOperation:kCiWindowOperationUpgrade formulae:selectedCasks options:nil];
     }
 }
 
@@ -840,7 +840,7 @@ NSOpenSavePanelDelegate>
     
     if ([alert runModal] == NSAlertFirstButtonReturn)
     {
-        self.operationWindowController = [BPInstallationWindowController runWithOperation:kBPWindowOperationUpgrade formulae:nil options:nil];
+        self.operationWindowController = [CiInstallationWindowController runWithOperation:kCiWindowOperationUpgrade formulae:nil options:nil];
     }
 }
 
@@ -868,15 +868,15 @@ NSOpenSavePanelDelegate>
             return;
         }
         
-        BPFormula *lformula = [BPFormula formulaWithName:name];
-        self.operationWindowController = [BPInstallationWindowController runWithOperation:kBPWindowOperationTap formulae:@[lformula] options:nil];
+        CiFormula *lformula = [CiFormula formulaWithName:name];
+        self.operationWindowController = [CiInstallationWindowController runWithOperation:kCiWindowOperationTap formulae:@[lformula] options:nil];
     }
 }
 
 - (IBAction)untapRepository:(id)sender
 {
     [self checkForBackgroundTask];
-    BPFormula *formula = [self selectedFormula];
+    CiFormula *formula = [self selectedFormula];
     
     if (!formula)
     {
@@ -892,7 +892,7 @@ NSOpenSavePanelDelegate>
     
     if ([alert runModal] == NSAlertFirstButtonReturn)
     {
-        self.operationWindowController = [BPInstallationWindowController runWithOperation:kBPWindowOperationUntap formulae:@[formula] options:nil];
+        self.operationWindowController = [CiInstallationWindowController runWithOperation:kCiWindowOperationUntap formulae:@[formula] options:nil];
     }
 }
 
@@ -904,7 +904,7 @@ NSOpenSavePanelDelegate>
 
 - (IBAction)openSelectedFormulaWebsite:(id)sender
 {
-    BPFormula *formula = [self selectedFormula];
+    CiFormula *formula = [self selectedFormula];
     
     if (!formula)
     {
@@ -922,7 +922,7 @@ NSOpenSavePanelDelegate>
     }
     else
     {
-        [[BPHomebrewManager sharedManager] updateSearchWithName:searchPhrase];
+        [[CiHomebrewManager sharedManager] updateSearchWithName:searchPhrase];
     }
 }
 
@@ -933,7 +933,7 @@ NSOpenSavePanelDelegate>
 
 - (IBAction)runHomebrewCleanup:(id)sender
 {
-    self.operationWindowController = [BPInstallationWindowController runWithOperation:kBPWindowOperationCleanup formulae:nil options:nil];
+    self.operationWindowController = [CiInstallationWindowController runWithOperation:kCiWindowOperationCleanup formulae:nil options:nil];
 }
 
 - (IBAction)runHomebrewExport:(id)sender
@@ -949,7 +949,7 @@ NSOpenSavePanelDelegate>
         if (fileURL && result)
         {
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                self.operationWindowController = [BPBundleWindowController runExportOperationWithFile:fileURL];
+                self.operationWindowController = [CiBundleWindowController runExportOperationWithFile:fileURL];
             });
         }
     }];
@@ -972,7 +972,7 @@ NSOpenSavePanelDelegate>
         if (fileURL && result)
         {
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                self.operationWindowController = [BPBundleWindowController runImportOperationWithFile:fileURL];
+                self.operationWindowController = [CiBundleWindowController runImportOperationWithFile:fileURL];
             });
         }
     }];
@@ -987,7 +987,7 @@ NSOpenSavePanelDelegate>
     }
 }
 
-- (BPFormula *)selectedFormula
+- (CiFormula *)selectedFormula
 {
     NSInteger selectedIndex = [self.formulaeTableView selectedRow];
     if (self.formulaeTableView.dataSource == self.casksDataSource) {
@@ -1009,7 +1009,7 @@ NSOpenSavePanelDelegate>
     return [formulas valueForKeyPath:@"@unionOfObjects.name"];
 }
 
-- (BPFormula *)selectedCask
+- (CiFormula *)selectedCask
 {
     NSInteger selectedIndex = [self.formulaeTableView selectedRow];
     return [self.casksDataSource caskAtIndex:selectedIndex];

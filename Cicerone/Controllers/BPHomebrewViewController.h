@@ -21,26 +21,26 @@
 
 #import <Foundation/Foundation.h>
 #import <PXSourceList/PXSourceList.h>
-#import "BPFormula.h"
-#import "BPFormulaeTableView.h"
-#import "BPFormulaPopoverViewController.h"
-#import "BPSideBarController.h"
+#import "CiFormula.h"
+#import "CiFormulaeTableView.h"
+#import "CiFormulaPopoverViewController.h"
+#import "CiSideBarController.h"
 
-typedef NS_ENUM(NSUInteger, BPWindowOperation) {
-	kBPWindowOperationInstall,
-	kBPWindowOperationUninstall,
-	kBPWindowOperationUpgrade,
-	kBPWindowOperationTap,
-	kBPWindowOperationUntap,
-	kBPWindowOperationCleanup
+typedef NS_ENUM(NSUInteger, CiWindowOperation) {
+	kCiWindowOperationInstall,
+	kCiWindowOperationUninstall,
+	kCiWindowOperationUpgrade,
+	kCiWindowOperationTap,
+	kCiWindowOperationUntap,
+	kCiWindowOperationCleanup
 };
 
-@class BPUpdateDoctorController;
+@class CiUpdateDoctorController;
 
-@interface BPHomebrewViewController : NSViewController
+@interface CiHomebrewViewController : NSViewController
 
-@property (weak) IBOutlet BPSideBarController      *sidebarController;
-@property (weak) IBOutlet BPFormulaeTableView      *formulaeTableView;
+@property (weak) IBOutlet CiSideBarController      *sidebarController;
+@property (weak) IBOutlet CiFormulaeTableView      *formulaeTableView;
 @property (weak) IBOutlet NSScrollView             *scrollView_formulae;
 @property (weak) IBOutlet NSTabView                *tabView;
 @property (weak) IBOutlet NSTextField              *label_information;
@@ -48,7 +48,7 @@ typedef NS_ENUM(NSUInteger, BPWindowOperation) {
 
 // Cocoa bindings
 @property BOOL enableUpgradeFormulasMenu;
-@property (copy) BPFormula *currentFormula;
+@property (copy) CiFormula *currentFormula;
 
 - (BOOL)isHomebrewInstalled;
 

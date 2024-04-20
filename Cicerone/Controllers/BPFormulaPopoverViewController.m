@@ -1,42 +1,42 @@
 //
-//  BPFormulaPopoverViewController.m
+//  CiFormulaPopoverViewController.m
 //  Cicerone
 //
 //  Created by Marek Hrusovsky on 05/09/14.
 //  Copyright (c) 2014 Bruno Philipe. All rights reserved.
 //
 
-#import "BPFormulaPopoverViewController.h"
-#import "BPFormula.h"
-#import "BPHomebrewInterface.h"
-#import "BPTimedDispatch.h"
-#import "BPStyle.h"
+#import "CiFormulaPopoverViewController.h"
+#import "CiFormula.h"
+#import "CiHomebrewInterface.h"
+#import "CiTimedDispatch.h"
+#import "CiStyle.h"
 
-@interface BPFormulaPopoverViewController ()
+@interface CiFormulaPopoverViewController ()
 
-@property (strong) BPTimedDispatch *timedDispatch;
+@property (strong) CiTimedDispatch *timedDispatch;
 
 @end
 
-@implementation BPFormulaPopoverViewController
+@implementation CiFormulaPopoverViewController
 
 - (void)awakeFromNib
 {
-	NSFont *font = [BPStyle defaultFixedWidthFont];
+	NSFont *font = [CiStyle defaultFixedWidthFont];
 	[self.formulaTextView setFont:font];
-	[self.formulaTextView setTextColor:[BPStyle popoverTextViewColor]];
+	[self.formulaTextView setTextColor:[CiStyle popoverTextViewColor]];
 	[self.formulaPopover setContentViewController:self];
-	[self setTimedDispatch:[BPTimedDispatch new]];
-	[self.formulaTitleLabel setTextColor:[BPStyle popoverTitleColor]];
-	[self setInfoType:kBPFormulaInfoTypeGeneral];
+	[self setTimedDispatch:[CiTimedDispatch new]];
+	[self.formulaTitleLabel setTextColor:[CiStyle popoverTitleColor]];
+	[self setInfoType:kCiFormulaInfoTypeGeneral];
 }
 
-- (void)setFormula:(BPFormula *)formula
+- (void)setFormula:(CiFormula *)formula
 {
 	if (_formula)
 	{
 		[[NSNotificationCenter defaultCenter] removeObserver:self
-														name:BPFormulaDidUpdateNotification
+														name:CiFormulaDidUpdateNotification
 													  object:_formula];
 	}
 	
@@ -45,13 +45,13 @@
 	
 	switch ([self infoType])
 	{
-		case kBPFormulaInfoTypeGeneral:
+		case kCiFormulaInfoTypeGeneral:
 		{
 			NSString *titleFormat = NSLocalizedString(@"Formula_Popover_Title", nil);
 			[self.formulaTitleLabel setStringValue:[NSString stringWithFormat:titleFormat, [formula name]]];
 
 			[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateView:)
-														 name:BPFormulaDidUpdateNotification
+														 name:CiFormulaDidUpdateNotification
 													   object:formula];
 
 			dispatch_async(dispatch_get_main_queue(), ^{
@@ -67,8 +67,8 @@
 		}
 		break;
 
-		case kBPFormulaInfoTypeInstalledDependents:
-		case kBPFormulaInfoTypeAllDependents:
+		case kCiFormulaInfoTypeInstalledDependents:
+		case kCiFormulaInfoTypeAllDependents:
 			[self displayDependentsInformationForFormula];
 			break;
 	}
@@ -77,7 +77,7 @@
 
 - (NSString *)nibName
 {
-	return @"BPFormulaPopoverView";
+	return @"CiFormulaPopoverView";
 }
 
 - (void)updateView:(NSNotification *)notification
@@ -110,12 +110,12 @@
 	[self.formulaTextView setString:@""];
 	[self.progressIndicator startAnimation:nil];
 
-	if (self.infoType == kBPFormulaInfoTypeInstalledDependents)
+	if (self.infoType == kCiFormulaInfoTypeInstalledDependents)
 	{
 		[self.formulaTitleLabel setStringValue:[NSString stringWithFormat:NSLocalizedString(@"Formula_Installed_Dependents_Title", nil), name]];
 
 		dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
-			NSString *string = [[BPHomebrewInterface sharedInterface] dependantsForFormulaName:name onlyInstalled:YES];
+			NSString *string = [[CiHomebrewInterface sharedInterface] dependantsForFormulaName:name onlyInstalled:YES];
 
 			dispatch_async(dispatch_get_main_queue(), ^{
 				[self.progressIndicator stopAnimation:nil];
@@ -125,12 +125,12 @@
 			});
 		});
 	}
-	else if (self.infoType == kBPFormulaInfoTypeAllDependents)
+	else if (self.infoType == kCiFormulaInfoTypeAllDependents)
 	{
 		[self.formulaTitleLabel setStringValue:[NSString stringWithFormat:NSLocalizedString(@"Formula_All_Dependents_Title", nil), name]];
 
 		dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
-			NSString *string = [[BPHomebrewInterface sharedInterface] dependantsForFormulaName:name onlyInstalled:NO];
+			NSString *string = [[CiHomebrewInterface sharedInterface] dependantsForFormulaName:name onlyInstalled:NO];
 
 			dispatch_async(dispatch_get_main_queue(), ^{
 				[self.progressIndicator stopAnimation:nil];

@@ -21,24 +21,24 @@
 
 #import <Foundation/Foundation.h>
 #import <Cocoa/Cocoa.h>
-#import "BPFormula.h"
+#import "CiFormula.h"
 
-typedef NS_ENUM(NSInteger, BPListMode) {
-	kBPListAllFormulae,
-	kBPListInstalledFormulae,
-	kBPListLeaves,
-	kBPListOutdatedFormulae,
-	kBPListSearchFormulae, /* Don't call -[BPHomebrewInterface listMode:] with this parameter. */
-	kBPListRepositories,
+typedef NS_ENUM(NSInteger, CiListMode) {
+	kCiListAllFormulae,
+	kCiListInstalledFormulae,
+	kCiListLeaves,
+	kCiListOutdatedFormulae,
+	kCiListSearchFormulae, /* Don't call -[CiHomebrewInterface listMode:] with this parameter. */
+	kCiListRepositories,
 	
-	kBPListAllCasks,
-	kBPListInstalledCasks,
-	kBPListOutdatedCasks,
-	kBPListSearchCasks
+	kCiListAllCasks,
+	kCiListInstalledCasks,
+	kCiListOutdatedCasks,
+	kCiListSearchCasks
 
 };
 
-@protocol BPHomebrewInterfaceDelegate <NSObject>
+@protocol CiHomebrewInterfaceDelegate <NSObject>
 
 /**
  *  Caled when the formulae cache has been updated.
@@ -54,7 +54,7 @@ typedef NS_ENUM(NSInteger, BPListMode) {
 
 @end
 
-@interface BPHomebrewInterface : NSObject <BPFormulaDataProvider>
+@interface CiHomebrewInterface : NSObject <CiFormulaDataProvider>
 
 + (instancetype)sharedInterface;
 + (instancetype)alloc __attribute__((unavailable("alloc not available, call sharedInterface instead")));
@@ -64,7 +64,7 @@ typedef NS_ENUM(NSInteger, BPListMode) {
 /**
  *  The delegate object.
  */
-@property (weak, nonatomic) id<BPHomebrewInterfaceDelegate> delegate;
+@property (weak, nonatomic) id<CiHomebrewInterfaceDelegate> delegate;
 
 #pragma mark - Operations with live data callback block
 
@@ -177,9 +177,9 @@ typedef NS_ENUM(NSInteger, BPListMode) {
  *
  *  @param mode All, Installed, Leaves, Outdated, etc.
  *
- *  @return List of BPFormula objects.
+ *  @return List of CiFormula objects.
  */
-- (NSArray*)listMode:(BPListMode)mode;
+- (NSArray*)listMode:(CiListMode)mode;
 
 /**
  *  Executes `brew info` for parameter formula name.

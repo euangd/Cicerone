@@ -1,5 +1,5 @@
 //
-//  BPTimedDispatch.h
+//  CiTimedDispatch.h
 //  Cicerone
 //
 //  Created by Bruno Philipe on 4/17/15.
@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface BPTimedDispatch : NSObject
+@interface CiTimedDispatch : NSObject
 
 - (void)scheduleDispatchAfterTimeInterval:(NSTimeInterval)interval ofBlock:(void (^)(void))block;
 - (void)scheduleDispatchAfterTimeInterval:(NSTimeInterval)interval inQueue:(dispatch_queue_t)queue ofBlock:(void (^)(void))block;

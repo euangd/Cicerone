@@ -1,5 +1,5 @@
 //
-//	BPFormula.m
+//	CiFormula.m
 //	Cicerone – The Homebrew GUI App for OS X
 //
 //	Created by Bruno Philipe on 4/3/14.
@@ -19,32 +19,32 @@
 //	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-#import "BPFormula.h"
-#import "BPFormulaOption.h"
-#import "BPHomebrewManager.h"
-#import "BPHomebrewInterface.h"
+#import "CiFormula.h"
+#import "CiFormulaOption.h"
+#import "CiHomebrewManager.h"
+#import "CiHomebrewInterface.h"
 
-static void * BPFormulaContext = &BPFormulaContext;
+static void * CiFormulaContext = &CiFormulaContext;
 
-NSString *const kBP_ENCODE_FORMULA_NAME = @"BP_ENCODE_FORMULA_NAME";
-NSString *const kBP_ENCODE_FORMULA_IVER = @"BP_ENCODE_FORMULA_IVER";
-NSString *const kBP_ENCODE_FORMULA_LVER = @"BP_ENCODE_FORMULA_LVER";
-NSString *const kBP_ENCODE_FORMULA_PATH = @"BP_ENCODE_FORMULA_PATH";
-NSString *const kBP_ENCODE_FORMULA_WURL = @"BP_ENCODE_FORMULA_WURL";
-NSString *const kBP_ENCODE_FORMULA_DEPS = @"BP_ENCODE_FORMULA_DEPS";
-NSString *const kBP_ENCODE_FORMULA_INST = @"BP_ENCODE_FORMULA_INST";
-NSString *const kBP_ENCODE_FORMULA_CNFL = @"BP_ENCODE_FORMULA_CNFL";
-NSString *const kBP_ENCODE_FORMULA_SDSC = @"BP_ENCODE_FORMULA_SDSC";
-NSString *const kBP_ENCODE_FORMULA_INFO = @"BP_ENCODE_FORMULA_INFO";
-NSString *const kBP_ENCODE_FORMULA_OPTN = @"BP_ENCODE_FORMULA_OPTN";
+NSString *const kCi_ENCODE_FORMULA_NAME = @"Ci_ENCODE_FORMULA_NAME";
+NSString *const kCi_ENCODE_FORMULA_IVER = @"Ci_ENCODE_FORMULA_IVER";
+NSString *const kCi_ENCODE_FORMULA_LVER = @"Ci_ENCODE_FORMULA_LVER";
+NSString *const kCi_ENCODE_FORMULA_PATH = @"Ci_ENCODE_FORMULA_PATH";
+NSString *const kCi_ENCODE_FORMULA_WURL = @"Ci_ENCODE_FORMULA_WURL";
+NSString *const kCi_ENCODE_FORMULA_DEPS = @"Ci_ENCODE_FORMULA_DEPS";
+NSString *const kCi_ENCODE_FORMULA_INST = @"Ci_ENCODE_FORMULA_INST";
+NSString *const kCi_ENCODE_FORMULA_CNFL = @"Ci_ENCODE_FORMULA_CNFL";
+NSString *const kCi_ENCODE_FORMULA_SDSC = @"Ci_ENCODE_FORMULA_SDSC";
+NSString *const kCi_ENCODE_FORMULA_INFO = @"Ci_ENCODE_FORMULA_INFO";
+NSString *const kCi_ENCODE_FORMULA_OPTN = @"Ci_ENCODE_FORMULA_OPTN";
 
-NSString *const kBPIdentifierDependencies = @"==> Dependencies";
-NSString *const kBPIdentifierOptions = @"==> Options";
-NSString *const kBPIdentifierCaveats = @"==> Caveats";
+NSString *const kCiIdentifierDependencies = @"==> Dependencies";
+NSString *const kCiIdentifierOptions = @"==> Options";
+NSString *const kCiIdentifierCaveats = @"==> Caveats";
 
-NSString *const BPFormulaDidUpdateNotification = @"BPFormulaDidUpdateNotification";
+NSString *const CiFormulaDidUpdateNotification = @"CiFormulaDidUpdateNotification";
 
-@interface BPFormula ()
+@interface CiFormula ()
 
 @property (copy, readwrite) NSString *name;
 @property (copy, readwrite) NSString *version;
@@ -59,7 +59,7 @@ NSString *const BPFormulaDidUpdateNotification = @"BPFormulaDidUpdateNotificatio
 
 @end
 
-@implementation BPFormula
+@implementation CiFormula
 
 + (BOOL)supportsSecureCoding
 {
@@ -68,7 +68,7 @@ NSString *const BPFormulaDidUpdateNotification = @"BPFormulaDidUpdateNotificatio
 
 + (instancetype)formulaWithName:(NSString*)name version:(NSString*)version andLatestVersion:(NSString*)latestVersion
 {
-	BPFormula *formula = [[self alloc] init];
+	CiFormula *formula = [[self alloc] init];
 	
 	if (formula)
 	{
@@ -93,17 +93,17 @@ NSString *const BPFormulaDidUpdateNotification = @"BPFormulaDidUpdateNotificatio
 
 - (void)encodeWithCoder:(NSCoder *)aCoder
 {
-	if (self.name)				[aCoder encodeObject:self.name				forKey:kBP_ENCODE_FORMULA_NAME];
-	if (self.version)			[aCoder encodeObject:self.version			forKey:kBP_ENCODE_FORMULA_IVER];
-	if (self.latestVersion)		[aCoder encodeObject:self.latestVersion		forKey:kBP_ENCODE_FORMULA_LVER];
-	if (self.installPath)		[aCoder encodeObject:self.installPath		forKey:kBP_ENCODE_FORMULA_PATH];
-	if (self.website)			[aCoder encodeObject:self.website			forKey:kBP_ENCODE_FORMULA_WURL];
-	if (self.dependencies)		[aCoder encodeObject:self.dependencies		forKey:kBP_ENCODE_FORMULA_DEPS];
-	if (self.conflicts)			[aCoder encodeObject:self.conflicts			forKey:kBP_ENCODE_FORMULA_CNFL];
-	if (self.shortDescription)	[aCoder encodeObject:self.shortDescription	forKey:kBP_ENCODE_FORMULA_SDSC];
-	if (self.information)		[aCoder encodeObject:self.information		forKey:kBP_ENCODE_FORMULA_INFO];
-	if (self.options)			[aCoder encodeObject:self.options			forKey:kBP_ENCODE_FORMULA_OPTN];
-	[aCoder encodeObject:@([self isInstalled]) forKey:kBP_ENCODE_FORMULA_INST];
+	if (self.name)				[aCoder encodeObject:self.name				forKey:kCi_ENCODE_FORMULA_NAME];
+	if (self.version)			[aCoder encodeObject:self.version			forKey:kCi_ENCODE_FORMULA_IVER];
+	if (self.latestVersion)		[aCoder encodeObject:self.latestVersion		forKey:kCi_ENCODE_FORMULA_LVER];
+	if (self.installPath)		[aCoder encodeObject:self.installPath		forKey:kCi_ENCODE_FORMULA_PATH];
+	if (self.website)			[aCoder encodeObject:self.website			forKey:kCi_ENCODE_FORMULA_WURL];
+	if (self.dependencies)		[aCoder encodeObject:self.dependencies		forKey:kCi_ENCODE_FORMULA_DEPS];
+	if (self.conflicts)			[aCoder encodeObject:self.conflicts			forKey:kCi_ENCODE_FORMULA_CNFL];
+	if (self.shortDescription)	[aCoder encodeObject:self.shortDescription	forKey:kCi_ENCODE_FORMULA_SDSC];
+	if (self.information)		[aCoder encodeObject:self.information		forKey:kCi_ENCODE_FORMULA_INFO];
+	if (self.options)			[aCoder encodeObject:self.options			forKey:kCi_ENCODE_FORMULA_OPTN];
+	[aCoder encodeObject:@([self isInstalled]) forKey:kCi_ENCODE_FORMULA_INST];
 }
 
 - (instancetype)initWithCoder:(NSCoder *)aDecoder
@@ -111,18 +111,18 @@ NSString *const BPFormulaDidUpdateNotification = @"BPFormulaDidUpdateNotificatio
 	self = [super init];
 	if (self)
 	{
-		self.name				= [aDecoder decodeObjectOfClass:[NSString class] forKey:kBP_ENCODE_FORMULA_NAME];
-		self.version			= [aDecoder decodeObjectOfClass:[NSString class] forKey:kBP_ENCODE_FORMULA_IVER];
-		self.latestVersion		= [aDecoder decodeObjectOfClass:[NSString class] forKey:kBP_ENCODE_FORMULA_LVER];
-		self.installPath		= [aDecoder decodeObjectOfClass:[NSString class] forKey:kBP_ENCODE_FORMULA_PATH];
-		self.website			= [aDecoder decodeObjectOfClass:[NSURL class] forKey:kBP_ENCODE_FORMULA_WURL];
-		self.dependencies		= [aDecoder decodeObjectOfClass:[NSString class] forKey:kBP_ENCODE_FORMULA_DEPS];
-		self.conflicts			= [aDecoder decodeObjectOfClass:[NSString class] forKey:kBP_ENCODE_FORMULA_CNFL];
-		self.shortDescription	= [aDecoder decodeObjectOfClass:[NSString class] forKey:kBP_ENCODE_FORMULA_CNFL];
-		self.information		= [aDecoder decodeObjectOfClass:[NSString class] forKey:kBP_ENCODE_FORMULA_INFO];
+		self.name				= [aDecoder decodeObjectOfClass:[NSString class] forKey:kCi_ENCODE_FORMULA_NAME];
+		self.version			= [aDecoder decodeObjectOfClass:[NSString class] forKey:kCi_ENCODE_FORMULA_IVER];
+		self.latestVersion		= [aDecoder decodeObjectOfClass:[NSString class] forKey:kCi_ENCODE_FORMULA_LVER];
+		self.installPath		= [aDecoder decodeObjectOfClass:[NSString class] forKey:kCi_ENCODE_FORMULA_PATH];
+		self.website			= [aDecoder decodeObjectOfClass:[NSURL class] forKey:kCi_ENCODE_FORMULA_WURL];
+		self.dependencies		= [aDecoder decodeObjectOfClass:[NSString class] forKey:kCi_ENCODE_FORMULA_DEPS];
+		self.conflicts			= [aDecoder decodeObjectOfClass:[NSString class] forKey:kCi_ENCODE_FORMULA_CNFL];
+		self.shortDescription	= [aDecoder decodeObjectOfClass:[NSString class] forKey:kCi_ENCODE_FORMULA_CNFL];
+		self.information		= [aDecoder decodeObjectOfClass:[NSString class] forKey:kCi_ENCODE_FORMULA_INFO];
 
-		NSSet *optionsClasses = [NSSet setWithArray:@[[NSArray class], [BPFormulaOption class]]];
-		self.options			= [aDecoder decodeObjectOfClasses:optionsClasses forKey:kBP_ENCODE_FORMULA_OPTN];
+		NSSet *optionsClasses = [NSSet setWithArray:@[[NSArray class], [CiFormulaOption class]]];
+		self.options			= [aDecoder decodeObjectOfClasses:optionsClasses forKey:kCi_ENCODE_FORMULA_OPTN];
 		[self commonInit];
 	}
 	return self;
@@ -133,7 +133,7 @@ NSString *const BPFormulaDidUpdateNotification = @"BPFormulaDidUpdateNotificatio
 	[self addObserver:self
 		   forKeyPath:NSStringFromSelector(@selector(needsInformation))
 			  options:NSKeyValueObservingOptionNew
-			  context:BPFormulaContext];
+			  context:CiFormulaContext];
 }
 
 - (instancetype)copyWithZone:(NSZone *)zone
@@ -142,7 +142,7 @@ NSString *const BPFormulaDidUpdateNotification = @"BPFormulaDidUpdateNotificatio
 	 * Following best practices as suggested by:
 	 * http://stackoverflow.com/questions/9907154/best-practice-when-implementing-copywithzone
 	 */
-	BPFormula *formula = [[[self class] allocWithZone:zone] init];
+	CiFormula *formula = [[[self class] allocWithZone:zone] init];
 	if (formula)
 	{
 		formula->_name				= [self->_name				copy];
@@ -158,7 +158,7 @@ NSString *const BPFormulaDidUpdateNotification = @"BPFormulaDidUpdateNotificatio
 		
 		[formula addObserver:formula forKeyPath:NSStringFromSelector(@selector(needsInformation))
 					 options:NSKeyValueObservingOptionNew
-					 context:BPFormulaContext];
+					 context:CiFormulaContext];
 	}
 	return formula;
 }
@@ -179,7 +179,7 @@ NSString *const BPFormulaDidUpdateNotification = @"BPFormulaDidUpdateNotificatio
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
-	if (context == BPFormulaContext)
+	if (context == CiFormulaContext)
 	{
 		if ([object isEqualTo:self])
 		{
@@ -211,7 +211,7 @@ NSString *const BPFormulaDidUpdateNotification = @"BPFormulaDidUpdateNotificatio
 	
 	if (!self.information)
 	{
-		id<BPFormulaDataProvider> dataProvider = [self dataProvider];
+		id<CiFormulaDataProvider> dataProvider = [self dataProvider];
 		
 		if (![dataProvider respondsToSelector:@selector(informationForFormulaName:)])
 		{
@@ -315,9 +315,9 @@ NSString *const BPFormulaDidUpdateNotification = @"BPFormulaDidUpdateNotificatio
 		}
 	}
 	
-	NSRange range_deps = [output rangeOfString:kBPIdentifierDependencies];
-	NSRange range_opts = [output rangeOfString:kBPIdentifierOptions];
-	NSRange range_cvts = [output rangeOfString:kBPIdentifierCaveats];
+	NSRange range_deps = [output rangeOfString:kCiIdentifierDependencies];
+	NSRange range_opts = [output rangeOfString:kCiIdentifierOptions];
+	NSRange range_cvts = [output rangeOfString:kCiIdentifierCaveats];
 	
 	// Find dependencies
 	if (range_deps.location != NSNotFound)
@@ -362,16 +362,16 @@ NSString *const BPFormulaDidUpdateNotification = @"BPFormulaDidUpdateNotificatio
 		NSString *optionsString = [output substringFromIndex:range_opts.length+range_opts.location+1];
 		NSMutableArray *options = [NSMutableArray arrayWithCapacity:10];
 		
-		range_cvts = [optionsString rangeOfString:kBPIdentifierCaveats];
+		range_cvts = [optionsString rangeOfString:kCiIdentifierCaveats];
 		
 		if (range_cvts.location != NSNotFound) {
 			optionsString = [optionsString substringToIndex:range_cvts.location];
 		}
 		
-		BPFormulaOption __block *formulaOption = nil;
+		CiFormulaOption __block *formulaOption = nil;
 		[optionsString enumerateLinesUsingBlock:^(NSString *line, BOOL *stop) {
 			if ([line hasPrefix:@"--"]) { // This is an option command
-				formulaOption = [[BPFormulaOption alloc] init];
+				formulaOption = [[CiFormulaOption alloc] init];
 				formulaOption.name = line;
 			} else if (formulaOption) { // This is the option description
 				formulaOption.explanation = [line stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
@@ -389,20 +389,20 @@ NSString *const BPFormulaDidUpdateNotification = @"BPFormulaDidUpdateNotificatio
 	
 	_needsInformation = NO;
 	
-	[[NSNotificationCenter defaultCenter] postNotificationName:BPFormulaDidUpdateNotification object:self];
+	[[NSNotificationCenter defaultCenter] postNotificationName:CiFormulaDidUpdateNotification object:self];
 	return YES;
 }
 
 - (BOOL)isInstalled
 {
-	return [[BPHomebrewManager sharedManager] statusForFormula:self] != kBPFormulaNotInstalled
-	|| [[BPHomebrewManager sharedManager] statusForCask:self] != kBPFormulaNotInstalled;
+	return [[CiHomebrewManager sharedManager] statusForFormula:self] != kCiFormulaNotInstalled
+	|| [[CiHomebrewManager sharedManager] statusForCask:self] != kCiFormulaNotInstalled;
 }
 
 - (BOOL)isOutdated
 {
-	return [[BPHomebrewManager sharedManager] statusForFormula:self] == kBPFormulaOutdated
-	|| [[BPHomebrewManager sharedManager] statusForCask:self] != kBPFormulaOutdated;
+	return [[CiHomebrewManager sharedManager] statusForFormula:self] == kCiFormulaOutdated
+	|| [[CiHomebrewManager sharedManager] statusForCask:self] != kCiFormulaOutdated;
 }
 
 - (NSString*)description
@@ -428,16 +428,16 @@ NSString *const BPFormulaDidUpdateNotification = @"BPFormulaDidUpdateNotificatio
 	}
 }
 
-- (id<BPFormulaDataProvider>)dataProvider
+- (id<CiFormulaDataProvider>)dataProvider
 {
-	return [BPHomebrewInterface sharedInterface];
+	return [CiHomebrewInterface sharedInterface];
 }
 
 - (void)dealloc
 {
 	[self removeObserver:self
 			  forKeyPath:NSStringFromSelector(@selector(needsInformation))
-				 context:BPFormulaContext];
+				 context:CiFormulaContext];
 }
 
 @end

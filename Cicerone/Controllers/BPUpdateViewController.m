@@ -1,5 +1,5 @@
 //
-//  BPUpdateViewController.m
+//  CiUpdateViewController.m
 //  Cicerone
 //
 //  Created by Marek Hrusovsky on 21/08/14.
@@ -19,12 +19,12 @@
 //	along with this program.	If not, see <http://www.gnu.org/licenses/>.
 //
 
-#import "BPUpdateViewController.h"
-#import "BPHomebrewInterface.h"
-#import "BPStyle.h"
-#import "BPAppDelegate.h"
+#import "CiUpdateViewController.h"
+#import "CiHomebrewInterface.h"
+#import "CiStyle.h"
+#import "CiAppDelegate.h"
 
-@interface BPUpdateViewController ()
+@interface CiUpdateViewController ()
 
 @property (unsafe_unretained, nonatomic) IBOutlet NSTextView *updateTextView;
 @property (weak, nonatomic) IBOutlet NSProgressIndicator *progressIndicator;
@@ -32,20 +32,20 @@
 
 @end
 
-@implementation BPUpdateViewController
+@implementation CiUpdateViewController
 
 - (void)awakeFromNib {
-	NSFont *font = [BPStyle defaultFixedWidthFont];
+	NSFont *font = [CiStyle defaultFixedWidthFont];
 	[self.updateTextView setFont:font];
 	self.isPerformingUpdate = NO;
 }
 
 - (NSString *)nibName {
-	return @"BPUpdateView";
+	return @"CiUpdateView";
 }
 
 - (IBAction)runStopUpdate:(id)sender {
-	BPAppDelegate *appDelegate = BPAppDelegateRef;
+	CiAppDelegate *appDelegate = CiAppDelegateRef;
 	
 	if (appDelegate.isRunningBackgroundTask)
 	{
@@ -59,7 +59,7 @@
 	[self.progressIndicator startAnimation:sender];
 	
 	dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
-		[[BPHomebrewInterface sharedInterface] updateWithReturnBlock:^(NSString *output) {
+		[[CiHomebrewInterface sharedInterface] updateWithReturnBlock:^(NSString *output) {
 			dispatch_async(dispatch_get_main_queue(), ^{
 				[self.updateTextView setString:[self.updateTextView.string stringByAppendingString:output]];
 			});
@@ -72,7 +72,7 @@
 			
 			NSString *title = [NSLocalizedString(@"Homebrew_Task_Finished", nil) capitalizedString];
 			NSString *desc = NSLocalizedString(@"Notification_Update", nil);
-			[BPAppDelegateRef requestUserAttentionWithMessageTitle:title andDescription:desc];
+			[CiAppDelegateRef requestUserAttentionWithMessageTitle:title andDescription:desc];
 		});
 	});
 }

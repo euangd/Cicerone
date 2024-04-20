@@ -5,7 +5,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
-        <customObject id="-2" userLabel="File's Owner" customClass="BPFormulaPopoverViewController">
+        <customObject id="-2" userLabel="File's Owner" customClass="CiFormulaPopoverViewController">
             <connections>
                 <outlet property="formulaPopover" destination="R9H-2a-rah" id="RNL-Wi-8sw"/>
                 <outlet property="formulaTextView" destination="KOw-qb-3MZ" id="W35-tF-slM"/>

@@ -1,5 +1,5 @@
 //
-//	BPHomebrewManager.m
+//	CiHomebrewManager.m
 //	Cicerone – The Homebrew GUI App for OS X
 //
 //	Created by Bruno Philipe on 4/3/14.
@@ -19,27 +19,27 @@
 //	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-#import "BPHomebrewManager.h"
-#import "BPHomebrewInterface.h"
-#import "BPAppDelegate.h"
+#import "CiHomebrewManager.h"
+#import "CiHomebrewInterface.h"
+#import "CiAppDelegate.h"
 
-NSString *const kBPCacheLastUpdateKey = @"BPCacheLastUpdateKey";
-NSString *const kBPCacheDataKey	= @"BPCacheDataKey";
+NSString *const kCiCacheLastUpdateKey = @"CiCacheLastUpdateKey";
+NSString *const kCiCacheDataKey	= @"CiCacheDataKey";
 
-#define kBP_SECONDS_IN_A_DAY 86400
+#define kCi_SECONDS_IN_A_DAY 86400
 
-@interface BPHomebrewManager () <BPHomebrewInterfaceDelegate>
+@interface CiHomebrewManager () <CiHomebrewInterfaceDelegate>
 
 @end
 
-@implementation BPHomebrewManager
+@implementation CiHomebrewManager
 
-+ (BPHomebrewManager *)sharedManager
++ (CiHomebrewManager *)sharedManager
 {
 	@synchronized(self)
 	{
         static dispatch_once_t once;
-        static BPHomebrewManager *instance;
+        static CiHomebrewManager *instance;
         dispatch_once(&once, ^ { instance = [[super allocWithZone:NULL] initUniqueInstance]; });
         return instance;
 	}
@@ -75,25 +75,25 @@ NSString *const kBPCacheDataKey	= @"BPCacheDataKey";
 	NSUInteger previousCountOfAllCasks = [self allCasks].count;
 
 	dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
-		[[BPHomebrewInterface sharedInterface] setDelegate:self];
+		[[CiHomebrewInterface sharedInterface] setDelegate:self];
 		
-		NSArray *installedFormulae = [[BPHomebrewInterface sharedInterface] listMode:kBPListInstalledFormulae];
-		NSArray *leavesFormulae = [[BPHomebrewInterface sharedInterface] listMode:kBPListLeaves];
-		NSArray *outdatedFormulae = [[BPHomebrewInterface sharedInterface] listMode:kBPListOutdatedFormulae];
-		NSArray *repositoriesFormulae = [[BPHomebrewInterface sharedInterface] listMode:kBPListRepositories];
+		NSArray *installedFormulae = [[CiHomebrewInterface sharedInterface] listMode:kCiListInstalledFormulae];
+		NSArray *leavesFormulae = [[CiHomebrewInterface sharedInterface] listMode:kCiListLeaves];
+		NSArray *outdatedFormulae = [[CiHomebrewInterface sharedInterface] listMode:kCiListOutdatedFormulae];
+		NSArray *repositoriesFormulae = [[CiHomebrewInterface sharedInterface] listMode:kCiListRepositories];
 
-		NSArray *installedCasks = [[BPHomebrewInterface sharedInterface] listMode:kBPListInstalledCasks];
-		NSArray *outdatedCasks = [[BPHomebrewInterface sharedInterface] listMode:kBPListOutdatedCasks];
+		NSArray *installedCasks = [[CiHomebrewInterface sharedInterface] listMode:kCiListInstalledCasks];
+		NSArray *outdatedCasks = [[CiHomebrewInterface sharedInterface] listMode:kCiListOutdatedCasks];
 		
 		NSArray *allFormulae = nil;
 		NSArray *allCasks = nil;
 
 		if (![self loadAllFormulaeCaches] || previousCountOfAllFormulae <= 100 || shouldRebuildCache) {
-			allFormulae = [[BPHomebrewInterface sharedInterface] listMode:kBPListAllFormulae];
+			allFormulae = [[CiHomebrewInterface sharedInterface] listMode:kCiListAllFormulae];
 		}
 		
 		if (![self loadAllCasksCaches] || previousCountOfAllCasks <= 10 || shouldRebuildCache) {
-			allCasks = [[BPHomebrewInterface sharedInterface] listMode:kBPListAllCasks];
+			allCasks = [[CiHomebrewInterface sharedInterface] listMode:kCiListAllCasks];
 		}
 
 		dispatch_async(dispatch_get_main_queue(), ^{
@@ -121,7 +121,7 @@ NSString *const kBPCacheDataKey	= @"BPCacheDataKey";
 	NSMutableArray *matches = [NSMutableArray array];
 	NSRange range;
 	
-	for (BPFormula *formula in _allFormulae) {
+	for (CiFormula *formula in _allFormulae) {
 		range = [[formula name] rangeOfString:name options:NSCaseInsensitiveSearch];
 		if (range.location != NSNotFound) {
 			[matches addObject:formula];
@@ -148,16 +148,16 @@ NSString *const kBPCacheDataKey	= @"BPCacheDataKey";
 /**
  Returns `YES` if cache exists, was created less than 24 hours ago and was loaded successfully. Otherwise returns `NO`.
  */
-- (BOOL)loadCache:(NSString*)fileName array:(NSArray<BPFormula*>*)cache
+- (BOOL)loadCache:(NSString*)fileName array:(NSArray<CiFormula*>*)cache
 {
-   NSURL *cachesFolder = [BPAppDelegate urlForApplicationCachesFolder];
+   NSURL *cachesFolder = [CiAppDelegate urlForApplicationCachesFolder];
    NSURL *allFile = [cachesFolder URLByAppendingPathComponent:fileName];
    BOOL shouldLoadCache = NO;
    
-   if ([[NSUserDefaults standardUserDefaults] objectForKey:kBPCacheLastUpdateKey])
+   if ([[NSUserDefaults standardUserDefaults] objectForKey:kCiCacheLastUpdateKey])
    {
 	   NSDate *storageDate = [NSDate dateWithTimeIntervalSince1970:[[NSUserDefaults standardUserDefaults]
-																	integerForKey:kBPCacheLastUpdateKey]];
+																	integerForKey:kCiCacheLastUpdateKey]];
 	   
 	   if ([[NSDate date] timeIntervalSinceDate:storageDate] <= 3600*24)
 	   {
@@ -175,7 +175,7 @@ NSString *const kBPCacheDataKey	= @"BPCacheDataKey";
 		   NSError *error = nil;
 
 		   if (@available(macOS 10.13, *)) {
-			   NSSet *classes = [NSSet setWithArray:@[[NSString class], [NSDictionary class], [NSMutableArray class], [BPFormula class]]];
+			   NSSet *classes = [NSSet setWithArray:@[[NSString class], [NSDictionary class], [NSMutableArray class], [CiFormula class]]];
 			   cacheDict = [NSKeyedUnarchiver unarchivedObjectOfClasses:classes fromData:data error:&error];
 			   if (error) {
 				   NSLog(@"Failed decoding data: %@", [error localizedDescription]);
@@ -183,12 +183,12 @@ NSString *const kBPCacheDataKey	= @"BPCacheDataKey";
 		   } else {
 			   cacheDict = [NSKeyedUnarchiver unarchiveObjectWithFile:allFile.relativePath];
 		   }
-		   cache = [cacheDict objectForKey:kBPCacheDataKey];
+		   cache = [cacheDict objectForKey:kCiCacheDataKey];
 	   }
    } else {
 	   // Delete all cache data
 	   [[NSFileManager defaultManager] removeItemAtURL:allFile error:nil];
-	   [[NSUserDefaults standardUserDefaults] removeObjectForKey:kBPCacheLastUpdateKey];
+	   [[NSUserDefaults standardUserDefaults] removeObjectForKey:kCiCacheLastUpdateKey];
    }
    return cache != nil;
 }
@@ -203,23 +203,23 @@ NSString *const kBPCacheDataKey	= @"BPCacheDataKey";
 	[self storeCache:@"allCasks.cache.bin" array:self.allCasks];
 }
 
-- (void)storeCache:(NSString*)fileName array:(NSArray<BPFormula*>*)cache
+- (void)storeCache:(NSString*)fileName array:(NSArray<CiFormula*>*)cache
 {
 	if (self.allCasks)
 	{
-		NSURL *cachesFolder = [BPAppDelegate urlForApplicationCachesFolder];
+		NSURL *cachesFolder = [CiAppDelegate urlForApplicationCachesFolder];
 		if (cachesFolder)
 		{
 			NSURL *allFile = [cachesFolder URLByAppendingPathComponent:fileName];
 			NSDate *storageDate = [NSDate date];
 			
-			if ([[NSUserDefaults standardUserDefaults] objectForKey:kBPCacheLastUpdateKey])
+			if ([[NSUserDefaults standardUserDefaults] objectForKey:kCiCacheLastUpdateKey])
 			{
 				storageDate = [NSDate dateWithTimeIntervalSince1970:[[NSUserDefaults standardUserDefaults]
-																	 integerForKey:kBPCacheLastUpdateKey]];
+																	 integerForKey:kCiCacheLastUpdateKey]];
 			}
 			
-			NSDictionary *cacheDict = @{kBPCacheDataKey: cache};
+			NSDictionary *cacheDict = @{kCiCacheDataKey: cache};
 			NSData *cacheData;
 
 			if (@available(macOS 10.13, *)) {
@@ -246,18 +246,18 @@ NSString *const kBPCacheDataKey	= @"BPCacheDataKey";
 			}
 			
 			[[NSUserDefaults standardUserDefaults] setInteger:[storageDate timeIntervalSince1970]
-													   forKey:kBPCacheLastUpdateKey];
+													   forKey:kCiCacheLastUpdateKey];
 		} else {
-			NSLog(@"Could not store cache file. BPAppDelegate function returned nil!");
+			NSLog(@"Could not store cache file. CiAppDelegate function returned nil!");
 		}
 	}
 }
 
-- (NSInteger)searchForFormula:(BPFormula*)formula inArray:(NSArray*)array
+- (NSInteger)searchForFormula:(CiFormula*)formula inArray:(NSArray*)array
 {
 	NSUInteger index = 0;
 	
-	for (BPFormula* item in array)
+	for (CiFormula* item in array)
 	{
 		if ([[item installedName] isEqualToString:[formula installedName]])
 		{
@@ -270,34 +270,34 @@ NSString *const kBPCacheDataKey	= @"BPCacheDataKey";
 	return -1;
 }
 
-- (BPFormulaStatus)statusForFormula:(BPFormula*)formula {
+- (CiFormulaStatus)statusForFormula:(CiFormula*)formula {
 	if ([self searchForFormula:formula inArray:self.installedFormulae] >= 0) {
 		if ([self searchForFormula:formula inArray:self.outdatedFormulae] >= 0)
 		{
-			return kBPFormulaOutdated;
+			return kCiFormulaOutdated;
 		} else {
-			return kBPFormulaInstalled;
+			return kCiFormulaInstalled;
 		}
 	} else {
-		return kBPFormulaNotInstalled;
+		return kCiFormulaNotInstalled;
 	}
 }
 
-- (BPFormulaStatus)statusForCask:(BPFormula*)formula {
+- (CiFormulaStatus)statusForCask:(CiFormula*)formula {
 	if ([self searchForFormula:formula inArray:self.installedCasks] >= 0) {
 		if ([self searchForFormula:formula inArray:self.outdatedCasks] >= 0) {
-			return kBPFormulaOutdated;
+			return kCiFormulaOutdated;
 		} else {
-			return kBPFormulaInstalled;
+			return kCiFormulaInstalled;
 		}
 	} else {
-		return kBPFormulaNotInstalled;
+		return kCiFormulaNotInstalled;
 	}
 }
 
 - (void)cleanUp
 {
-	[[BPHomebrewInterface sharedInterface] cleanup];
+	[[CiHomebrewInterface sharedInterface] cleanup];
 }
 
 #pragma - Homebrew Interface Delegate

@@ -1,5 +1,5 @@
 //
-//	BPHomebrewManager.h
+//	CiHomebrewManager.h
 //	Cicerone – The Homebrew GUI App for OS X
 //
 //	Created by Bruno Philipe on 4/3/14.
@@ -20,39 +20,39 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "BPFormula.h"
+#import "CiFormula.h"
 
-@class BPHomebrewManager;
+@class CiHomebrewManager;
 
-typedef NS_ENUM(NSInteger, BPFormulaStatus) {
-	kBPFormulaNotInstalled,
-	kBPFormulaInstalled,
-	kBPFormulaOutdated
+typedef NS_ENUM(NSInteger, CiFormulaStatus) {
+	kCiFormulaNotInstalled,
+	kCiFormulaInstalled,
+	kCiFormulaOutdated
 };
 
-@protocol BPHomebrewManagerDelegate <NSObject>
+@protocol CiHomebrewManagerDelegate <NSObject>
 
-- (void)homebrewManagerFinishedUpdating:(BPHomebrewManager*)manager;
-- (void)homebrewManager:(BPHomebrewManager *)manager didUpdateSearchResults:(NSArray *)searchResults;
-- (void)homebrewManager:(BPHomebrewManager *)manager shouldDisplayNoBrewMessage:(BOOL)yesOrNo;
+- (void)homebrewManagerFinishedUpdating:(CiHomebrewManager*)manager;
+- (void)homebrewManager:(CiHomebrewManager *)manager didUpdateSearchResults:(NSArray *)searchResults;
+- (void)homebrewManager:(CiHomebrewManager *)manager shouldDisplayNoBrewMessage:(BOOL)yesOrNo;
 
 @end
 
-@interface BPHomebrewManager : NSObject
+@interface CiHomebrewManager : NSObject
 
-@property (strong) NSArray<BPFormula*> *installedFormulae;
-@property (strong) NSArray<BPFormula*> *outdatedFormulae;
-@property (strong) NSArray<BPFormula*> *allFormulae;
-@property (strong) NSArray<BPFormula*> *leavesFormulae;
-@property (strong) NSArray<BPFormula*> *searchFormulae;
-@property (strong) NSArray<BPFormula*> *repositoriesFormulae;
+@property (strong) NSArray<CiFormula*> *installedFormulae;
+@property (strong) NSArray<CiFormula*> *outdatedFormulae;
+@property (strong) NSArray<CiFormula*> *allFormulae;
+@property (strong) NSArray<CiFormula*> *leavesFormulae;
+@property (strong) NSArray<CiFormula*> *searchFormulae;
+@property (strong) NSArray<CiFormula*> *repositoriesFormulae;
 
-@property (strong) NSArray<BPFormula*> *installedCasks;
-@property (strong) NSArray<BPFormula*> *outdatedCasks;
-@property (strong) NSArray<BPFormula*> *allCasks;
-@property (strong) NSArray<BPFormula*> *searchCasks;
+@property (strong) NSArray<CiFormula*> *installedCasks;
+@property (strong) NSArray<CiFormula*> *outdatedCasks;
+@property (strong) NSArray<CiFormula*> *allCasks;
+@property (strong) NSArray<CiFormula*> *searchCasks;
 
-@property (weak) id<BPHomebrewManagerDelegate> delegate;
+@property (weak) id<CiHomebrewManagerDelegate> delegate;
 
 + (instancetype)sharedManager;
 + (instancetype)alloc __attribute__((unavailable("alloc not available, call sharedManager instead")));
@@ -62,8 +62,8 @@ typedef NS_ENUM(NSInteger, BPFormulaStatus) {
 - (void)reloadFromInterfaceRebuildingCache:(BOOL)shouldRebuildCache;
 - (void)updateSearchWithName:(NSString *)name;
 
-- (BPFormulaStatus)statusForFormula:(BPFormula*)formula;
-- (BPFormulaStatus)statusForCask:(BPFormula*)formula;
+- (CiFormulaStatus)statusForFormula:(CiFormula*)formula;
+- (CiFormulaStatus)statusForCask:(CiFormula*)formula;
 
 - (void)cleanUp;
 

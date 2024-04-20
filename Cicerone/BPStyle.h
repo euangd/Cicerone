@@ -1,5 +1,5 @@
 //
-//  BPStyle.m
+//  CiStyle.m
 //  Cicerone
 //
 //  Created by Marek Hrusovsky on 25/08/15.
@@ -21,7 +21,7 @@
 
 #import <Cocoa/Cocoa.h>
 
-@interface BPStyle : NSObject
+@interface CiStyle : NSObject
 
 + (NSFont *)defaultFixedWidthFont;
 

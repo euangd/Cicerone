@@ -1,5 +1,5 @@
 //
-//  BPStyle.h
+//  CiStyle.h
 //  Cicerone
 //
 //  Created by Marek Hrusovsky on 25/08/15.
@@ -19,16 +19,16 @@
 //	along with this program.	If not, see <http://www.gnu.org/licenses/>.
 //
 
-#import "BPStyle.h"
-#import "BPUtilities.h"
+#import "CiStyle.h"
+#import "CiUtilities.h"
 
 static BOOL shouldUseFlatUserInterface;
 
-@implementation BPStyle
+@implementation CiStyle
 
 + (void)load
 {
-	shouldUseFlatUserInterface = [BPUtilities isRunningYosemiteOrLater];
+	shouldUseFlatUserInterface = [CiUtilities isRunningYosemiteOrLater];
 }
 
 + (BOOL)isFlat

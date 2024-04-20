@@ -1,5 +1,5 @@
 //
-//  BPToolbar.h
+//  CiToolbar.h
 //  Cicerone
 //
 //  Created by Marek Hrusovsky on 16/08/15.
@@ -21,7 +21,7 @@
 
 #import <Cocoa/Cocoa.h>
 
-@protocol BPToolbarProtocol <NSObject>
+@protocol CiToolbarProtocol <NSObject>
 
 @required
 - (void)performSearchWithString:(NSString *)search;
@@ -34,7 +34,7 @@
 - (void)uninstallFormula:(id)sender;
 @end
 
-@interface BPToolbar : NSToolbar <NSToolbarDelegate>
+@interface CiToolbar : NSToolbar <NSToolbarDelegate>
 
 // user access intent, as in the intent the user would have to access bar controls with the current context
 

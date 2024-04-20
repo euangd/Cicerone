@@ -1,5 +1,5 @@
 //
-//  BPFormulaeDataSource.h
+//  CiFormulaeDataSource.h
 //  Cicerone
 //
 //  Created by Marek Hrusovsky on 04/09/14.
@@ -7,15 +7,15 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "BPHomebrewInterface.h"
-#import "BPFormula.h"
+#import "CiHomebrewInterface.h"
+#import "CiFormula.h"
 
-@interface BPFormulaeDataSource : NSObject <NSTableViewDataSource>
+@interface CiFormulaeDataSource : NSObject <NSTableViewDataSource>
 
-@property (nonatomic, assign) BPListMode mode;
+@property (nonatomic, assign) CiListMode mode;
 
-- (instancetype)initWithMode:(BPListMode)aMode;
-- (BPFormula *)formulaAtIndex:(NSInteger)index;
+- (instancetype)initWithMode:(CiListMode)aMode;
+- (CiFormula *)formulaAtIndex:(NSInteger)index;
 - (NSArray *)formulasAtIndexSet:(NSIndexSet *)indexSet;
 - (void)refreshBackingArray;
 @end
