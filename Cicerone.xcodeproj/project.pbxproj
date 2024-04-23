@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 56;
+	objectVersion = 63;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -52,6 +52,7 @@
 		222DC89E284CE05B0094E825 /* CiCasksDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 222DC89D284CE05B0094E825 /* CiCasksDataSource.m */; };
 		B7247B652BD2AE7200C13021 /* Pods-CiceroneTests in Frameworks */ = {isa = PBXBuildFile; fileRef = B79350752BD2ACB100C793ED /* Pods-CiceroneTests */; };
 		B7247B662BD2AE7200C13021 /* Pods-CiceroneTests in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = B79350752BD2ACB100C793ED /* Pods-CiceroneTests */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		B7247B6D2BD52CA800C13021 /* NSString+Summarization.m in Sources */ = {isa = PBXBuildFile; fileRef = B7247B6C2BD52CA800C13021 /* NSString+Summarization.m */; };
 		B79350782BD2ACCD00C793ED /* Pods-Cicerone in Frameworks */ = {isa = PBXBuildFile; fileRef = B79350732BD2ACB100C793ED /* Pods-Cicerone */; };
 		B79350792BD2ACCD00C793ED /* Pods-Cicerone in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = B79350732BD2ACB100C793ED /* Pods-Cicerone */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		B7BA471F29EE6EB400301D80 /* Credits.md in Resources */ = {isa = PBXBuildFile; fileRef = B7BA471E29EE6EB400301D80 /* Credits.md */; };
@@ -269,6 +270,8 @@
 		8E3B2F2DB08D3A5D17E010AE /* Pods_Cicerone.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Cicerone.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		ABCD0FD1BA4ECE02384478B4 /* Pods-CiceroneTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CiceroneTests.release.xcconfig"; path = "Target Support Files/Pods-CiceroneTests/Pods-CiceroneTests.release.xcconfig"; sourceTree = "<group>"; };
 		B70EBB99C630D39AC65F0200 /* Pods_CiceroneTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CiceroneTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B7247B6B2BD52CA800C13021 /* NSString+Summarization.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSString+Summarization.h"; sourceTree = "<group>"; };
+		B7247B6C2BD52CA800C13021 /* NSString+Summarization.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSString+Summarization.m"; sourceTree = "<group>"; };
 		B79350652BD2ACB100C793ED /* Pods.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Pods.xcodeproj; path = Pods/Pods.xcodeproj; sourceTree = "<group>"; };
 		B7BA471E29EE6EB400301D80 /* Credits.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = Credits.md; sourceTree = SOURCE_ROOT; };
 		B7BA472029F0F7BF00301D80 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; indentWidth = 2; path = Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
@@ -607,6 +610,8 @@
 				D2F732F019190B75002B2512 /* NSString+URLValidation.m */,
 				15A89D3725F2F467003D33F5 /* NSLayoutConstraint+Shims.h */,
 				15A89D3825F2F467003D33F5 /* NSLayoutConstraint+Shims.m */,
+				B7247B6B2BD52CA800C13021 /* NSString+Summarization.h */,
+				B7247B6C2BD52CA800C13021 /* NSString+Summarization.m */,
 			);
 			path = Categories;
 			sourceTree = "<group>";
@@ -672,7 +677,7 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
-				CLASSPREFIX = CiO;
+				CLASSPREFIX = Ci;
 				LastUpgradeCheck = 1430;
 				ORGANIZATIONNAME = "oaVa-o";
 				TargetAttributes = {
@@ -685,7 +690,7 @@
 				};
 			};
 			buildConfigurationList = 1FE4FE4E148E4CDD008EDE8B /* Build configuration list for PBXProject "Cicerone" */;
-			compatibilityVersion = "Xcode 14.0";
+			compatibilityVersion = "Xcode 15.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -904,6 +909,7 @@
 				150AEC531B3F999A00163767 /* CiSelectedFormulaViewController.m in Sources */,
 				150AEC541B3F999A00163767 /* CiSideBarController.m in Sources */,
 				1570BA5618EE50BD001C3C5C /* CiFormula.m in Sources */,
+				B7247B6D2BD52CA800C13021 /* NSString+Summarization.m in Sources */,
 				15CEFC631AB335B2005CF54A /* CiLoadingView.m in Sources */,
 				15EC1B0725CED52C00C93861 /* CiWindow.m in Sources */,
 				D2C4278B1B8E055B001C1F80 /* CiDisabledView.m in Sources */,

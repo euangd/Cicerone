@@ -152,74 +152,53 @@
 	[self.progressIndicator startAnimation:nil];
 	
 	dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
-		NSString __block *outputValue;
-		__weak CiInstallationWindowController *weakSelf = self;
+        NSString *standardOutput;
+        
+        switch (self.windowOperation) {
+            case kCiWindowOperationInstall:
+                standardOutput = [[CiHomebrewInterface sharedInterface] installWithFormulaName:[[self.formulae firstObject] name] withOptions:self.options];
+                break;
+            case kCiWindowOperationUninstall:
+                standardOutput = [[CiHomebrewInterface sharedInterface] uninstallWithFormulaName:[[self.formulae firstObject] name]];
+                break;
+            case kCiWindowOperationUpgrade:
+                if (self.formulae)
+                {
+                    standardOutput = [[CiHomebrewInterface sharedInterface] upgradeWithFormulaeNames:[self namesOfAllFormulae]];
+                }
+                else
+                {
+                    //no parameter is necessary to upgrade all formulas; recycling API with empty string
+                    standardOutput = [[CiHomebrewInterface sharedInterface] upgradeWithFormulaeNames:@[@""]];
+                }
+                break;
+            case kCiWindowOperationTap:
+                if (self.formulae)
+                {
+                    standardOutput = [[CiHomebrewInterface sharedInterface] tapWithRepositoryName:[[self.formulae firstObject] name]];
+                }
+                break;
+            case kCiWindowOperationUntap:
+                if (self.formulae)
+                {
+                    standardOutput = [[CiHomebrewInterface sharedInterface] untapWithRepositoryName:[[self.formulae firstObject] name]];
+                }
+                break;
+            case kCiWindowOperationCleanup:
+                standardOutput = [[CiHomebrewInterface sharedInterface] cleanup];
+                break;
+            default:
+                goto end;
+                break;
+        }
+        
+        self.operationStatus = standardOutput;
+        
+        [self.recordTextView performSelectorOnMainThread:@selector(setString:)
+                                              withObject:standardOutput
+                                           waitUntilDone:YES];
 		
-		void (^displayTerminalOutput)(NSString *outputValue) = ^(NSString *output) {
-			if (outputValue)
-			{
-				outputValue = [outputValue stringByAppendingString:output];
-			}
-			else
-			{
-				outputValue = output;
-			}
-			[weakSelf.recordTextView performSelectorOnMainThread:@selector(setString:)
-													  withObject:outputValue
-												   waitUntilDone:YES];
-		};
-		
-		CiHomebrewInterface *homebrewInterface = [CiHomebrewInterface sharedInterface];
-		if (self.windowOperation == kCiWindowOperationInstall)
-		{
-			NSString *name = [[self.formulae firstObject] name];
-			self.operationStatus = [homebrewInterface installFormula:name
-														 withOptions:self.options
-													  andReturnBlock:displayTerminalOutput];
-		}
-		else if (self.windowOperation == kCiWindowOperationUninstall)
-		{
-			NSString *name = [[self.formulae firstObject] name];
-			self.operationStatus = [homebrewInterface uninstallFormula:name
-													   withReturnBlock:displayTerminalOutput];
-		}
-		else if (self.windowOperation == kCiWindowOperationUpgrade)
-		{
-			if (self.formulae)
-			{
-				NSArray *names = [self namesOfAllFormulae];
-				self.operationStatus = [homebrewInterface upgradeFormulae:names
-														  withReturnBlock:displayTerminalOutput];
-			}
-			else
-			{
-				//no parameter is necessary to upgrade all formulas; recycling API with empty string
-				self.operationStatus = [homebrewInterface upgradeFormulae:@[@""]
-														  withReturnBlock:displayTerminalOutput];
-			}
-		}
-		else if (self.windowOperation == kCiWindowOperationTap)
-		{
-			if (self.formulae)
-			{
-				NSString *name = [[self.formulae firstObject] name];
-				self.operationStatus = [homebrewInterface tapRepository:name withReturnsBlock:displayTerminalOutput];
-			}
-		}
-		else if (self.windowOperation == kCiWindowOperationUntap)
-		{
-			if (self.formulae)
-			{
-				NSString *name = [[self.formulae firstObject] name];
-				self.operationStatus = [[CiHomebrewInterface sharedInterface] untapRepository:name
-																			 withReturnsBlock:displayTerminalOutput];
-			}
-		}
-		else if (self.windowOperation == kCiWindowOperationCleanup)
-		{
-			self.operationStatus = [[CiHomebrewInterface sharedInterface] runCleanupWithReturnBlock:displayTerminalOutput];
-		}
-		
+    end:
 		[self finishTask];
 	});
 }

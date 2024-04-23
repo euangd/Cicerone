@@ -26,7 +26,7 @@ extern NSString *const CiFormulaDidUpdateNotification;
 
 @protocol CiFormulaDataProvider <NSObject>
 @required
-- (NSString *)informationForFormulaName:(NSString *)name;
+- (NSString *)informationWithFormulaName:(NSString *)name;
 @end
 
 @interface CiFormula : NSObject <NSSecureCoding, NSCopying>

@@ -77,23 +77,23 @@ NSString *const kCiCacheDataKey	= @"CiCacheDataKey";
 	dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
 		[[CiHomebrewInterface sharedInterface] setDelegate:self];
 		
-		NSArray *installedFormulae = [[CiHomebrewInterface sharedInterface] listMode:kCiListInstalledFormulae];
-		NSArray *leavesFormulae = [[CiHomebrewInterface sharedInterface] listMode:kCiListLeaves];
-		NSArray *outdatedFormulae = [[CiHomebrewInterface sharedInterface] listMode:kCiListOutdatedFormulae];
-		NSArray *repositoriesFormulae = [[CiHomebrewInterface sharedInterface] listMode:kCiListRepositories];
+		NSArray *installedFormulae = [[CiHomebrewInterface sharedInterface] packagesWithMode:kCiListInstalledFormulae];
+		NSArray *leavesFormulae = [[CiHomebrewInterface sharedInterface] packagesWithMode:kCiListLeaves];
+		NSArray *outdatedFormulae = [[CiHomebrewInterface sharedInterface] packagesWithMode:kCiListOutdatedFormulae];
+		NSArray *repositoriesFormulae = [[CiHomebrewInterface sharedInterface] packagesWithMode:kCiListRepositories];
 
-		NSArray *installedCasks = [[CiHomebrewInterface sharedInterface] listMode:kCiListInstalledCasks];
-		NSArray *outdatedCasks = [[CiHomebrewInterface sharedInterface] listMode:kCiListOutdatedCasks];
+		NSArray *installedCasks = [[CiHomebrewInterface sharedInterface] packagesWithMode:kCiListInstalledCasks];
+		NSArray *outdatedCasks = [[CiHomebrewInterface sharedInterface] packagesWithMode:kCiListOutdatedCasks];
 		
 		NSArray *allFormulae = nil;
 		NSArray *allCasks = nil;
 
 		if (![self loadAllFormulaeCaches] || previousCountOfAllFormulae <= 100 || shouldRebuildCache) {
-			allFormulae = [[CiHomebrewInterface sharedInterface] listMode:kCiListAllFormulae];
+			allFormulae = [[CiHomebrewInterface sharedInterface] packagesWithMode:kCiListAllFormulae];
 		}
 		
 		if (![self loadAllCasksCaches] || previousCountOfAllCasks <= 10 || shouldRebuildCache) {
-			allCasks = [[CiHomebrewInterface sharedInterface] listMode:kCiListAllCasks];
+			allCasks = [[CiHomebrewInterface sharedInterface] packagesWithMode:kCiListAllCasks];
 		}
 
 		dispatch_async(dispatch_get_main_queue(), ^{
@@ -307,7 +307,7 @@ NSString *const kCiCacheDataKey	= @"CiCacheDataKey";
 	[self reloadFromInterfaceRebuildingCache:YES];
 }
 
-- (void)homebrewInterfaceShouldDisplayNoBrewMessage:(BOOL)yesOrNo
+- (void)homebrewInterfaceDidFindBrew:(BOOL)yesOrNo
 {
 	if (self.delegate) {
 		[self.delegate homebrewManager:self shouldDisplayNoBrewMessage:yesOrNo];

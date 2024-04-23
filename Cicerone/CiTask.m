@@ -20,182 +20,153 @@
 //
 
 #import "CiTask.h"
-
-static BOOL systemHasAppNap;
+#import "Categories/NSString+Summarization.h"
 
 NSString *const kDidBeginBackgroundActivityNotification	= @"DidBeginBackgroundActivityNotification";
 NSString *const kDidEndBackgroundActivityNotification	= @"DidEndBackgroundActivityNotification";
 
 @interface CiTask()
 {
+    BOOL halting;
+    id launchLock;
+    
 	id activity;
-	NSPipe *outputPipe;
-	NSPipe *errorPipe;
-	NSPipe *inputPipe;
-	NSFileHandle *outputFileHandle;
-	NSFileHandle *errorFileHandle;
-	NSMutableData *outputData;
-	NSMutableData *errorData;
-	int someAsyncOut;
-	int someAsyncErr;
-	NSObject *outputHandlerObserver;
-	NSObject *errorHandlerObserver;
-	void (^operationUpdateBlock)(NSString*);
+	NSFileHandle *standardOutputFileHandle;
+	NSFileHandle *standardErrorFileHandle;
+	NSMutableData *standardOutputData;
+	NSMutableData *standardErrorData;
+	int standardOutputDataNextWritePosition;
+	int standardErrorDataNextWritePosition;
+    dispatch_group_t processingDispatchGroup;
 }
 
-@property (strong) NSTask *task;
-@property (readwrite) NSString *output;
-@property (readwrite) NSString *error;
+@property (nonatomic, strong) NSTask *coreTask;
+
+// todo: standard input
+
+@property (nonatomic, strong) NSPipe *standardOutputPipe, *standardErrorPipe;
+
+// public
+@property (readwrite, nonatomic) BOOL ran;
+
+@property (readwrite, nonatomic, strong) NSString *executablePath;
+@property (readwrite, nonatomic, strong) NSArray *executableArguments;
 
 @end
 
 @implementation CiTask
 
-+ (void)load
+- (instancetype)initWithPath:(NSString *)path withArguments:(NSArray *)arguments
 {
-	systemHasAppNap = [[NSProcessInfo processInfo] respondsToSelector:@selector(beginActivityWithOptions:reason:)];
-}
-
-- (instancetype)initWithPath:(NSString *)path arguments:(NSArray *)arguments
-{
+    assert(path);
+    
 	self = [super init];
 	if (self)
 	{
-		someAsyncOut = 0;
-		someAsyncErr = 0;
+        launchLock = [[NSObject alloc] init];
+        
+        _executablePath = path;
+        _executableArguments = arguments;
+        
 		#ifdef DEBUG
-			if (![self shouldUsePartialUpdates]) {
-				NSLog(@"cmd: %@ %@", path, [arguments componentsJoinedByString:@" "]);
-			}
+        NSLog(@"task: %@ %@", path, [arguments componentsJoinedByString:@" "]);
 		#endif
-		_task = [self taskWithPath:path arguments:arguments];
-		[[NSNotificationCenter defaultCenter] addObserver:self
-												 selector:@selector(taskDidTerminate:)
-													 name:NSTaskDidTerminateNotification object:_task];
-		outputData = [[NSMutableData alloc] init];
-		errorData = [[NSMutableData alloc] init];
 	}
 	return self;
 }
 
-- (NSTask *)taskWithPath:(NSString *)path arguments:(NSArray *)arguments
+- (void)setCoreTask:(NSTask *)coreTask
 {
-	if (!path)
-	{
-		return nil;
-	}
-	
-	NSTask *task = [[NSTask alloc] init];
-	[task setLaunchPath:path];
-	[task setArguments:arguments];
-	return task;
+    _coreTask = coreTask;
+    
+    [coreTask setLaunchPath:_executablePath];
+    [coreTask setArguments:_executableArguments];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(taskDidTerminate:)
+                                                 name:NSTaskDidTerminateNotification object:_coreTask];
 }
 
-- (BOOL)shouldUsePartialUpdates
+- (void)setStandardOutputPipe:(NSPipe *)standardOutputPipe
 {
-	return self.updateBlock != nil;
+    _standardOutputPipe = standardOutputPipe;
+    
+    standardOutputData = [[NSMutableData alloc] init];
+    standardOutputDataNextWritePosition = 0;
+    
+    [self.coreTask setStandardOutput:standardOutputPipe];
+    
+    standardOutputFileHandle = [standardOutputPipe fileHandleForReading];
+    [standardOutputFileHandle waitForDataInBackgroundAndNotify];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receiveStandardOutputFileHandleDataAvailableNotification:) name:NSFileHandleDataAvailableNotification
+                                               object:standardOutputFileHandle];
 }
 
-- (void)configureStandardOutput
+- (void)setStandardErrorPipe:(NSPipe *)standardErrorPipe
 {
-	outputPipe = [NSPipe pipe];
-	[self.task setStandardOutput:outputPipe];
+    _standardErrorPipe = standardErrorPipe;
+    
+    standardErrorData = [[NSMutableData alloc] init];
+    standardErrorDataNextWritePosition = 0;
+    
+    [self.coreTask setStandardError:standardErrorPipe];
+    standardErrorFileHandle = [standardErrorPipe fileHandleForReading];
+    
+    [standardErrorFileHandle waitForDataInBackgroundAndNotify];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receiveStandardErrorFileHandleDataAvailableNotification:) name:NSFileHandleDataAvailableNotification
+                                               object:standardErrorFileHandle];
 }
 
-- (void)configureStandardError
-{
-	errorPipe = [NSPipe pipe];
-	[self.task setStandardError:errorPipe];
-}
+// waitUntilExit makes sure that we stay in the same run loop (thread); needed for notifications
 
-- (void)configureOutputFileHandle
+- (int)runToExitReturningStandardOutput:(out NSString * __autoreleasing *)standardOutput returningStandardError:(out NSString * __autoreleasing *)standardError
 {
-	outputFileHandle = [outputPipe fileHandleForReading];
-	if ([self shouldUsePartialUpdates])
-	{
-		[outputFileHandle waitForDataInBackgroundAndNotify];
-		outputHandlerObserver = [[NSNotificationCenter defaultCenter] addObserverForName:NSFileHandleDataAvailableNotification
-																				  object:outputFileHandle
-																				   queue:[NSOperationQueue currentQueue]
-																			  usingBlock:^(NSNotification *note) {
-																				  [self updatedFileHandle:note];
-																			  }];
-	}
-}
-
-- (void)configureErrorFileHandle
-{
-	errorFileHandle = [errorPipe fileHandleForReading];
-	if ([self shouldUsePartialUpdates] )
-	{
-		[errorFileHandle waitForDataInBackgroundAndNotify];
-		errorHandlerObserver = [[NSNotificationCenter defaultCenter] addObserverForName:NSFileHandleDataAvailableNotification
-																				 object:errorFileHandle
-																				  queue:[NSOperationQueue currentQueue]
-																			 usingBlock:^(NSNotification *note) {
-																				 [self updatedFileHandle:note];
-																			 }];
-	}
-}
-
-- (void)processStandardOutput
-{
-	if (![self shouldUsePartialUpdates]) {
-		NSData *data = [outputFileHandle readDataToEndOfFile];
-		if ([data length]) {
-			self.output = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-		}
-		
-	} else {
-		if ([outputData length]) {
-			self.output = [[NSString alloc] initWithData:outputData encoding:NSUTF8StringEncoding];
-		}
-	}
-}
-
-- (void)processStandardError
-{
-	if(![self shouldUsePartialUpdates]) {
-		NSData *data = [errorFileHandle readDataToEndOfFile];
-		if ([data length]) {
-			self.error = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-		}
-	} else {
-		if ([errorData length]) {
-			self.error = [[NSString alloc] initWithData:errorData encoding:NSUTF8StringEncoding];
-		}
-	}
-}
-/**
- * waitUntilExit makes sure that we stay in the same run loop (thread); needed for notifications
- */
-- (int)execute
-{
-	[self configureStandardOutput];
-	[self configureOutputFileHandle];
-	[self configureStandardError];
-	[self configureErrorFileHandle];
-	[self beginActivity];
 	@try {
-        NSError *error = nil;
-        
-        if (![self.task launchAndReturnError:&error]) {
-            @throw [NSException exceptionWithName:@"MyCustomException"
-                                           reason:@"Something went wrong"
-                                         userInfo:@{ @"error": error }];
+        @synchronized (self) {
+            processingDispatchGroup = dispatch_group_create();
+            dispatch_group_enter(processingDispatchGroup);
+            
+            [self beginActivity];
+            
+            self.coreTask = [[NSTask alloc] init];
+            
+            self.standardOutputPipe = [NSPipe pipe];
+            self.standardErrorPipe = [NSPipe pipe];
+            
+            @synchronized (launchLock) {
+                if (halting) {
+                    return -1;
+                }
+                
+                NSError *error = nil;
+                
+                if (![self.coreTask launchAndReturnError:&error]) {
+                    @throw [NSException exceptionWithName:@"MyCustomException"
+                                                   reason:@"Something went wrong"
+                                                 userInfo:@{ @"error": error }];
+                }
+                
+                self.ran = true;
+            }
+            
+            [self.coreTask waitUntilExit];
+            dispatch_group_wait(processingDispatchGroup, DISPATCH_TIME_FOREVER);
+            
+            if (standardOutput) {
+                [self readOutStandardOutputFileHandle:standardOutputFileHandle];
+                (*standardOutput) = [[NSString alloc] initWithData:standardOutputData encoding:NSUTF8StringEncoding];
+            }
+            
+            if (standardError) {
+                [self readOutStandardErrorFileHandle:standardErrorFileHandle];
+                (*standardError) = [[NSString alloc] initWithData:standardErrorData encoding:NSUTF8StringEncoding];
+            }
+            
+            [self endActivity];
+            self.ran = false;
+            
+            return [self.coreTask terminationStatus];
         }
-        
-		[self.task waitUntilExit];
-		if (![self shouldUsePartialUpdates]) {
-//			#ifdef DEBUG
-//				NSLog(@"\tcode = %d", [self.task terminationStatus]);
-//				NSLog(@"\tout  = %@", self.output);
-//				NSLog(@"\terr  = %@", self.error);
-//			#endif
-			return [self.task terminationStatus];
-		} else {
-			return 0;
-		}
 	}
 	@catch (NSException *exception) {
 		NSLog(@"Exception: %@", exception);
@@ -210,124 +181,126 @@ NSString *const kDidEndBackgroundActivityNotification	= @"DidEndBackgroundActivi
             }
         }
         
-		[self cleanup];
 		return -1;
-	}
+    } @finally {
+        [self halt];
+    }
 }
 
-- (void)updatedFileHandle:(NSNotification*)notification
+// these used to the same method but there was no point because it just compared the received file handle to each receiver handle
+// todo consider sanity-checking the respective file handles against what is already stored
+
+- (void)receiveStandardOutputFileHandleDataAvailableNotification:(NSNotification *)notification
 {
-	NSFileHandle *fileHandle = [notification object];
-	NSData *data = [fileHandle readDataToEndOfFile];
-	
-	if (fileHandle == outputFileHandle) {
-		[outputData appendData:data];
-		someAsyncOut += data.length + 1;
-	}
-
-	if (fileHandle == errorFileHandle) {
-		[errorData appendData:data];
-		someAsyncErr += data.length + 1;
-	}
-
-	if (someAsyncOut > 0 && someAsyncErr > 0 ) {
-		dispatch_queue_t queue = [self updateBlockQueue];
-
-		if (queue == nil) {
-			queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0);
-		}
-
-		[self processStandardOutput];
-		[self processStandardError];
-		#ifdef DEBUG
-			NSLog(@"async cmd: %@ %@",  [self.task launchPath], [[self.task arguments] componentsJoinedByString:@" "]);
-			NSLog(@"\tcode = %d", [self.task terminationStatus]);
-			NSLog(@"\tout  = %@", self.output);
-			NSLog(@"\terr  = %@", self.error);
-		#endif
-		dispatch_async(queue, ^{
-			self.updateBlock(self.output);
-		});
-		[self taskDidTerminateH];
-	}
+    [self readOutStandardOutputFileHandle:[notification object]];
 }
+
+- (void)readOutStandardOutputFileHandle:(NSFileHandle *)fileHandle
+{
+    standardOutputDataNextWritePosition += [self readOutFileHandle:fileHandle toAggregateData:standardOutputData];
+}
+
+- (void)receiveStandardErrorFileHandleDataAvailableNotification:(NSNotification *)notification
+{
+    [self readOutStandardErrorFileHandle:[notification object]];
+}
+
+- (void)readOutStandardErrorFileHandle:(NSFileHandle *)fileHandle
+{
+    standardErrorDataNextWritePosition += [self readOutFileHandle:fileHandle toAggregateData:standardErrorData];
+}
+
+- (NSUInteger)readOutFileHandle:(NSFileHandle *)fileHandle toAggregateData:(NSMutableData *)aggregateData
+{
+    @synchronized (aggregateData) {
+        dispatch_group_enter(processingDispatchGroup);
+        
+        @try {
+            NSData *data = [fileHandle readDataToEndOfFile];
+            [aggregateData appendData:data];
+            return data.length + 1;
+        } @finally {
+            dispatch_group_leave(processingDispatchGroup);
+        }
+    }
+}
+
+// this method used to send a result update via dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{ });
 
 - (void)taskDidTerminate:(NSNotification *)notification
 {
-	if ([self shouldUsePartialUpdates]) {
-		if (someAsyncOut < 1 || someAsyncErr < 1) {
-			return;
-		}
-	}
-	[self processStandardOutput];
-	[self processStandardError];
-	[self taskDidTerminateH];
+#ifdef DEBUG
+    NSLog(@"async cmd: %@ %@",  [self.coreTask launchPath], [[self.coreTask arguments] componentsJoinedByString:@" "]);
+    NSLog(@"\tcode = %d", [self.coreTask terminationStatus]);
+#endif
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    
+    [self endActivity];
+    dispatch_group_leave(processingDispatchGroup);
 }
 
-- (void)taskDidTerminateH
-{
-	[[NSNotificationCenter defaultCenter] removeObserver:self];
-	[[NSNotificationCenter defaultCenter] removeObserver:outputHandlerObserver];
-	[[NSNotificationCenter defaultCenter] removeObserver:errorHandlerObserver];
-	
-	outputHandlerObserver = nil;
-	errorHandlerObserver = nil;
-	
-	[self endActivity];
-	
-	if (self.delegate)
-	{
-		if ([self.delegate respondsToSelector:@selector(task:didFinishWithOutput:error:)])
-		{
-			[self.delegate task:self didFinishWithOutput:self.output error:self.error];
-		}
-	}
-}
+// the system will always have app nap on modern targets. using the terminology app nap because that's what the variable used to be called; supposedly the gated features were introduced with app nap? there used to be a check: [[NSProcessInfo processInfo] respondsToSelector:@selector(beginActivityWithOptions:reason:)]
 
 - (void)beginActivity
 {
-	if (systemHasAppNap)
-	{
-		activity = [[NSProcessInfo processInfo] beginActivityWithOptions:NSActivityUserInitiated
-																  reason:NSLocalizedString(@"Homebrew_AppNap_Task_Reason", nil)];
-
-		[[NSNotificationCenter defaultCenter] postNotificationName:kDidBeginBackgroundActivityNotification object:self];
-	}
+    
+    activity = [[NSProcessInfo processInfo] beginActivityWithOptions:NSActivityUserInitiated | NSActivityLatencyCritical // latency-critical because usually there's a loading indicator and that should go away as quickly as possible
+                                                              reason:NSLocalizedString(@"Homebrew_AppNap_Task_Reason", nil)];
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:kDidBeginBackgroundActivityNotification object:self];
 }
 
 - (void)endActivity
 {
-	if (systemHasAppNap)
-	{
-		[[NSProcessInfo processInfo] endActivity:activity];
-		activity = nil;
-
-		[[NSNotificationCenter defaultCenter] postNotificationName:kDidEndBackgroundActivityNotification object:self];
-	}
+    [[NSProcessInfo processInfo] endActivity:activity];
+    activity = nil;
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:kDidEndBackgroundActivityNotification object:self];
 }
 
-- (void)cleanup
+- (void)halt
 {
-	[self.task terminate];
-	[self endActivity];
-	
-	outputData = nil;
-	errorData = nil;
-	outputFileHandle = nil;
-	errorFileHandle = nil;
-	
-	[[NSNotificationCenter defaultCenter] removeObserver:outputHandlerObserver];
-	[[NSNotificationCenter defaultCenter] removeObserver:errorHandlerObserver];
-	
-	outputHandlerObserver = nil;
-	errorHandlerObserver = nil;
+    // if the task is running, send sigterm, then wait for task data plumbing to stop... or now just secure the self lock as fast as possible, then wait for sync run to stop, then deinitialize
+    // this is done through making sure that if the task is not yet running, it will see the attempt to halt as soon as it tries to start and then exit, or if the task is running it will sigterm
+    // halting = true is basically a screwy way to seize the self lock with the launchLock, because if this code does need to wait for the self lock the launch lock will also be hit, where it checks halting and exits.
+    
+    @synchronized (launchLock) {
+        halting = true;
+        
+        if (self.ran) {
+            [self.coreTask terminate];
+        }
+    }
+    
+    @synchronized (self) {
+        if (activity) {
+            [self endActivity];
+        }
+        
+        [[NSNotificationCenter defaultCenter] removeObserver:self];
+        
+        standardOutputData = nil;
+        standardErrorData = nil;
+        standardOutputFileHandle = nil;
+        standardErrorFileHandle = nil;
+        _standardOutputPipe = nil;
+        _standardErrorPipe = nil;
+        
+        activity = nil;
+        
+        halting = false;
+    }
 }
 
 - (void)dealloc
 {
-	self.updateBlock = nil;
-	[self cleanup];
+    [self halt];
+    
+    self.executableArguments = nil;
+    self.executablePath = nil;
+    
+    processingDispatchGroup = nil;
 }
-
 
 @end

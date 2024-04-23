@@ -59,11 +59,10 @@
 	[self.progressIndicator startAnimation:sender];
 	
 	dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
-		[[CiHomebrewInterface sharedInterface] updateWithReturnBlock:^(NSString *output) {
-			dispatch_async(dispatch_get_main_queue(), ^{
-				[self.updateTextView setString:[self.updateTextView.string stringByAppendingString:output]];
-			});
-		}];
+        NSString *standardOutput = [[CiHomebrewInterface sharedInterface] update];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.updateTextView setString:[self.updateTextView.string stringByAppendingString:standardOutput]];
+        });
 
 		dispatch_async(dispatch_get_main_queue(), ^{
 			[self.progressIndicator stopAnimation:sender];

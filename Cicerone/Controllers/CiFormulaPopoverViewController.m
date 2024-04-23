@@ -115,7 +115,7 @@
 		[self.formulaTitleLabel setStringValue:[NSString stringWithFormat:NSLocalizedString(@"Formula_Installed_Dependents_Title", nil), name]];
 
 		dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
-			NSString *string = [[CiHomebrewInterface sharedInterface] dependantsForFormulaName:name onlyInstalled:YES];
+			NSString *string = [[CiHomebrewInterface sharedInterface] dependentsWithFormulaNamed:name installed:YES];
 
 			dispatch_async(dispatch_get_main_queue(), ^{
 				[self.progressIndicator stopAnimation:nil];
@@ -130,7 +130,7 @@
 		[self.formulaTitleLabel setStringValue:[NSString stringWithFormat:NSLocalizedString(@"Formula_All_Dependents_Title", nil), name]];
 
 		dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
-			NSString *string = [[CiHomebrewInterface sharedInterface] dependantsForFormulaName:name onlyInstalled:NO];
+			NSString *string = [[CiHomebrewInterface sharedInterface] dependentsWithFormulaNamed:name installed:NO];
 
 			dispatch_async(dispatch_get_main_queue(), ^{
 				[self.progressIndicator stopAnimation:nil];

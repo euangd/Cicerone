@@ -50,7 +50,7 @@ typedef NS_ENUM(NSInteger, CiListMode) {
  *
  *  @param yesOrNo `YES` if brew was not found.
  */
-- (void)homebrewInterfaceShouldDisplayNoBrewMessage:(BOOL)yesOrNo;
+- (void)homebrewInterfaceDidFindBrew:(BOOL)yesOrNo;
 
 @end
 
@@ -71,7 +71,6 @@ typedef NS_ENUM(NSInteger, CiListMode) {
 /**
  *  Terminates all running tasks
  */
-- (void)cleanup;
 
 /**
  *  Update Homebrew.
@@ -80,7 +79,7 @@ typedef NS_ENUM(NSInteger, CiListMode) {
  *
  *  @return `YES` if successful.
  */
-- (BOOL)updateWithReturnBlock:(void (^)(NSString*))block;
+- (NSString *)update;
 
 /**
  *  Upgrade parameter formulae to the latest available version.
@@ -90,7 +89,7 @@ typedef NS_ENUM(NSInteger, CiListMode) {
  *
  *  @return `YES` if successful.
  */
-- (BOOL)upgradeFormulae:(NSArray*)formulae withReturnBlock:(void (^)(NSString*))block;
+- (NSString *)upgradeWithFormulaeNames:(NSArray*)formulae;
 
 /**
  *  Install formula with options.
@@ -101,7 +100,7 @@ typedef NS_ENUM(NSInteger, CiListMode) {
  *
  *  @return `YES` if successful.
  */
-- (BOOL)installFormula:(NSString*)formula withOptions:(NSArray*)options andReturnBlock:(void (^)(NSString*output))block;
+- (NSString *)installWithFormulaName:(NSString*)formula withOptions:(NSArray*)options;
 
 /**
  *  Uninstalls a formula.
@@ -111,7 +110,7 @@ typedef NS_ENUM(NSInteger, CiListMode) {
  *
  *  @return `YES` if successful.
  */
-- (BOOL)uninstallFormula:(NSString*)formula withReturnBlock:(void (^)(NSString*))block;
+- (NSString *)uninstallWithFormulaName:(NSString*)formula;
 
 /**
  *  Taps a repo.
@@ -121,7 +120,7 @@ typedef NS_ENUM(NSInteger, CiListMode) {
  *
  *  @return `YES` if successful.
  */
-- (BOOL)tapRepository:(NSString*)repository withReturnsBlock:(void (^)(NSString*))block;
+- (NSString *)tapWithRepositoryName:(NSString*)repository;
 
 /**
  *  Untaps a repo.
@@ -131,7 +130,7 @@ typedef NS_ENUM(NSInteger, CiListMode) {
  *
  *  @return `YES` if successful.
  */
-- (BOOL)untapRepository:(NSString*)repository withReturnsBlock:(void (^)(NSString*))block;
+- (NSString *)untapWithRepositoryName:(NSString*)repository;
 
 /**
  *  Runs Homebrew cleanup tool.
@@ -140,7 +139,7 @@ typedef NS_ENUM(NSInteger, CiListMode) {
  *
  *  @return `YES` if successful.
  */
-- (BOOL)runCleanupWithReturnBlock:(void (^)(NSString*output))block;
+- (NSString *)cleanup;
 
 /**
  *  Runs Homebrew doctor tool.
@@ -149,7 +148,7 @@ typedef NS_ENUM(NSInteger, CiListMode) {
  *
  *  @return `YES` if successful.
  */
-- (BOOL)runDoctorWithReturnBlock:(void (^)(NSString*))block;
+- (NSString *)doctor:(void (^)(NSString*))block;
 
 /**
  *  Runs Homebrew bundle dump tool. Will request instalation of Homebrew-Bundle tap if it is not already tapped.
@@ -158,7 +157,7 @@ typedef NS_ENUM(NSInteger, CiListMode) {
  *
  *  @return `nil` on success (no output), or the error in case something goes wrong.
  */
-- (NSError*)runBrewExportToolWithPath:(NSString*)path;
+- (NSError *)exportWithPath:(NSString*)path;
 
 /**
  *  Runs Homebrew bundle import tool. Will request instalation of Homebrew-Bundle tap if it is not already tapped.
@@ -168,7 +167,7 @@ typedef NS_ENUM(NSInteger, CiListMode) {
  *
  *  @return `YES` on success, `NO` otherwise.
  */
-- (BOOL)runBrewImportToolWithPath:(NSString*)path withReturnsBlock:(void (^)(NSString *))block;
+- (BOOL)importWithPath:(NSString*)path withReturnsBlock:(void (^)(NSString *))block;
 
 #pragma mark - Operations that return on finish
 
@@ -179,7 +178,7 @@ typedef NS_ENUM(NSInteger, CiListMode) {
  *
  *  @return List of CiFormula objects.
  */
-- (NSArray*)listMode:(CiListMode)mode;
+- (NSArray*)packagesWithMode:(CiListMode)mode;
 
 /**
  *  Executes `brew info` for parameter formula name.
@@ -188,7 +187,7 @@ typedef NS_ENUM(NSInteger, CiListMode) {
  *
  *  @return The information for the parameter formula as output by Homebrew.
  */
-- (NSString *)informationForFormulaName:(NSString *)name;
+- (NSString *)informationWithFormulaNamed:(NSString *)name;
 
 /**
  *  Executes `brew uses` for parameter formula name.
@@ -198,17 +197,6 @@ typedef NS_ENUM(NSInteger, CiListMode) {
  *
  *  @return The list of dependents for the parameter formula as output by Homebrew.
  */
-- (NSString *)dependantsForFormulaName:(NSString *)name onlyInstalled:(BOOL)onlyInstalled;
-
-#pragma mark – Utilities
-
-/**
- *
- *  Checks if there is any non-terminated task in queue
- *
- *  @return YES if there is any task in background queue. No if the queue is empty
- *
- */
-- (BOOL)isRunningBackgroundTask;
+- (NSString *)dependentsWithFormulaNamed:(NSString *)name installed:(BOOL)onlyInstalled;
 
 @end

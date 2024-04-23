@@ -97,7 +97,7 @@
 	self.importOutputString = [NSMutableString new];
 	__weak CiBundleWindowController *weakSelf = self;
 	
-	[[CiHomebrewInterface sharedInterface] runBrewImportToolWithPath:[fileURL path]
+	[[CiHomebrewInterface sharedInterface] importWithPath:[fileURL path]
 													withReturnsBlock:^(NSString *output)
 	{
 		[self.importOutputString appendString:output];
@@ -113,7 +113,7 @@
 
 - (void)runExportOperationWithFile:(NSURL*)fileURL
 {
-	NSError *error = [[CiHomebrewInterface sharedInterface] runBrewExportToolWithPath:[fileURL path]];
+	NSError *error = [[CiHomebrewInterface sharedInterface] exportWithPath:[fileURL path]];
 	
 	if (error)
 	{

@@ -328,9 +328,9 @@ NSOpenSavePanelDelegate>
             [self.toolbar setToolsWithUse:CiBarAddTapMode];
         }
     } else if (selectedSidebarRow == FormulaeSideBarItemDoctor) {
-        [self.toolbar setToolsWithUse:CiBarBlank];
+        [self.toolbar setToolsWithUse:CiBarCore];
     } else if (selectedSidebarRow == FormulaeSideBarItemUpdate) {
-        [self.toolbar setToolsWithUse:CiBarBlank];
+        [self.toolbar setToolsWithUse:CiBarCore];
     } else {
         showFormulaInfo = true;
         CiFormula *formula;
@@ -338,31 +338,42 @@ NSOpenSavePanelDelegate>
         if (selectedSidebarRow > FormulaeSideBarItemCasksCategory) {
             self.formulaeTableView.dataSource = self.casksDataSource;
             [self.formulaeTableView setAccessibilityLabel:NSLocalizedString(@"Casks", nil)];
-            formula = [self.casksDataSource caskAtIndex:selectedIndex];
-            [self.selectedFormulaeViewController setFormulae:selectedCasks];
-            status = [[CiHomebrewManager sharedManager] statusForFormula:formula];
+            
+            if (selectedIndex != -1) {
+                formula = [self.casksDataSource caskAtIndex:selectedIndex];
+                [self.selectedFormulaeViewController setFormulae:selectedCasks];
+                status = [[CiHomebrewManager sharedManager] statusForFormula:formula];
+            }
         } else {
             self.formulaeTableView.dataSource = self.formulaeDataSource;
             [self.formulaeTableView setAccessibilityLabel:NSLocalizedString(@"Formulae", nil)];
-            formula = [self.formulaeDataSource formulaAtIndex:selectedIndex];
-            [self.selectedFormulaeViewController setFormulae:selectedFormulae];
-            status = [[CiHomebrewManager sharedManager] statusForCask:formula];
+            
+            if (selectedIndex != -1) {
+                formula = [self.formulaeDataSource formulaAtIndex:selectedIndex];
+                [self.selectedFormulaeViewController setFormulae:selectedFormulae];
+                status = [[CiHomebrewManager sharedManager] statusForCask:formula];                
+            }
         }
-        switch (status) {
-            case kCiFormulaInstalled:
-                //case kCiCaskInstalled:
-                [self.toolbar setToolsWithUse:CiOBarUAIActOnInstalled];
-                break;
-                
-            case kCiFormulaOutdated:
-                //case kCiCaskOutdated:
-                [self.toolbar setToolsWithUse:CiOBarUAIActOnOldVersionInstalled];
-                break;
-                
-            case kCiFormulaNotInstalled:
-                //case kCiCaskNotInstalled:
-                [self.toolbar setToolsWithUse:CiOBarUAIActOnInstallable];
-                break;
+        
+        if (selectedIndex != -1) {
+            [self.toolbar setToolsWithUse:CiBarCore];
+        } else {
+            switch (status) {
+                case kCiFormulaInstalled:
+                    //case kCiCaskInstalled:
+                    [self.toolbar setToolsWithUse:CiOBarUAIActOnInstalled];
+                    break;
+                    
+                case kCiFormulaOutdated:
+                    //case kCiCaskOutdated:
+                    [self.toolbar setToolsWithUse:CiOBarUAIActOnOldVersionInstalled];
+                    break;
+                    
+                case kCiFormulaNotInstalled:
+                    //case kCiCaskNotInstalled:
+                    [self.toolbar setToolsWithUse:CiOBarUAIActOnInstallable];
+                    break;
+            }
         }
     }
     if (showFormulaInfo) {
@@ -473,7 +484,7 @@ NSOpenSavePanelDelegate>
         [self.mainWindowController setContentViewHidden:NO];
         [self.label_information setHidden:NO];
         
-        [self.toolbar setToolsWithUse:CiBarBlank];
+        [self.toolbar setToolsWithUse:CiBarCore];
         [self.toolbar lock:NO];
         [self.formulaeDataSource refreshBackingArray];
         [self.casksDataSource refreshBackingArray];

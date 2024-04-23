@@ -213,13 +213,13 @@ NSString *const CiFormulaDidUpdateNotification = @"CiFormulaDidUpdateNotificatio
 	{
 		id<CiFormulaDataProvider> dataProvider = [self dataProvider];
 		
-		if (![dataProvider respondsToSelector:@selector(informationForFormulaName:)])
+		if (![dataProvider respondsToSelector:@selector(informationWithFormulaNamedinformationWithFormulaNamed:)])
 		{
 			_needsInformation = NO;
 			return NO;
 		}
 
-		NSString *information = [[self dataProvider] informationForFormulaName:self.name];
+		NSString *information = [[self dataProvider] informationWithFormulaName:self.name];
 
 		if ([information rangeOfString:@"\n"].location == NSNotFound)
 		{

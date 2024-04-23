@@ -61,7 +61,7 @@
 	NSString *previousString = [self.doctorTextView string];
 	
 	dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
-		[[CiHomebrewInterface sharedInterface] runDoctorWithReturnBlock:^(NSString *output) {
+		[[CiHomebrewInterface sharedInterface] doctor:^(NSString *output) {
 			[self.doctorTextView performSelectorOnMainThread:@selector(setString:)
 												  withObject:[previousString stringByAppendingString:output]
 											   waitUntilDone:YES];

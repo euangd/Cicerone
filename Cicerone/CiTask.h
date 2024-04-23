@@ -26,21 +26,17 @@ extern NSString * _Nonnull const kDidEndBackgroundActivityNotification;
 
 @class CiTask;
 
-@protocol CiTaskCompleted <NSObject>
-- (void)task:(CiTask * _Nonnull)task didFinishWithOutput:(NSString * _Nonnull)output error:(NSString * _Nonnull)error;
-@end
+// this class used to use an output notification protocol, checked with [self.delegate respondsToSelector:@selector(task:didFinishWithOutput:error:)]
 
 @interface CiTask : NSObject
 
 - (_Nonnull instancetype)initWithPath:(NSString * _Nonnull)path
-							arguments:(NSArray * _Nonnull)arguments;
-- (int)execute;
-- (void)cleanup;
+                        withArguments:(NSArray * _Nonnull)arguments;
+- (int)runToExitReturningStandardOutput:(out NSString * _Nullable * _Nullable)standardOutput returningStandardError:(out NSString * _Nullable * _Nullable)standardError;
+- (void)halt;
 
-@property (nonatomic, nullable, copy) void (^updateBlock)(NSString * _Nonnull);
-@property (nonatomic, nullable) dispatch_queue_t updateBlockQueue;
-@property (readonly, nonnull) NSString *output;
-@property (readonly, nonnull) NSString *error;
-@property (weak, nullable) id<CiTaskCompleted> delegate;
+@property (strong, readonly, nonnull) NSString *executablePath;
+@property (strong, readonly, nonnull) NSArray *executableArguments;
+@property (readonly) BOOL ran;
 
 @end

@@ -33,12 +33,12 @@ extern NSString *const kCi_HOMEBREW_WEBSITE;
 
 @property (getter=isRunningBackgroundTask) BOOL runningBackgroundTask;
 
-+ (NSURL*)urlForApplicationSupportFolder;
-+ (NSURL*)urlForApplicationCachesFolder;
++ (NSURL *)urlForApplicationSupportFolder;
++ (NSURL *)urlForApplicationCachesFolder;
 
 - (IBAction)openWebsite:(id)sender;
 
 - (void)displayBackgroundWarning;
-- (void)requestUserAttentionWithMessageTitle:(NSString*)title andDescription:(NSString*)desc;
+- (void)requestUserAttentionWithMessageTitle:(NSString *)title andDescription:(NSString *)desc;
 
 @end
