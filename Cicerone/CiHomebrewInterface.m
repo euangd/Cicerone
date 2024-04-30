@@ -203,7 +203,7 @@ to pass to async tasks, even though this never happened, to run the update block
 		if (self.delegate) {
 			id delegate = self.delegate;
 			dispatch_async(dispatch_get_main_queue(), ^{
-				[delegate homebrewInterfaceDidFindBrew:YES];
+				[delegate homebrewInterfaceDidNotFindBrew:YES];
 			});
 		}
 	}
@@ -240,35 +240,35 @@ to pass to async tasks, even though this never happened, to run the update block
 	CiHomebrewInterfaceListCall *listCall = nil;
 
 	switch (mode) {
-		case kCiListInstalledFormulae:
+		case kCiListModeInstalledFormulae:
 			listCall = [[CiHomebrewInterfaceListCallInstalledFormulae alloc] init];
 			break;
 			
-		case kCiListInstalledCasks:
+		case kCiListModeInstalledCasks:
 			listCall = [[CiHomebrewInterfaceListCallInstalledCasks alloc] init];
 			break;
 			
-		case kCiListAllFormulae:
+		case kCiListModeAllFormulae:
 			listCall = [[CiHomebrewInterfaceListCallAllFormulae alloc] init];
 			break;
 			
-		case kCiListAllCasks:
+		case kCiListModeAllCasks:
 			listCall = [[CiHomebrewInterfaceListCallAllCasks alloc] init];
 			break;
 
-		case kCiListOutdatedFormulae:
+		case kCiListModeOutdatedFormulae:
 			listCall = [[CiHomebrewInterfaceListCallUpgradeableFormulae alloc] init];
 			break;
 			
-		case kCiListOutdatedCasks:
+		case kCiListModeOutdatedCasks:
 			listCall = [[CiHomebrewInterfaceListCallUpgradeableCasks alloc] init];
 			break;
 			
-		case kCiListLeaves:
+		case kCiListModeLeaves:
 			listCall = [[CiHomebrewInterfaceListCallLeaves alloc] init];
 			break;
 
-		case kCiListRepositories:
+		case kCiListModeRepositories:
 			listCall = [[CiHomebrewInterfaceListCallRepositories alloc] init];
 			break;
 
@@ -505,7 +505,7 @@ to pass to async tasks, even though this never happened, to run the update block
 - (CiFormula *)parseFormulaItem:(NSString *)item
 {
 	NSArray *aux = [item componentsSeparatedByString:@" "];
-	return [CiFormula formulaWithName:[aux firstObject] andVersion:[aux lastObject]];
+	return [CiFormula formulaWithName:[aux firstObject] withVersion:[aux lastObject]];
 }
 
 @end
@@ -562,8 +562,8 @@ to pass to async tasks, even though this never happened, to run the update block
 			NSString *latestVersion = [item substringWithRange:[result rangeAtIndex:[result numberOfRanges] - 1]];
 
 			formula = [CiFormula formulaWithName:formulaName
-										 version:installedVersion
-								andLatestVersion:latestVersion];
+										 withVersion:installedVersion
+								withLatestVersion:latestVersion];
 		}
 	}];
 	

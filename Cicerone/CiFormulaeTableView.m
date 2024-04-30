@@ -29,7 +29,7 @@ unichar SPACE_CHARACTER = 0x0020;
 {
 	self = [super initWithFrame:frameRect];
 	if (self) {
-		_mode = kCiListAllFormulae;
+		_mode = kCiListModeAllFormulae;
 	}
 	return self;
 }
@@ -48,7 +48,7 @@ unichar SPACE_CHARACTER = 0x0020;
 	}
 	
 	switch (self.mode) {
-		case kCiListAllFormulae:
+		case kCiListModeAllFormulae:
 			titleWidth = (NSInteger)(totalWidth - 125);
 			[[self tableColumnWithIdentifier:kColumnIdentifierVersion] setHidden:YES];
 			[[self tableColumnWithIdentifier:kColumnIdentifierLatestVersion] setHidden:YES];
@@ -57,7 +57,7 @@ unichar SPACE_CHARACTER = 0x0020;
 			[self setAllowsMultipleSelection:NO];
 			break;
 			
-		case kCiListInstalledFormulae:
+		case kCiListModeInstalledFormulae:
 			titleWidth = (NSInteger)(totalWidth * 0.4);
 			[[self tableColumnWithIdentifier:kColumnIdentifierLatestVersion] setHidden:YES];
 			[[self tableColumnWithIdentifier:kColumnIdentifierStatus] setHidden:YES];
@@ -66,7 +66,7 @@ unichar SPACE_CHARACTER = 0x0020;
 			[self setAllowsMultipleSelection:NO];
 			break;
 			
-		case kCiListLeaves:
+		case kCiListModeLeaves:
 			titleWidth = totalWidth - 1;
 			[[self tableColumnWithIdentifier:kColumnIdentifierVersion] setHidden:YES];
 			[[self tableColumnWithIdentifier:kColumnIdentifierLatestVersion] setHidden:YES];
@@ -74,7 +74,7 @@ unichar SPACE_CHARACTER = 0x0020;
 			[self setAllowsMultipleSelection:NO];
 			break;
 			
-		case kCiListOutdatedFormulae:
+		case kCiListModeOutdatedFormulae:
 			titleWidth = (NSInteger)(totalWidth * 0.4);
 			[[self tableColumnWithIdentifier:kColumnIdentifierStatus] setHidden:YES];
 			[[self tableColumnWithIdentifier:kColumnIdentifierVersion] setHidden:NO];
@@ -84,7 +84,7 @@ unichar SPACE_CHARACTER = 0x0020;
 			[self setAllowsMultipleSelection:YES];
 			break;
 			
-		case kCiListSearchFormulae:
+		case kCiListModeSearchFormulae:
 			titleWidth = (NSInteger)(totalWidth - 90);
 			[[self tableColumnWithIdentifier:kColumnIdentifierVersion] setHidden:YES];
 			[[self tableColumnWithIdentifier:kColumnIdentifierLatestVersion] setHidden:YES];
@@ -93,7 +93,7 @@ unichar SPACE_CHARACTER = 0x0020;
 			[self setAllowsMultipleSelection:NO];
 			break;
 			
-		case kCiListRepositories:
+		case kCiListModeRepositories:
 			titleWidth = totalWidth - 1;
 			[[self tableColumnWithIdentifier:kColumnIdentifierVersion] setHidden:YES];
 			[[self tableColumnWithIdentifier:kColumnIdentifierLatestVersion] setHidden:YES];
@@ -101,7 +101,7 @@ unichar SPACE_CHARACTER = 0x0020;
 			[self setAllowsMultipleSelection:NO];
 			break;
 			
-		case kCiListAllCasks:
+		case kCiListModeAllCasks:
 			titleWidth = (NSInteger)(totalWidth - 125);
 			[[self tableColumnWithIdentifier:kColumnIdentifierVersion] setHidden:YES];
 			[[self tableColumnWithIdentifier:kColumnIdentifierLatestVersion] setHidden:YES];
@@ -110,7 +110,7 @@ unichar SPACE_CHARACTER = 0x0020;
 			[self setAllowsMultipleSelection:NO];
 			break;
 			
-		case kCiListInstalledCasks:
+		case kCiListModeInstalledCasks:
 			titleWidth = (NSInteger)(totalWidth * 0.4);
 			[[self tableColumnWithIdentifier:kColumnIdentifierLatestVersion] setHidden:YES];
 			[[self tableColumnWithIdentifier:kColumnIdentifierStatus] setHidden:YES];
@@ -119,7 +119,7 @@ unichar SPACE_CHARACTER = 0x0020;
 			[self setAllowsMultipleSelection:NO];
 			break;
 			
-		case kCiListOutdatedCasks:
+		case kCiListModeOutdatedCasks:
 			titleWidth = (NSInteger)(totalWidth * 0.4);
 			[[self tableColumnWithIdentifier:kColumnIdentifierStatus] setHidden:YES];
 			[[self tableColumnWithIdentifier:kColumnIdentifierVersion] setHidden:NO];
@@ -129,7 +129,7 @@ unichar SPACE_CHARACTER = 0x0020;
 			[self setAllowsMultipleSelection:YES];
 			break;
 			
-		case kCiListSearchCasks:
+		case kCiListModeSearchCasks:
 			titleWidth = (NSInteger)(totalWidth - 90);
 			[[self tableColumnWithIdentifier:kColumnIdentifierVersion] setHidden:YES];
 			[[self tableColumnWithIdentifier:kColumnIdentifierLatestVersion] setHidden:YES];
@@ -204,13 +204,13 @@ unichar SPACE_CHARACTER = 0x0020;
 	//On yosemite or later viewcontroller is part of responder chain
 	if (floor(NSAppKitVersionNumber) >= NSAppKitVersionNumber10_10)
 	{
-		[NSApp sendAction:@selector(showFormulaInfo:) to:nil from:self];
+		[NSApp sendAction:@selector(infoForSelectedFormula:) to:nil from:self];
 	}
 	else
 	{
-		if ([self.delegate respondsToSelector:@selector(showFormulaInfo:)])
+		if ([self.delegate respondsToSelector:@selector(infoForSelectedFormula:)])
 		{
-			[self.delegate performSelector:@selector(showFormulaInfo:) withObject:nil];
+			[self.delegate performSelector:@selector(infoForSelectedFormula:) withObject:nil];
 		}
 	}
 }

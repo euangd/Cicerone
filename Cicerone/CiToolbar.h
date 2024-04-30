@@ -25,39 +25,42 @@
 
 @required
 - (void)performSearchWithString:(NSString *)search;
-- (void)updateHomebrew:(id)sender;
+
+- (void)update:(id)sender;
 - (void)upgradeSelectedFormulae:(id)sender;
-- (void)showFormulaInfo:(id)sender;
-- (void)tapRepository:(id)sender;
-- (void)untapRepository:(id)sender;
-- (void)installFormula:(id)sender;
-- (void)uninstallFormula:(id)sender;
+- (void)infoForSelectedFormula:(id)sender;
+- (void)tap:(id)sender;
+- (void)untapSelectedRepository:(id)sender;
+- (void)installSelectedFormula:(id)sender;
+- (void)uninstallSelectedFormula:(id)sender;
 @end
 
 @interface CiToolbar : NSToolbar <NSToolbarDelegate>
 
-// user access intent, as in the intent the user would have to access bar controls with the current context
+// bar use mode, as in the mode which affects how the bar would be used
 
-typedef NS_ENUM(NSUInteger, CiBarUses)
+typedef NS_ENUM(NSUInteger, CiLToolbarMode)
 {
-	CiBarBlank,
+	kCiToolbarModeBlank,
     
-	CiBarCore,
+	kCiToolbarModeCore,
     
-	CiOBarUAIActOnInstallable,
-	CiOBarUAIActOnInstalled,
+	kCiToolbarModeNotInstalledPackage,
+	kCiToolbarModeInstalledPackage,
     
-	CiOBarUAIActOnOldVersionInstalled,
-	CiOBarUAIActOnOldVersionsInstalled,
+	kCiToolbarModeOutdatedPackage,
+	kCiToolbarModeOutdatedPackages,
     
-	CiBarAddTapMode,
-	CiBarTapMode
+	kCiToolbarModeTap,
+	kCiToolbarModeTappedRepository
 };
 
-@property (nonatomic, weak) id activeVisualContext;
+@property (nonatomic) BOOL lock;
 
-- (void)setToolsWithUse:(CiBarUses)use;
-- (void)lock:(BOOL)shut;
+@property (nonatomic) CiLToolbarMode mode;
+
+@property (nonatomic, weak) id homebrewViewController;
+
 - (void)showSearch;
 - (NSSearchField*)searchField;
 

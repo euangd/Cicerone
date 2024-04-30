@@ -28,7 +28,7 @@
 
 //#import "CiCask.h"
 //#import "CiCaskOptionsWindowController.h"
-#import "CiCasksDataSource.h"
+//#import "CiCasksDataSource.h"
 //#import "CiSelectedCaskViewController.h"
 
 #import "CiHomebrewViewController.h"
@@ -47,12 +47,14 @@
 #import "CiMainWindowController.h"
 #import "NSLayoutConstraint+Shims.h"
 
-typedef NS_ENUM(NSUInteger, CiContentTab) {
-    kCiContentTabFormulae,
-    kCiContentTabCasks,
-    kCiContentTabDoctor,
-    kCiContentTabUpdate
+// HomebrewViewMainContentOption ?
+typedef NS_ENUM(NSUInteger, CiHomebrewViewTabViewTabOption) {
+    kCiHomebrewViewTabViewTabOptionFormulaeList,
+    kCiHomebrewViewTabViewTabOptionDoctorTool,
+    kCiHomebrewViewTabViewTabOptionUpdateTool
 };
+
+static const CGFloat kPreferedHeightSelectedFormulaView = 120.f;
 
 @interface CiHomebrewViewController () <NSTableViewDelegate,
 CiSideBarControllerDelegate,
@@ -64,20 +66,17 @@ NSOpenSavePanelDelegate>
 
 @property (weak) CiAppDelegate *appDelegate;
 
-@property NSInteger lastSelectedSidebarIndex;
+@property NSUInteger lastSelectedSidebarIndex;
 
 @property (getter=isSearching)			BOOL searching;
 @property (getter=isHomebrewInstalled)	BOOL homebrewInstalled;
 
-
-@property (strong, nonatomic) CiFormulaeDataSource				*formulaeDataSource;
-@property (strong, nonatomic) CiCasksDataSource					*casksDataSource;
 @property (strong, nonatomic) CiFormulaOptionsWindowController	*formulaOptionsWindowController;
 @property (strong, nonatomic) NSWindowController				*operationWindowController;
 @property (strong, nonatomic) CiUpdateViewController			*updateViewController;
 @property (strong, nonatomic) CiDoctorViewController			*doctorViewController;
 @property (strong, nonatomic) CiFormulaPopoverViewController	*formulaPopoverViewController;
-@property (strong, nonatomic) CiSelectedFormulaViewController	*selectedFormulaeViewController;
+@property (strong, nonatomic) CiSelectedFormulaViewController	*selectedFormulaViewController;
 @property (strong, nonatomic) CiToolbar							*toolbar;
 @property (strong, nonatomic) CiDisabledView					*disabledView;
 @property (strong, nonatomic) CiLoadingView						*loadingView;
@@ -87,12 +86,11 @@ NSOpenSavePanelDelegate>
 @property (weak) IBOutlet NSProgressIndicator		*backgroundActivityIndicator;
 @property (weak) IBOutlet CiMainWindowController	*mainWindowController;
 
-
 @end
 
 @implementation CiHomebrewViewController
 {
-    CiHomebrewManager *_homebrewManager;
+    CiHomebrewManager *homebrewManager;
 }
 
 - (CiFormulaPopoverViewController *)formulaPopoverViewController
@@ -123,31 +121,37 @@ NSOpenSavePanelDelegate>
     return self;
 }
 
+
 - (void)commonInit
 {
-    _homebrewManager = [CiHomebrewManager sharedManager];
-    [_homebrewManager setDelegate:self];
+    homebrewManager = CiHomebrewManager.sharedManager;
+    homebrewManager.delegate = self;
     
-    self.selectedFormulaeViewController = [[CiSelectedFormulaViewController alloc] init];
-    [self.selectedFormulaeViewController setDelegate:self];
+    self.selectedFormulaViewController = [[CiSelectedFormulaViewController alloc] init];
+    self.selectedFormulaViewController.delegate = self;
     
     self.homebrewInstalled = YES;
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReceiveBackgroundActivityNotification:) name:kDidBeginBackgroundActivityNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReceiveBackgroundActivityNotification:) name:kDidEndBackgroundActivityNotification object:nil];
+    [NSNotificationCenter.defaultCenter addObserver:self
+                                           selector:@selector(didReceiveBackgroundActivityNotification:)
+                                               name:kDidBeginBackgroundActivityNotification object:nil];
+    
+    [NSNotificationCenter.defaultCenter addObserver:self
+                                           selector:@selector(didReceiveBackgroundActivityNotification:)
+                                               name:kDidEndBackgroundActivityNotification object:nil];
 }
 
 - (void)didReceiveBackgroundActivityNotification:(NSNotification*)notification
 {
-    if ([[notification name] isEqualToString:kDidBeginBackgroundActivityNotification])
+    if ([notification.name isEqualToString:kDidBeginBackgroundActivityNotification])
     {
-        [[self backgroundActivityIndicator] performSelectorOnMainThread:@selector(startAnimation:)
-                                                             withObject:self waitUntilDone:YES];
+        [self.backgroundActivityIndicator performSelectorOnMainThread:@selector(startAnimation:)
+                                                           withObject:self waitUntilDone:YES];
     }
-    else if ([[notification name] isEqualToString:kDidEndBackgroundActivityNotification])
+    else if ([notification.name isEqualToString:kDidEndBackgroundActivityNotification])
     {
-        [[self backgroundActivityIndicator] performSelectorOnMainThread:@selector(stopAnimation:)
-                                                             withObject:self waitUntilDone:YES];
+        [self.backgroundActivityIndicator performSelectorOnMainThread:@selector(stopAnimation:)
+                                                           withObject:self waitUntilDone:YES];
     }
 }
 
@@ -156,49 +160,41 @@ NSOpenSavePanelDelegate>
     [super viewDidLoad];
     
     [self.mainWindowController setUpViews];
-    [self.mainWindowController setContentViewHidden:YES];
     
-    self.formulaeDataSource = [[CiFormulaeDataSource alloc] initWithMode:kCiListAllFormulae];
-    self.formulaeTableView.dataSource = self.formulaeDataSource;
+    self.mainWindowController.windowContentViewHidden = YES;
+    
+    // this used to initialize formulaeDataSource here, now we just refresh it
+    [homebrewManager.formulaeDataSource refreshBackingArray];
+    
+    self.formulaeTableView.dataSource = homebrewManager.formulaeDataSource;
     self.formulaeTableView.delegate = self;
-    [self.formulaeTableView setAccessibilityLabel:NSLocalizedString(@"Formulae", nil)];
-    
+    self.formulaeTableView.accessibilityLabel = NSLocalizedString(@"Formulae", nil); // @"Casks" ever?
     
     //link formulae tableview
     NSView *formulaeView = self.formulaeSplitView;
-    if ([[self.tabView tabViewItems] count] > kCiContentTabFormulae) {
-        NSTabViewItem *formulaeTab = [self.tabView tabViewItemAtIndex:kCiContentTabFormulae];
+    if ([[self.tabView tabViewItems] count] > kCiHomebrewViewTabViewTabOptionFormulaeList) {
+        NSTabViewItem *formulaeTab = [self.tabView tabViewItemAtIndex:kCiHomebrewViewTabViewTabOptionFormulaeList];
         [formulaeTab setView:formulaeView];
-    }
-    
-    self.casksDataSource = [[CiCasksDataSource alloc] initWithMode:kCiListAllCasks];
-    // todo - investigate population of a casksTableView (update `configureTableForListing:` if changed)
-    
-    //link casks tableview
-    NSView *casksView = self.formulaeSplitView;
-    if ([[self.tabView tabViewItems] count] > kCiContentTabCasks) {
-        NSTabViewItem *casksTab = [self.tabView tabViewItemAtIndex:kCiContentTabCasks];
-        [casksTab setView:casksView];
     }
     
     //Creating view for update tab
     self.updateViewController = [[CiUpdateViewController alloc] initWithNibName:nil bundle:nil];
     NSView *updateView = [self.updateViewController view];
-    if ([[self.tabView tabViewItems] count] > kCiContentTabUpdate) {
-        NSTabViewItem *updateTab = [self.tabView tabViewItemAtIndex:kCiContentTabUpdate];
+    if ([[self.tabView tabViewItems] count] > kCiHomebrewViewTabViewTabOptionUpdateTool) {
+        NSTabViewItem *updateTab = [self.tabView tabViewItemAtIndex:kCiHomebrewViewTabViewTabOptionUpdateTool];
         [updateTab setView:updateView];
     }
     
     //Creating view for doctor tab
     self.doctorViewController = [[CiDoctorViewController alloc] initWithNibName:nil bundle:nil];
     NSView *doctorView = [self.doctorViewController view];
-    if ([[self.tabView tabViewItems] count] > kCiContentTabDoctor) {
-        NSTabViewItem *doctorTab = [self.tabView tabViewItemAtIndex:kCiContentTabDoctor];
+    if ([[self.tabView tabViewItems] count] > kCiHomebrewViewTabViewTabOptionDoctorTool) {
+        NSTabViewItem *doctorTab = [self.tabView tabViewItemAtIndex:kCiHomebrewViewTabViewTabOptionDoctorTool];
         [doctorTab setView:doctorView];
     }
     
-    
-    NSView *selectedFormulaView = [self.selectedFormulaeViewController view];
+    // todo: investigate; seems pretty dubious
+    NSView *selectedFormulaView = [self.selectedFormulaViewController view];
     [self.selectedFormulaView addSubview:selectedFormulaView];
     selectedFormulaView.translatesAutoresizingMaskIntoConstraints = NO;
     
@@ -228,12 +224,14 @@ NSOpenSavePanelDelegate>
 {
     self.toolbar = [[CiToolbar alloc] initWithIdentifier:@"MainToolbar"];
     self.toolbar.delegate = self.toolbar;
-    self.toolbar.activeVisualContext = self;
+    self.toolbar.homebrewViewController = self;
+    
     [[[self view] window] setToolbar:self.toolbar];
     if (@available(macOS 11.0, *)) {
         [self.toolbar setDisplayMode:NSToolbarDisplayModeIconOnly];
     }
-    [self.toolbar lock:YES];
+    
+    [self.toolbar setLock:YES];
 }
 
 - (void)addDisabledView
@@ -274,13 +272,7 @@ NSOpenSavePanelDelegate>
     loadingView.translatesAutoresizingMaskIntoConstraints = NO;
     [self.view addSubview:loadingView];
     
-    NSView *referenceView;
-    
-    if (@available(macOS 11.0, *)) {
-        referenceView = self.mainWindowController.windowContentView;
-    } else {
-        referenceView = self.view;
-    }
+    NSView *referenceView = self.mainWindowController.windowContentView;
     
     [NSLayoutConstraint activate:@[
         [NSLayoutConstraint constraintWithItem:referenceView attribute:NSLayoutAttributeLeading
@@ -302,94 +294,65 @@ NSOpenSavePanelDelegate>
 
 - (void)dealloc
 {
-    [_homebrewManager setDelegate:nil];
+    [homebrewManager setDelegate:nil];
     
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)updateInterfaceItems
 {
-    NSInteger selectedSidebarRow	= [self.sidebarController.sidebar selectedRow];
-    NSInteger selectedIndex			= [self.formulaeTableView selectedRow];
-    NSIndexSet *selectedRows		= [self.formulaeTableView selectedRowIndexes];
-    NSArray *selectedFormulae		= [self.formulaeDataSource formulasAtIndexSet:selectedRows];
-    NSArray *selectedCasks			= [self.casksDataSource casksAtIndexSet:selectedRows];
+    NSInteger selectedSidebarRow = self.sidebarController.sidebar.selectedRow;
     
-    CGFloat height = [self.formulaeSplitView bounds].size.height;
-    CGFloat preferedHeightOfSelectedFormulaView = 120.f;
-    [self.formulaeSplitView setPosition:height - preferedHeightOfSelectedFormulaView ofDividerAtIndex:0];
+    NSInteger mostRecentlySelectedListIndex = self.formulaeTableView.selectedRow;
+    NSIndexSet *allSelectedListIndeces = self.formulaeTableView.selectedRowIndexes;
     
-    BOOL showFormulaInfo = false;
-    if (selectedSidebarRow == FormulaeSideBarItemRepositories) {
-        [self.toolbar setToolsWithUse:CiBarAddTapMode];
-        if (selectedIndex != -1) {
-            [self.toolbar setToolsWithUse:CiBarTapMode];
-        } else {
-            [self.toolbar setToolsWithUse:CiBarAddTapMode];
-        }
-    } else if (selectedSidebarRow == FormulaeSideBarItemDoctor) {
-        [self.toolbar setToolsWithUse:CiBarCore];
-    } else if (selectedSidebarRow == FormulaeSideBarItemUpdate) {
-        [self.toolbar setToolsWithUse:CiBarCore];
-    } else {
-        showFormulaInfo = true;
-        CiFormula *formula;
-        CiFormulaStatus status;
-        if (selectedSidebarRow > FormulaeSideBarItemCasksCategory) {
-            self.formulaeTableView.dataSource = self.casksDataSource;
-            [self.formulaeTableView setAccessibilityLabel:NSLocalizedString(@"Casks", nil)];
+    NSArray *selectedFormulae = [homebrewManager.formulaeDataSource formulaeAtIndexSet:allSelectedListIndeces];
+    
+    [self.formulaeSplitView setPosition:self.formulaeSplitView.bounds.size.height - kPreferedHeightSelectedFormulaView ofDividerAtIndex:0];
+    
+    BOOL showFormulaInfo = false; // will get computed based on whether or not the formulae list homebrew view tab view tab option is selected and is not for the repositories sidebar row
+    switch (selectedSidebarRow) {
+        case kCiSidebarRowRepositories:
+            self.toolbar.mode = mostRecentlySelectedListIndex != -1 ? kCiToolbarModeTappedRepository : kCiToolbarModeTap;
+            break;
+        case kCiSidebarRowDoctor:
+        case kCiSidebarRowUpdate:
+            self.toolbar.mode = kCiToolbarModeCore;
+            break;
+        default:
+            showFormulaInfo = true;
             
-            if (selectedIndex != -1) {
-                formula = [self.casksDataSource caskAtIndex:selectedIndex];
-                [self.selectedFormulaeViewController setFormulae:selectedCasks];
-                status = [[CiHomebrewManager sharedManager] statusForFormula:formula];
-            }
-        } else {
-            self.formulaeTableView.dataSource = self.formulaeDataSource;
-            [self.formulaeTableView setAccessibilityLabel:NSLocalizedString(@"Formulae", nil)];
+            self.selectedFormulaViewController.formulae = selectedFormulae;
             
-            if (selectedIndex != -1) {
-                formula = [self.formulaeDataSource formulaAtIndex:selectedIndex];
-                [self.selectedFormulaeViewController setFormulae:selectedFormulae];
-                status = [[CiHomebrewManager sharedManager] statusForCask:formula];                
+            if (mostRecentlySelectedListIndex != -1) {
+                switch ([homebrewManager.formulaeDataSource statusForFormula:[homebrewManager.formulaeDataSource formulaAtIndex:mostRecentlySelectedListIndex]]) {
+                    case kCiFormulaStatusInstalled:
+                        self.toolbar.mode = kCiToolbarModeInstalledPackage;
+                        break;
+                        
+                    case kCiFormulaStatusOutdated:
+                        self.toolbar.mode = kCiToolbarModeOutdatedPackage;
+                        break;
+                        
+                    case kCiFormulaStatusNotInstalled:
+                        self.toolbar.mode = kCiToolbarModeNotInstalledPackage;
+                        break;
+                }
+            } else {
+                self.toolbar.mode = kCiToolbarModeCore;
             }
-        }
-        
-        if (selectedIndex != -1) {
-            [self.toolbar setToolsWithUse:CiBarCore];
-        } else {
-            switch (status) {
-                case kCiFormulaInstalled:
-                    //case kCiCaskInstalled:
-                    [self.toolbar setToolsWithUse:CiOBarUAIActOnInstalled];
-                    break;
-                    
-                case kCiFormulaOutdated:
-                    //case kCiCaskOutdated:
-                    [self.toolbar setToolsWithUse:CiOBarUAIActOnOldVersionInstalled];
-                    break;
-                    
-                case kCiFormulaNotInstalled:
-                    //case kCiCaskNotInstalled:
-                    [self.toolbar setToolsWithUse:CiOBarUAIActOnInstallable];
-                    break;
-            }
-        }
+            break;
     }
-    if (showFormulaInfo) {
-        [self.selectedFormulaView setHidden:NO];
-    } else {
-        [self.selectedFormulaView setHidden:YES];
-    }
+    
+    self.selectedFormulaView.hidden = !showFormulaInfo;
 }
 
 - (void)configureTableForListing:(CiListMode)mode
 {
     [self.formulaeTableView deselectAll:nil];
-    [self.formulaeDataSource setMode:mode];
-    [self.casksDataSource setMode:mode];
-    // todo casksTableView
-    [self.formulaeTableView setMode:mode];
+    homebrewManager.formulaeDataSource.mode = mode;
+    
+    self.formulaeTableView.mode = mode;
     [self.formulaeTableView reloadData];
     
     [self updateInterfaceItems];
@@ -400,7 +363,7 @@ NSOpenSavePanelDelegate>
 
 - (void)updateInfoLabelWithSidebarSelection
 {
-    FormulaeSideBarItem selectedSidebarRow = [self.sidebarController.sidebar selectedRow];
+    CiSidebarRow selectedSidebarRow = [self.sidebarController.sidebar selectedRow];
     NSString *message = nil;
     
     if (self.isSearching)
@@ -411,43 +374,43 @@ NSOpenSavePanelDelegate>
     {
         switch (selectedSidebarRow)
         {
-            case FormulaeSideBarItemInstalled: // Installed Formulae
+            case kCiSidebarRowInstalledFormulae: // Installed Formulae
                 message = NSLocalizedString(@"Sidebar_Info_Installed", nil);
                 break;
                 
-            case FormulaeSideBarItemOutdated: // Outdated Formulae
+            case kCiSidebarRowOutdatedFormulae: // Outdated Formulae
                 message = NSLocalizedString(@"Sidebar_Info_Outdated", nil);
                 break;
                 
-            case FormulaeSideBarItemAll: // All Formulae
+            case kCiSidebarRowAllFormulae: // All Formulae
                 message = NSLocalizedString(@"Sidebar_Info_All", nil);
                 break;
                 
-            case FormulaeSideBarItemLeaves:	// Leaves
+            case kCiSidebarRowLeaves:    // Leaves
                 message = NSLocalizedString(@"Sidebar_Info_Leaves", nil);
                 break;
                 
-            case FormulaeSideBarItemRepositories: // Repositories
+            case kCiSidebarRowRepositories: // Repositories
                 message = NSLocalizedString(@"Sidebar_Info_Repos", nil);
                 break;
                 
-            case FormulaeSideBarItemDoctor: // Doctor
+            case kCiSidebarRowDoctor: // Doctor
                 message = NSLocalizedString(@"Sidebar_Info_Doctor", nil);
                 break;
                 
-            case FormulaeSideBarItemUpdate: // Update Tool
+            case kCiSidebarRowUpdate: // Update Tool
                 message = NSLocalizedString(@"Sidebar_Info_Update", nil);
                 break;
                 
-            case CasksSideBarItemInstalled: // Installed Casks
+            case kCiSidebarRowInstalledCasks: // Installed Casks
                 message = NSLocalizedString(@"Sidebar_Info_Installed_Casks", nil);
                 break;
                 
-            case CasksSideBarItemOutdated: // Outdated Casks
+            case kCiSidebarRowOutdatedCasks: // Outdated Casks
                 message = NSLocalizedString(@"Sidebar_Info_Outdated_Casks", nil);
                 break;
                 
-            case CasksSideBarItemAll: // All Casks
+            case kCiSidebarRowAllCasks: // All Casks
                 message = NSLocalizedString(@"Sidebar_Info_All_Casks", nil);
                 break;
                 
@@ -463,13 +426,13 @@ NSOpenSavePanelDelegate>
 {
     if (message)
     {
-        [self.label_information setStringValue:message];
+        [self.informationTextField setStringValue:message];
     }
 }
 
 #pragma mark - Homebrew Manager Delegate
 
-- (void)homebrewManagerFinishedUpdating:(CiHomebrewManager *)manager
+- (void)homebrewManagerDidFinishUpdating:(CiHomebrewManager *)manager
 {
     [self.loadingView removeFromSuperview];
     self.loadingView = nil;
@@ -478,16 +441,16 @@ NSOpenSavePanelDelegate>
     {
         [[self.formulaeTableView menu] cancelTracking];
         
-        self.currentFormula = nil;
-        self.selectedFormulaeViewController.formulae = nil;
+        self.selectedFormula = nil;
+        self.selectedFormulaViewController.formulae = nil;
         
-        [self.mainWindowController setContentViewHidden:NO];
-        [self.label_information setHidden:NO];
+        [self.mainWindowController setWindowContentViewHidden:NO];
+        [self.informationTextField setHidden:NO];
         
-        [self.toolbar setToolsWithUse:CiBarCore];
-        [self.toolbar lock:NO];
-        [self.formulaeDataSource refreshBackingArray];
-        [self.casksDataSource refreshBackingArray];
+        self.toolbar.mode = kCiToolbarModeCore;
+        self.toolbar.lock = NO;
+        
+        [homebrewManager.formulaeDataSource refreshBackingArray];
         
         // Used after unlocking the app when inserting custom homebrew installation path
         BOOL shouldReselectFirstRow = ([self.sidebarController.sidebar selectedRow] < 0);
@@ -498,28 +461,28 @@ NSOpenSavePanelDelegate>
         [self setEnableUpgradeFormulasMenu:([[CiHomebrewManager sharedManager] outdatedFormulae].count > 0)];
         
         if (shouldReselectFirstRow) {
-            [self.sidebarController.sidebar selectRowIndexes:[NSIndexSet indexSetWithIndex:FormulaeSideBarItemInstalled] byExtendingSelection:NO];
+            [self.sidebarController.sidebar selectRowIndexes:[NSIndexSet indexSetWithIndex:kCiSidebarRowInstalledFormulae] byExtendingSelection:NO];
         } else {
             [self.sidebarController.sidebar selectRowIndexes:[NSIndexSet indexSetWithIndex:(NSUInteger)_lastSelectedSidebarIndex] byExtendingSelection:NO];
         }
     }
 }
 
-- (void)homebrewManager:(CiHomebrewManager *)manager didUpdateSearchResults:(NSArray *)searchResults
+- (void)homebrewManager:(CiHomebrewManager *)manager didFinishSearchReturningSearchResults:(NSArray *)searchResults
 {
     [self loadSearchResults];
 }
 
-- (void)homebrewManager:(CiHomebrewManager *)manager shouldDisplayNoBrewMessage:(BOOL)yesOrNo
+- (void)homebrewManager:(CiHomebrewManager *)manager didNotFindBrew:(BOOL)yesOrNo
 {
     [self setHomebrewInstalled:!yesOrNo];
     
     if (yesOrNo)
     {
         [self addDisabledView];
-        [self.label_information setHidden:YES];
-        [self.mainWindowController setContentViewHidden:YES];
-        [self.toolbar lock:YES];
+        [self.informationTextField setHidden:YES];
+        [self.mainWindowController setWindowContentViewHidden:YES];
+        [self.toolbar setLock:YES];
         
         NSAlert *alert = [[NSAlert alloc] init];
         [alert setMessageText:NSLocalizedString(@"Generic_Error", nil)];
@@ -547,12 +510,12 @@ NSOpenSavePanelDelegate>
     {
         [self.disabledView removeFromSuperview];
         self.disabledView = nil;
-        [self.label_information setHidden:NO];
-        [self.mainWindowController setContentViewHidden:NO];
+        [self.informationTextField setHidden:NO];
+        [self.mainWindowController setWindowContentViewHidden:NO];
         
-        [self.toolbar lock:NO];
+        [self.toolbar setLock:NO];
         
-        [[CiHomebrewManager sharedManager] reloadFromInterfaceRebuildingCache:YES];
+        [[CiHomebrewManager sharedManager] loadHomebrewStateWithCacheRebuild:YES];
     }
 }
 
@@ -585,17 +548,17 @@ NSOpenSavePanelDelegate>
 
 - (void)loadSearchResults
 {
-    [self.sidebarController.sidebar selectRowIndexes:[NSIndexSet indexSetWithIndex:FormulaeSideBarItemAll]
+    [self.sidebarController.sidebar selectRowIndexes:[NSIndexSet indexSetWithIndex:kCiSidebarRowAllFormulae]
                                 byExtendingSelection:NO];
     [self setSearching:YES];
-    [self configureTableForListing:kCiListSearchFormulae];
+    [self configureTableForListing:kCiListModeSearchFormulae];
 }
 
 - (void)endSearchAndCleanup
 {
     [self.toolbar.searchField setStringValue:@""];
     [self setSearching:NO];
-    [self configureTableForListing:kCiListAllFormulae];
+    [self configureTableForListing:kCiListModeAllFormulae];
     [self updateInfoLabelWithSidebarSelection];
 }
 
@@ -610,14 +573,15 @@ NSOpenSavePanelDelegate>
 
 - (void)selectedFormulaViewDidUpdateFormulaInfoForFormula:(CiFormula *)formula
 {
-    if (formula) [self setCurrentFormula:formula];
+    if (formula) _selectedFormula = formula;
+    // send KVO change notification for selectedFormula; maybe in manual setter?
 }
 
 #pragma mark - CiSideBarDelegate Delegate
 
 - (void)sourceListSelectionDidChange
 {
-    CiContentTab tabIndex;
+    CiHomebrewViewTabViewTabOption tabOption;
     NSInteger selectedSidebarRow = [self.sidebarController.sidebar selectedRow];
     
     if ([self isSearching])
@@ -631,67 +595,57 @@ NSOpenSavePanelDelegate>
     }
     
     [self.formulaeTableView deselectAll:nil];
-    [self setCurrentFormula:nil];
+    [self setSelectedFormula:nil];
     
     [self updateInterfaceItems];
     
     switch (selectedSidebarRow) {
-        case FormulaeSideBarItemInstalled: // Installed Formulae
-            tabIndex = kCiContentTabFormulae;
-            [self configureTableForListing:kCiListInstalledFormulae];
+        case kCiSidebarRowDoctor: // Doctor
+            tabOption = kCiHomebrewViewTabViewTabOptionDoctorTool;
+            goto apply;
+            
+        case kCiSidebarRowUpdate: // Update Tool
+            tabOption = kCiHomebrewViewTabViewTabOptionUpdateTool;
+            goto apply;
+            
+        case kCiSidebarRowInstalledFormulae: // Installed Formulae
+            [self configureTableForListing:kCiListModeInstalledFormulae];
             break;
             
-        case FormulaeSideBarItemOutdated: // Outdated Formulae
-            tabIndex = kCiContentTabFormulae;
-            [self configureTableForListing:kCiListOutdatedFormulae];
+        case kCiSidebarRowOutdatedFormulae: // Outdated Formulae
+            [self configureTableForListing:kCiListModeOutdatedFormulae];
             break;
             
-        case FormulaeSideBarItemAll: // All Formulae
-            tabIndex = kCiContentTabFormulae;
-            [self configureTableForListing:kCiListAllFormulae];
-            break;
-        
-        case FormulaeSideBarItemLeaves:	// Leaves
-            tabIndex = kCiContentTabFormulae;
-            [self configureTableForListing:kCiListLeaves];
+        case kCiSidebarRowAllFormulae: // All Formulae
+            [self configureTableForListing:kCiListModeAllFormulae];
             break;
             
-        case FormulaeSideBarItemRepositories: // Repositories
-            tabIndex = kCiContentTabFormulae;
-            [self configureTableForListing:kCiListRepositories];
+        case kCiSidebarRowLeaves:    // Leaves
+            [self configureTableForListing:kCiListModeLeaves];
             break;
             
-        case FormulaeSideBarItemDoctor: // Doctor
-            tabIndex = kCiContentTabDoctor;
+        case kCiSidebarRowRepositories: // Repositories
+            [self configureTableForListing:kCiListModeRepositories];
             break;
             
-        case FormulaeSideBarItemUpdate: // Update Tool
-            tabIndex = kCiContentTabUpdate;
+        case kCiSidebarRowInstalledCasks: // Installed Casks
+            [self configureTableForListing:kCiListModeInstalledCasks];
             break;
             
-        case CasksSideBarItemInstalled: // Installed Casks
-            tabIndex = kCiContentTabCasks;
-            [self configureTableForListing:kCiListInstalledCasks];
+        case kCiSidebarRowOutdatedCasks: // Outdated Casks
+            [self configureTableForListing:kCiListModeOutdatedCasks];
             break;
             
-        case CasksSideBarItemOutdated: // Outdated Casks
-            tabIndex = kCiContentTabCasks;
-            [self configureTableForListing:kCiListOutdatedCasks];
-            break;
-            
-        case CasksSideBarItemAll: // All Casks
-            tabIndex = kCiContentTabCasks;
-            [self configureTableForListing:kCiListAllCasks];
-            break;
-            
-        default:
-            tabIndex = kCiContentTabFormulae;
+        case kCiSidebarRowAllCasks: // All Casks
+            [self configureTableForListing:kCiListModeAllCasks];
             break;
     }
     
-    [self updateInfoLabelWithSidebarSelection];
+    tabOption = kCiHomebrewViewTabViewTabOptionFormulaeList;
     
-    [self.tabView selectTabViewItemAtIndex:tabIndex];
+apply:
+    [self updateInfoLabelWithSidebarSelection];
+    [self.tabView selectTabViewItemAtIndex:tabOption];
 }
 
 #pragma mark - NSMenu Delegate
@@ -724,7 +678,7 @@ NSOpenSavePanelDelegate>
     [self showFormulaInfoForCurrentlySelectedFormulaUsingInfoType:type];
 }
 
-- (IBAction)installFormula:(id)sender
+- (IBAction)installSelectedFormula:(id)sender
 {
     [self checkForBackgroundTask];
     
@@ -764,7 +718,7 @@ NSOpenSavePanelDelegate>
     }];
 }
 
-- (IBAction)uninstallFormula:(id)sender
+- (IBAction)uninstallSelectedFormula:(id)sender
 {
     [self checkForBackgroundTask];
     
@@ -812,31 +766,6 @@ NSOpenSavePanelDelegate>
     }
 }
 
-- (IBAction)upgradeSelectedCasks:(id)sender
-{
-    [self checkForBackgroundTask];
-    
-    NSArray *selectedCasks = [self selectedCasks];
-    if (![selectedCasks count])
-    {
-        return;
-    }
-    
-    NSString *formulaNames = [[self selectedCaskNames] componentsJoinedByString:@", "];
-    
-    NSAlert *alert = [[NSAlert alloc] init];
-    [alert setMessageText:NSLocalizedString(@"Message_Update_Formulae_Title", nil)];
-    [alert addButtonWithTitle:NSLocalizedString(@"Generic_Yes", nil)];
-    [alert addButtonWithTitle:NSLocalizedString(@"Generic_Cancel", nil)];
-    [alert setInformativeText:[NSString stringWithFormat:NSLocalizedString(@"Message_Update_Formulae_Body", nil), formulaNames]];
-    
-    [alert.window setTitle:NSLocalizedString(@"Cicerone", nil)];
-    if ([alert runModal] == NSAlertFirstButtonReturn)
-    {
-        self.operationWindowController = [CiInstallationWindowController runWithOperation:kCiWindowOperationUpgrade formulae:selectedCasks options:nil];
-    }
-}
-
 
 - (IBAction)upgradeAllOutdatedFormulae:(id)sender
 {
@@ -855,7 +784,7 @@ NSOpenSavePanelDelegate>
     }
 }
 
-- (IBAction)tapRepository:(id)sender
+- (IBAction)tap:(id)sender
 {
     [self checkForBackgroundTask];
     
@@ -884,7 +813,7 @@ NSOpenSavePanelDelegate>
     }
 }
 
-- (IBAction)untapRepository:(id)sender
+- (IBAction)untapSelectedRepository:(id)sender
 {
     [self checkForBackgroundTask];
     CiFormula *formula = [self selectedFormula];
@@ -909,7 +838,7 @@ NSOpenSavePanelDelegate>
 
 - (IBAction)updateHomebrew:(id)sender
 {
-    [self.sidebarController.sidebar selectRowIndexes:[NSIndexSet indexSetWithIndex:FormulaeSideBarItemUpdate] byExtendingSelection:NO];
+    [self.sidebarController.sidebar selectRowIndexes:[NSIndexSet indexSetWithIndex:kCiSidebarRowUpdate] byExtendingSelection:NO];
     [self.updateViewController runStopUpdate:nil];
 }
 
@@ -936,6 +865,16 @@ NSOpenSavePanelDelegate>
         [[CiHomebrewManager sharedManager] updateSearchWithName:searchPhrase];
     }
 }
+
+- (void)infoForSelectedFormula:(id)sender { 
+    [self showFormulaInfo:sender];
+}
+
+
+- (void)update:(id)sender {
+    [self updateHomebrew:sender];
+}
+
 
 - (IBAction)beginFormulaSearch:(id)sender
 {
@@ -1000,42 +939,17 @@ NSOpenSavePanelDelegate>
 
 - (CiFormula *)selectedFormula
 {
-    NSInteger selectedIndex = [self.formulaeTableView selectedRow];
-    if (self.formulaeTableView.dataSource == self.casksDataSource) {
-        return [self.casksDataSource caskAtIndex:selectedIndex];
-    } else {
-        return [self.formulaeDataSource formulaAtIndex:selectedIndex];
-    }
+    return [[homebrewManager formulaeDataSource] formulaAtIndex:[self.formulaeTableView selectedRow]];
 }
 
 - (NSArray *)selectedFormulae
 {
-    NSIndexSet *selectedIndexes = [self.formulaeTableView selectedRowIndexes];
-    return [self.formulaeDataSource formulasAtIndexSet:selectedIndexes];
+    return [homebrewManager.formulaeDataSource formulaeAtIndexSet:[self.formulaeTableView selectedRowIndexes]];
 }
 
 - (NSArray *)selectedFormulaNames
 {
-    NSArray *formulas = [self selectedFormulae];
-    return [formulas valueForKeyPath:@"@unionOfObjects.name"];
-}
-
-- (CiFormula *)selectedCask
-{
-    NSInteger selectedIndex = [self.formulaeTableView selectedRow];
-    return [self.casksDataSource caskAtIndex:selectedIndex];
-}
-
-- (NSArray *)selectedCasks
-{
-    NSIndexSet *selectedIndexes = [self.formulaeTableView selectedRowIndexes];
-    return [self.casksDataSource casksAtIndexSet:selectedIndexes];
-}
-
-- (NSArray *)selectedCaskNames
-{
-    NSArray *formulas = [self selectedCasks];
-    return [formulas valueForKeyPath:@"@unionOfObjects.name"];
+    return [[self selectedFormulae] valueForKeyPath:@"@unionOfObjects.name"];
 }
 
 #pragma mark - Open Save Panels Delegate

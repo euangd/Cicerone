@@ -54,14 +54,14 @@
 {
 	for (CiFormula *formula in _formulae) {
 		[[NSNotificationCenter defaultCenter] removeObserver:self
-														name:CiFormulaDidUpdateNotification
+														name:kCiFormulaDidUpdateNotification
 													  object:formula];
 	}
 	_formulae = formulae;
 	for (CiFormula *formula in formulae) {
 		[[NSNotificationCenter defaultCenter] addObserver:self
 												 selector:@selector(updateFormulaInformation:)
-													 name:CiFormulaDidUpdateNotification
+													 name:kCiFormulaDidUpdateNotification
 												   object:formula];
 	}
 	[self displayInformationForFormulae];

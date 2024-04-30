@@ -24,18 +24,18 @@
 #import "CiFormula.h"
 
 typedef NS_ENUM(NSInteger, CiListMode) {
-	kCiListAllFormulae,
-	kCiListInstalledFormulae,
-	kCiListLeaves,
-	kCiListOutdatedFormulae,
-	kCiListSearchFormulae, /* Don't call -[CiHomebrewInterface listMode:] with this parameter. */
-	kCiListRepositories,
+	kCiListModeAllFormulae,
+	kCiListModeInstalledFormulae,
+	kCiListModeLeaves,
+	kCiListModeOutdatedFormulae,
+	kCiListModeSearchFormulae, /* Don't call -[CiHomebrewInterface listMode:] with this parameter. */
+    
+	kCiListModeRepositories,
 	
-	kCiListAllCasks,
-	kCiListInstalledCasks,
-	kCiListOutdatedCasks,
-	kCiListSearchCasks
-
+	kCiListModeAllCasks,
+	kCiListModeInstalledCasks,
+	kCiListModeOutdatedCasks,
+	kCiListModeSearchCasks
 };
 
 @protocol CiHomebrewInterfaceDelegate <NSObject>
@@ -50,7 +50,7 @@ typedef NS_ENUM(NSInteger, CiListMode) {
  *
  *  @param yesOrNo `YES` if brew was not found.
  */
-- (void)homebrewInterfaceDidFindBrew:(BOOL)yesOrNo;
+- (void)homebrewInterfaceDidNotFindBrew:(BOOL)yesOrNo;
 
 @end
 
@@ -187,7 +187,7 @@ typedef NS_ENUM(NSInteger, CiListMode) {
  *
  *  @return The information for the parameter formula as output by Homebrew.
  */
-- (NSString *)informationWithFormulaNamed:(NSString *)name;
+- (NSString *)informationWithFormulaName:(NSString *)name;
 
 /**
  *  Executes `brew uses` for parameter formula name.
@@ -197,6 +197,6 @@ typedef NS_ENUM(NSInteger, CiListMode) {
  *
  *  @return The list of dependents for the parameter formula as output by Homebrew.
  */
-- (NSString *)dependentsWithFormulaNamed:(NSString *)name installed:(BOOL)onlyInstalled;
+- (NSString *)dependentsWithFormulaName:(NSString *)name installed:(BOOL)onlyInstalled;
 
 @end

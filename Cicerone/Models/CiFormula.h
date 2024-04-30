@@ -22,7 +22,7 @@
 #import <Foundation/Foundation.h>
 #import "CiFormulaOption.h"
 
-extern NSString *const CiFormulaDidUpdateNotification;
+extern NSString *const kCiFormulaDidUpdateNotification;
 
 @protocol CiFormulaDataProvider <NSObject>
 @required
@@ -46,8 +46,8 @@ extern NSString *const CiFormulaDidUpdateNotification;
 
 @property BOOL needsInformation;
 
-+ (instancetype)formulaWithName:(NSString*)name version:(NSString*)version andLatestVersion:(NSString*)latestVersion;
-+ (instancetype)formulaWithName:(NSString*)name andVersion:(NSString*)version;
++ (instancetype)formulaWithName:(NSString*)name withVersion:(NSString*)version withLatestVersion:(NSString*)latestVersion;
++ (instancetype)formulaWithName:(NSString*)name withVersion:(NSString*)version;
 + (instancetype)formulaWithName:(NSString*)name;
 
 /**

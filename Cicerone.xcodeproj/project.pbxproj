@@ -49,7 +49,6 @@
 		1FE4FE65148E4CDD008EDE8B /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 1FE4FE64148E4CDD008EDE8B /* main.m */; };
 		1FE4FE6C148E4CDD008EDE8B /* CiAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1FE4FE6B148E4CDD008EDE8B /* CiAppDelegate.m */; };
 		1FE4FE6F148E4CDD008EDE8B /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1FE4FE6D148E4CDD008EDE8B /* MainMenu.xib */; };
-		222DC89E284CE05B0094E825 /* CiCasksDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 222DC89D284CE05B0094E825 /* CiCasksDataSource.m */; };
 		B7247B652BD2AE7200C13021 /* Pods-CiceroneTests in Frameworks */ = {isa = PBXBuildFile; fileRef = B79350752BD2ACB100C793ED /* Pods-CiceroneTests */; };
 		B7247B662BD2AE7200C13021 /* Pods-CiceroneTests in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = B79350752BD2ACB100C793ED /* Pods-CiceroneTests */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		B7247B6D2BD52CA800C13021 /* NSString+Summarization.m in Sources */ = {isa = PBXBuildFile; fileRef = B7247B6C2BD52CA800C13021 /* NSString+Summarization.m */; };
@@ -264,8 +263,6 @@
 		1FE4FE66148E4CDD008EDE8B /* Cicerone-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Cicerone-Prefix.pch"; sourceTree = "<group>"; };
 		1FE4FE6A148E4CDD008EDE8B /* CiAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CiAppDelegate.h; sourceTree = "<group>"; };
 		1FE4FE6B148E4CDD008EDE8B /* CiAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CiAppDelegate.m; sourceTree = "<group>"; };
-		222DC894284CDF900094E825 /* CiCasksDataSource.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CiCasksDataSource.h; sourceTree = "<group>"; };
-		222DC89D284CE05B0094E825 /* CiCasksDataSource.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = CiCasksDataSource.m; path = Controllers/CiCasksDataSource.m; sourceTree = "<group>"; };
 		5A096FDAF6579F93FCF80355 /* Pods-Cicerone.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Cicerone.release.xcconfig"; path = "Target Support Files/Pods-Cicerone/Pods-Cicerone.release.xcconfig"; sourceTree = "<group>"; };
 		8E3B2F2DB08D3A5D17E010AE /* Pods_Cicerone.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Cicerone.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		ABCD0FD1BA4ECE02384478B4 /* Pods-CiceroneTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CiceroneTests.release.xcconfig"; path = "Target Support Files/Pods-CiceroneTests/Pods-CiceroneTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -413,8 +410,6 @@
 				150AEC4B1B3F999A00163767 /* CiUpdateViewController.m */,
 				15EC1B0A25CEE4C200C93861 /* CiMainWindowController.h */,
 				15EC1B0B25CEE4C200C93861 /* CiMainWindowController.m */,
-				222DC894284CDF900094E825 /* CiCasksDataSource.h */,
-				222DC89D284CE05B0094E825 /* CiCasksDataSource.m */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -900,7 +895,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				222DC89E284CE05B0094E825 /* CiCasksDataSource.m in Sources */,
 				15BBA18E1BD031C9002C0127 /* CiBackgroundView.m in Sources */,
 				15D28A121AE1BD27005C8A3E /* BPTimedDispatch.m in Sources */,
 				D2A3A82F1B8C9F5200D05469 /* CiUtilities.m in Sources */,

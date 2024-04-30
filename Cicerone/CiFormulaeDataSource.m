@@ -18,16 +18,17 @@
 
 - (instancetype)init
 {
-	return [self initWithMode:kCiListAllFormulae];
+	return [self initWithMode:kCiListModeAllFormulae];
 }
 
 - (instancetype)initWithMode:(CiListMode)aMode
 {
 	self = [super init];
 	if (self) {
-		_mode = aMode;
-	}
-	[self refreshBackingArray];
+        // this used to also refresh the backing array via the mode setter
+//        self.mode = aMode;
+        _mode = aMode;
+    }
 	return self;
 }
 
@@ -40,29 +41,46 @@
 - (void)refreshBackingArray
 {
 	switch (self.mode) {
-		case kCiListAllFormulae:
+		case kCiListModeAllFormulae:
 			_formulaeArray = [[CiHomebrewManager sharedManager] allFormulae];
 			break;
 			
-		case kCiListInstalledFormulae:
+		case kCiListModeInstalledFormulae:
 			_formulaeArray = [[CiHomebrewManager sharedManager] installedFormulae];
 			break;
 			
-		case kCiListLeaves:
+		case kCiListModeLeaves:
 			_formulaeArray = [[CiHomebrewManager sharedManager] leavesFormulae];
 			break;
 			
-		case kCiListOutdatedFormulae:
+		case kCiListModeOutdatedFormulae:
 			_formulaeArray = [[CiHomebrewManager sharedManager] outdatedFormulae];
 			break;
 			
-		case kCiListSearchFormulae:
+		case kCiListModeSearchFormulae:
 			_formulaeArray = [[CiHomebrewManager sharedManager] searchFormulae];
 			break;
 			
-		case kCiListRepositories:
+		case kCiListModeRepositories:
 			_formulaeArray = [[CiHomebrewManager sharedManager] repositoriesFormulae];
-			
+            break;
+            
+        case kCiListModeAllCasks:
+            _formulaeArray = [[CiHomebrewManager sharedManager] allCasks];
+            break;
+            
+        case kCiListModeInstalledCasks:
+            _formulaeArray = [[CiHomebrewManager sharedManager] installedCasks];
+            break;
+            
+        case kCiListModeOutdatedCasks:
+            _formulaeArray = [[CiHomebrewManager sharedManager] outdatedCasks];
+            break;
+            
+        case kCiListModeSearchCasks:
+            _formulaeArray = [[CiHomebrewManager sharedManager] searchCasks];
+            break;
+            
 		default:
 			break;
 	}
@@ -84,12 +102,43 @@
 	return nil;
 }
 
-- (NSArray *)formulasAtIndexSet:(NSIndexSet *)indexSet
+- (NSArray *)formulaeAtIndexSet:(NSIndexSet *)indexSet
 {
 	if (indexSet.count > 0 && [self.formulaeArray count] > indexSet.lastIndex) {
 		return [self.formulaeArray objectsAtIndexes:indexSet];
 	}
 	return nil;
+}
+
+- (NSInteger)searchForFormula:(CiFormula*)formula inArray:(NSArray*)array
+{
+    __block NSUInteger index = -1;
+    
+    [array enumerateObjectsUsingBlock:^(id _Nonnull item, NSUInteger idx, BOOL * _Nonnull stop) {
+        if ([[item installedName] isEqualToString:[formula installedName]])
+        {
+            index = idx;
+            (*stop) = YES;
+        }
+    }];
+    
+    return index;
+}
+
+// temporary measure (ha ha... i mean it)
+
+- (CiFormulaStatus)statusForFormula:(CiFormula *)formula {
+    BOOL cask = self.mode >= kCiListModeAllCasks;
+    
+    if ([self searchForFormula:formula inArray:cask ? CiHomebrewManager.sharedManager.installedCasks : CiHomebrewManager.sharedManager.installedFormulae] >= 0) {
+        if ([self searchForFormula:formula inArray:cask ? CiHomebrewManager.sharedManager.outdatedCasks : CiHomebrewManager.sharedManager.outdatedFormulae] >= 0) {
+            return kCiFormulaStatusOutdated;
+        } else {
+            return kCiFormulaStatusInstalled;
+        }
+    } else {
+        return kCiFormulaStatusNotInstalled;
+    }
 }
 
 - (id)tableView:(NSTableView *)tableView objectValueForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row {
@@ -120,14 +169,14 @@
 			}
 		} else if ([columnIdentifer isEqualToString:kColumnIdentifierStatus]) {
 			if ([element isKindOfClass:[CiFormula class]]) {
-				switch ([[CiHomebrewManager sharedManager] statusForFormula:element]) {
-					case kCiFormulaInstalled:
+				switch ([self statusForFormula:element]) {
+					case kCiFormulaStatusInstalled:
 						return NSLocalizedString(@"Formula_Status_Installed", nil);
 						
-					case kCiFormulaNotInstalled:
+					case kCiFormulaStatusNotInstalled:
 						return NSLocalizedString(@"Formula_Status_Not_Installed", nil);
 						
-					case kCiFormulaOutdated:
+					case kCiFormulaStatusOutdated:
 						return NSLocalizedString(@"Formula_Status_Outdated", nil);
 						
 					default:

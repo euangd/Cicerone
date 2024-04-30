@@ -24,7 +24,7 @@
 #import "CiHomebrewManager.h"
 #import "CiHomebrewInterface.h"
 
-static void * CiFormulaContext = &CiFormulaContext;
+static void *kCiFormulaContext = &kCiFormulaContext;
 
 NSString *const kCi_ENCODE_FORMULA_NAME = @"Ci_ENCODE_FORMULA_NAME";
 NSString *const kCi_ENCODE_FORMULA_IVER = @"Ci_ENCODE_FORMULA_IVER";
@@ -42,9 +42,12 @@ NSString *const kCiIdentifierDependencies = @"==> Dependencies";
 NSString *const kCiIdentifierOptions = @"==> Options";
 NSString *const kCiIdentifierCaveats = @"==> Caveats";
 
-NSString *const CiFormulaDidUpdateNotification = @"CiFormulaDidUpdateNotification";
+NSString *const kCiFormulaDidUpdateNotification = @"CiFormulaDidUpdateNotification";
 
 @interface CiFormula ()
+
+@property (getter=isInstalled) BOOL installed;
+@property (getter=isOutdated) BOOL outdated;
 
 @property (copy, readwrite) NSString *name;
 @property (copy, readwrite) NSString *version;
@@ -54,8 +57,8 @@ NSString *const CiFormulaDidUpdateNotification = @"CiFormulaDidUpdateNotificatio
 @property (copy, readwrite) NSString *conflicts;
 @property (copy, readwrite) NSString *shortDescription;
 @property (copy, readwrite) NSString *information;
-@property (strong, readwrite) NSURL    *website;
-@property (strong, readwrite) NSArray  *options;
+@property (strong, readwrite) NSURL *website;
+@property (strong, readwrite) NSArray *options;
 
 @end
 
@@ -66,7 +69,7 @@ NSString *const CiFormulaDidUpdateNotification = @"CiFormulaDidUpdateNotificatio
 	return YES;
 }
 
-+ (instancetype)formulaWithName:(NSString*)name version:(NSString*)version andLatestVersion:(NSString*)latestVersion
++ (instancetype)formulaWithName:(NSString*)name withVersion:(NSString*)version withLatestVersion:(NSString*)latestVersion
 {
 	CiFormula *formula = [[self alloc] init];
 	
@@ -75,20 +78,21 @@ NSString *const CiFormulaDidUpdateNotification = @"CiFormulaDidUpdateNotificatio
 		formula.name = name;
 		formula.version = version;
 		formula.latestVersion = latestVersion;
+        
 		[formula commonInit];
 	}
 	
 	return formula;
 }
 
-+ (instancetype)formulaWithName:(NSString*)name andVersion:(NSString*)version
++ (instancetype)formulaWithName:(NSString*)name withVersion:(NSString*)version
 {
-	return [self formulaWithName:name version:version andLatestVersion:nil];
+	return [self formulaWithName:name withVersion:version withLatestVersion:nil];
 }
 
 + (instancetype)formulaWithName:(NSString*)name
 {
-	return [self formulaWithName:name andVersion:nil];
+	return [self formulaWithName:name withVersion:nil];
 }
 
 - (void)encodeWithCoder:(NSCoder *)aCoder
@@ -133,7 +137,7 @@ NSString *const CiFormulaDidUpdateNotification = @"CiFormulaDidUpdateNotificatio
 	[self addObserver:self
 		   forKeyPath:NSStringFromSelector(@selector(needsInformation))
 			  options:NSKeyValueObservingOptionNew
-			  context:CiFormulaContext];
+			  context:kCiFormulaContext];
 }
 
 - (instancetype)copyWithZone:(NSZone *)zone
@@ -158,7 +162,7 @@ NSString *const CiFormulaDidUpdateNotification = @"CiFormulaDidUpdateNotificatio
 		
 		[formula addObserver:formula forKeyPath:NSStringFromSelector(@selector(needsInformation))
 					 options:NSKeyValueObservingOptionNew
-					 context:CiFormulaContext];
+					 context:kCiFormulaContext];
 	}
 	return formula;
 }
@@ -179,7 +183,7 @@ NSString *const CiFormulaDidUpdateNotification = @"CiFormulaDidUpdateNotificatio
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
-	if (context == CiFormulaContext)
+	if (context == kCiFormulaContext)
 	{
 		if ([object isEqualTo:self])
 		{
@@ -213,7 +217,7 @@ NSString *const CiFormulaDidUpdateNotification = @"CiFormulaDidUpdateNotificatio
 	{
 		id<CiFormulaDataProvider> dataProvider = [self dataProvider];
 		
-		if (![dataProvider respondsToSelector:@selector(informationWithFormulaNamedinformationWithFormulaNamed:)])
+		if (![dataProvider respondsToSelector:@selector(informationWithFormulaName:)])
 		{
 			_needsInformation = NO;
 			return NO;
@@ -389,20 +393,18 @@ NSString *const CiFormulaDidUpdateNotification = @"CiFormulaDidUpdateNotificatio
 	
 	_needsInformation = NO;
 	
-	[[NSNotificationCenter defaultCenter] postNotificationName:CiFormulaDidUpdateNotification object:self];
+	[[NSNotificationCenter defaultCenter] postNotificationName:kCiFormulaDidUpdateNotification object:self];
 	return YES;
 }
 
 - (BOOL)isInstalled
 {
-	return [[CiHomebrewManager sharedManager] statusForFormula:self] != kCiFormulaNotInstalled
-	|| [[CiHomebrewManager sharedManager] statusForCask:self] != kCiFormulaNotInstalled;
+	return [[[CiHomebrewManager sharedManager] formulaeDataSource] statusForFormula:self] != kCiFormulaStatusNotInstalled;
 }
 
 - (BOOL)isOutdated
 {
-	return [[CiHomebrewManager sharedManager] statusForFormula:self] == kCiFormulaOutdated
-	|| [[CiHomebrewManager sharedManager] statusForCask:self] != kCiFormulaOutdated;
+	return [[[CiHomebrewManager sharedManager] formulaeDataSource] statusForFormula:self] == kCiFormulaStatusOutdated;
 }
 
 - (NSString*)description
@@ -437,7 +439,7 @@ NSString *const CiFormulaDidUpdateNotification = @"CiFormulaDidUpdateNotificatio
 {
 	[self removeObserver:self
 			  forKeyPath:NSStringFromSelector(@selector(needsInformation))
-				 context:CiFormulaContext];
+				 context:kCiFormulaContext];
 }
 
 @end

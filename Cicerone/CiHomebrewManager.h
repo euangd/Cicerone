@@ -21,36 +21,41 @@
 
 #import <Foundation/Foundation.h>
 #import "CiFormula.h"
+#import "CiFormulaeDataSource.h"
 
 @class CiHomebrewManager;
 
-typedef NS_ENUM(NSInteger, CiFormulaStatus) {
-	kCiFormulaNotInstalled,
-	kCiFormulaInstalled,
-	kCiFormulaOutdated
-};
-
 @protocol CiHomebrewManagerDelegate <NSObject>
 
-- (void)homebrewManagerFinishedUpdating:(CiHomebrewManager*)manager;
-- (void)homebrewManager:(CiHomebrewManager *)manager didUpdateSearchResults:(NSArray *)searchResults;
-- (void)homebrewManager:(CiHomebrewManager *)manager shouldDisplayNoBrewMessage:(BOOL)yesOrNo;
+- (void)homebrewManagerDidFinishUpdating:(CiHomebrewManager*)manager;
+- (void)homebrewManager:(CiHomebrewManager *)manager didFinishSearchReturningSearchResults:(NSArray *)searchResults;
+- (void)homebrewManager:(CiHomebrewManager *)manager didNotFindBrew:(BOOL)yesOrNo;
 
 @end
 
 @interface CiHomebrewManager : NSObject
 
-@property (strong) NSArray<CiFormula*> *installedFormulae;
-@property (strong) NSArray<CiFormula*> *outdatedFormulae;
-@property (strong) NSArray<CiFormula*> *allFormulae;
-@property (strong) NSArray<CiFormula*> *leavesFormulae;
-@property (strong) NSArray<CiFormula*> *searchFormulae;
-@property (strong) NSArray<CiFormula*> *repositoriesFormulae;
+@property (strong) NSArray<CiFormula *> *installedFormulae;
+@property (strong) NSArray<CiFormula *> *outdatedFormulae;
+@property (strong) NSArray<CiFormula *> *allFormulae;
+@property (strong) NSArray<CiFormula *> *leavesFormulae;
+@property (strong) NSArray<CiFormula *> *searchFormulae;
+@property (strong) NSArray<CiFormula *> *repositoriesFormulae;
 
-@property (strong) NSArray<CiFormula*> *installedCasks;
-@property (strong) NSArray<CiFormula*> *outdatedCasks;
-@property (strong) NSArray<CiFormula*> *allCasks;
-@property (strong) NSArray<CiFormula*> *searchCasks;
+@property (strong) NSArray<CiFormula *> *installedCasks;
+@property (strong) NSArray<CiFormula *> *outdatedCasks;
+@property (strong) NSArray<CiFormula *> *allCasks;
+@property (strong) NSArray<CiFormula *> *searchCasks;
+
+@property (strong, nonatomic) CiFormulaeDataSource *formulaeDataSource;
+
+// todo:
+// installedPackages
+// outdatedPackages
+// allPackages
+// ? leafPackages
+// ? leafCasks
+// searchPackages
 
 @property (weak) id<CiHomebrewManagerDelegate> delegate;
 
@@ -59,11 +64,8 @@ typedef NS_ENUM(NSInteger, CiFormulaStatus) {
 - (instancetype)init __attribute__((unavailable("init not available, call sharedManager instead")));
 + (instancetype)new __attribute__((unavailable("new not available, call sharedManager instead")));
 
-- (void)reloadFromInterfaceRebuildingCache:(BOOL)shouldRebuildCache;
+- (void)loadHomebrewStateWithCacheRebuild:(BOOL)shouldRebuildCache;
 - (void)updateSearchWithName:(NSString *)name;
-
-- (CiFormulaStatus)statusForFormula:(CiFormula*)formula;
-- (CiFormulaStatus)statusForCask:(CiFormula*)formula;
 
 - (void)cleanUp;
 

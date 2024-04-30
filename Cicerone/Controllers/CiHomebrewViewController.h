@@ -43,12 +43,12 @@ typedef NS_ENUM(NSUInteger, CiWindowOperation) {
 @property (weak) IBOutlet CiFormulaeTableView      *formulaeTableView;
 @property (weak) IBOutlet NSScrollView             *scrollView_formulae;
 @property (weak) IBOutlet NSTabView                *tabView;
-@property (weak) IBOutlet NSTextField              *label_information;
+@property (weak) IBOutlet NSTextField              *informationTextField;
 @property (weak) IBOutlet NSMenu                   *menu_formula;
 
 // Cocoa bindings
 @property BOOL enableUpgradeFormulasMenu;
-@property (copy) CiFormula *currentFormula;
+@property CiFormula *selectedFormula; // used to be (copy) but then -[setSelectedFormula:] would freeze, at least when @synchronized (self) up the call stack
 
 - (BOOL)isHomebrewInstalled;
 

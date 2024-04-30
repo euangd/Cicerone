@@ -10,12 +10,19 @@
 #import "CiHomebrewInterface.h"
 #import "CiFormula.h"
 
+typedef NS_ENUM(NSInteger, CiFormulaStatus) {
+    kCiFormulaStatusNotInstalled,
+    kCiFormulaStatusInstalled,
+    kCiFormulaStatusOutdated
+};
+
 @interface CiFormulaeDataSource : NSObject <NSTableViewDataSource>
 
 @property (nonatomic, assign) CiListMode mode;
 
 - (instancetype)initWithMode:(CiListMode)aMode;
 - (CiFormula *)formulaAtIndex:(NSInteger)index;
-- (NSArray *)formulasAtIndexSet:(NSIndexSet *)indexSet;
+- (NSArray *)formulaeAtIndexSet:(NSIndexSet *)indexSet;
+- (CiFormulaStatus)statusForFormula:(CiFormula *)formula;
 - (void)refreshBackingArray;
 @end

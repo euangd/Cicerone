@@ -9,23 +9,23 @@
 @import PXSourceList;
 @import Foundation;
 
-typedef NS_ENUM(NSUInteger, FormulaeSideBarItem)
+typedef NS_ENUM(NSUInteger, CiSidebarRow)
 {
-	FormulaeSideBarItemFormulaeCategory = 0,
-	FormulaeSideBarItemInstalled = 1,
-	FormulaeSideBarItemOutdated = 2,
-	FormulaeSideBarItemAll = 3,
-	FormulaeSideBarItemLeaves = 4,
+	kCiSidebarRowFormulaeHeader,
+	kCiSidebarRowInstalledFormulae,
+	kCiSidebarRowOutdatedFormulae,
+	kCiSidebarRowAllFormulae,
+	kCiSidebarRowLeaves,
 	
-	FormulaeSideBarItemCasksCategory = 5,
-	CasksSideBarItemInstalled = 6,
-	CasksSideBarItemOutdated = 7,
-	CasksSideBarItemAll = 8,
+	kCiSidebarRowCasksHeader,
+	kCiSidebarRowInstalledCasks,
+	kCiSidebarRowOutdatedCasks,
+	kCiSidebarRowAllCasks,
 	
-	FormulaeSideBarItemToolsCategory = 9,
-	FormulaeSideBarItemRepositories = 10,
-	FormulaeSideBarItemDoctor = 11,
-	FormulaeSideBarItemUpdate = 12,
+	kCiSidebarRowToolsHeader,
+	kCiSidebarRowRepositories,
+	kCiSidebarRowDoctor,
+	kCiSidebarRowUpdate,
 	
 };
 

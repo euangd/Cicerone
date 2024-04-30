@@ -22,6 +22,7 @@
 #import "CiHomebrewManager.h"
 #import "CiHomebrewInterface.h"
 #import "CiAppDelegate.h"
+#import "CiFormulaeDataSource.h"
 
 NSString *const kCiCacheLastUpdateKey = @"CiCacheLastUpdateKey";
 NSString *const kCiCacheDataKey	= @"CiCacheDataKey";
@@ -40,7 +41,9 @@ NSString *const kCiCacheDataKey	= @"CiCacheDataKey";
 	{
         static dispatch_once_t once;
         static CiHomebrewManager *instance;
+        
         dispatch_once(&once, ^ { instance = [[super allocWithZone:NULL] initUniqueInstance]; });
+        
         return instance;
 	}
 }
@@ -49,7 +52,7 @@ NSString *const kCiCacheDataKey	= @"CiCacheDataKey";
 {
 	self = [super init];
 	if (self) {
-		
+        _formulaeDataSource = [[CiFormulaeDataSource alloc] initWithMode:kCiListModeAllFormulae];
 	}
 	return self;
 }
@@ -69,7 +72,7 @@ NSString *const kCiCacheDataKey	= @"CiCacheDataKey";
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-- (void)reloadFromInterfaceRebuildingCache:(BOOL)shouldRebuildCache;
+- (void)loadHomebrewStateWithCacheRebuild:(BOOL)shouldRebuildCache;
 {
 	NSUInteger previousCountOfAllFormulae = [self allFormulae].count;
 	NSUInteger previousCountOfAllCasks = [self allCasks].count;
@@ -77,41 +80,44 @@ NSString *const kCiCacheDataKey	= @"CiCacheDataKey";
 	dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
 		[[CiHomebrewInterface sharedInterface] setDelegate:self];
 		
-		NSArray *installedFormulae = [[CiHomebrewInterface sharedInterface] packagesWithMode:kCiListInstalledFormulae];
-		NSArray *leavesFormulae = [[CiHomebrewInterface sharedInterface] packagesWithMode:kCiListLeaves];
-		NSArray *outdatedFormulae = [[CiHomebrewInterface sharedInterface] packagesWithMode:kCiListOutdatedFormulae];
-		NSArray *repositoriesFormulae = [[CiHomebrewInterface sharedInterface] packagesWithMode:kCiListRepositories];
+		NSArray *installedFormulae = [[CiHomebrewInterface sharedInterface] packagesWithMode:kCiListModeInstalledFormulae];
+		NSArray *leavesFormulae = [[CiHomebrewInterface sharedInterface] packagesWithMode:kCiListModeLeaves];
+		NSArray *outdatedFormulae = [[CiHomebrewInterface sharedInterface] packagesWithMode:kCiListModeOutdatedFormulae];
+		NSArray *repositoriesFormulae = [[CiHomebrewInterface sharedInterface] packagesWithMode:kCiListModeRepositories];
 
-		NSArray *installedCasks = [[CiHomebrewInterface sharedInterface] packagesWithMode:kCiListInstalledCasks];
-		NSArray *outdatedCasks = [[CiHomebrewInterface sharedInterface] packagesWithMode:kCiListOutdatedCasks];
+		NSArray *installedCasks = [[CiHomebrewInterface sharedInterface] packagesWithMode:kCiListModeInstalledCasks];
+		NSArray *outdatedCasks = [[CiHomebrewInterface sharedInterface] packagesWithMode:kCiListModeOutdatedCasks];
 		
 		NSArray *allFormulae = nil;
 		NSArray *allCasks = nil;
 
 		if (![self loadAllFormulaeCaches] || previousCountOfAllFormulae <= 100 || shouldRebuildCache) {
-			allFormulae = [[CiHomebrewInterface sharedInterface] packagesWithMode:kCiListAllFormulae];
+			allFormulae = [[CiHomebrewInterface sharedInterface] packagesWithMode:kCiListModeAllFormulae];
 		}
 		
 		if (![self loadAllCasksCaches] || previousCountOfAllCasks <= 10 || shouldRebuildCache) {
-			allCasks = [[CiHomebrewInterface sharedInterface] packagesWithMode:kCiListAllCasks];
+			allCasks = [[CiHomebrewInterface sharedInterface] packagesWithMode:kCiListModeAllCasks];
 		}
 
 		dispatch_async(dispatch_get_main_queue(), ^{
 			if (allFormulae != nil) {
-				[self setAllFormulae:allFormulae];
+                self.allFormulae = allFormulae;
 				[self storeAllFormulaeCaches];
 			}
-			if (allCasks != nil) {
-				[self setAllCasks:allCasks];
+			
+            if (allCasks != nil) {
+				self.allCasks = allCasks;
 				[self storeAllCasksCaches];
 			}
-			[self setInstalledFormulae:installedFormulae];
-			[self setLeavesFormulae:leavesFormulae];
-			[self setOutdatedFormulae:outdatedFormulae];
-			[self setRepositoriesFormulae:repositoriesFormulae];
-			[self setInstalledCasks:installedCasks];
-			[self setOutdatedCasks:outdatedCasks];
-			[self.delegate homebrewManagerFinishedUpdating:self];
+            
+            self.installedFormulae = installedFormulae;
+            self.leavesFormulae = leavesFormulae;
+            self.outdatedFormulae = outdatedFormulae;
+            self.repositoriesFormulae = repositoriesFormulae;
+            self.installedCasks = installedCasks;
+            self.outdatedCasks = outdatedCasks;
+			
+            [self.delegate homebrewManagerDidFinishUpdating:self];
 		});
 	});
 }
@@ -131,7 +137,7 @@ NSString *const kCiCacheDataKey	= @"CiCacheDataKey";
 	_searchFormulae = matches;
 
 	dispatch_async(dispatch_get_main_queue(), ^{
-		[self.delegate homebrewManager:self didUpdateSearchResults:matches];
+		[self.delegate homebrewManager:self didFinishSearchReturningSearchResults:matches];
 	});
 }
 
@@ -190,6 +196,7 @@ NSString *const kCiCacheDataKey	= @"CiCacheDataKey";
 	   [[NSFileManager defaultManager] removeItemAtURL:allFile error:nil];
 	   [[NSUserDefaults standardUserDefaults] removeObjectForKey:kCiCacheLastUpdateKey];
    }
+    
    return cache != nil;
 }
 
@@ -253,46 +260,9 @@ NSString *const kCiCacheDataKey	= @"CiCacheDataKey";
 	}
 }
 
-- (NSInteger)searchForFormula:(CiFormula*)formula inArray:(NSArray*)array
+- (CiFormulaStatus)statusForListedPackage:(CiFormula *)package
 {
-	NSUInteger index = 0;
-	
-	for (CiFormula* item in array)
-	{
-		if ([[item installedName] isEqualToString:[formula installedName]])
-		{
-			return index;
-		}
-		
-		index++;
-	}
-	
-	return -1;
-}
-
-- (CiFormulaStatus)statusForFormula:(CiFormula*)formula {
-	if ([self searchForFormula:formula inArray:self.installedFormulae] >= 0) {
-		if ([self searchForFormula:formula inArray:self.outdatedFormulae] >= 0)
-		{
-			return kCiFormulaOutdated;
-		} else {
-			return kCiFormulaInstalled;
-		}
-	} else {
-		return kCiFormulaNotInstalled;
-	}
-}
-
-- (CiFormulaStatus)statusForCask:(CiFormula*)formula {
-	if ([self searchForFormula:formula inArray:self.installedCasks] >= 0) {
-		if ([self searchForFormula:formula inArray:self.outdatedCasks] >= 0) {
-			return kCiFormulaOutdated;
-		} else {
-			return kCiFormulaInstalled;
-		}
-	} else {
-		return kCiFormulaNotInstalled;
-	}
+    [self.formulaeDataSource statusForFormula:package];
 }
 
 - (void)cleanUp
@@ -300,17 +270,17 @@ NSString *const kCiCacheDataKey	= @"CiCacheDataKey";
 	[[CiHomebrewInterface sharedInterface] cleanup];
 }
 
-#pragma - Homebrew Interface Delegate
+#pragma mark - Homebrew Interface Delegate
 
 - (void)homebrewInterfaceDidUpdateFormulae
 {
-	[self reloadFromInterfaceRebuildingCache:YES];
+	[self loadHomebrewStateWithCacheRebuild:YES];
 }
 
-- (void)homebrewInterfaceDidFindBrew:(BOOL)yesOrNo
+- (void)homebrewInterfaceDidNotFindBrew:(BOOL)yesOrNo
 {
 	if (self.delegate) {
-		[self.delegate homebrewManager:self shouldDisplayNoBrewMessage:yesOrNo];
+		[self.delegate homebrewManager:self didNotFindBrew:yesOrNo];
 	}
 }
 

@@ -181,7 +181,7 @@
 
 - (void)configureSidebarSettings
 {
-	[self.sidebar selectRowIndexes:[NSIndexSet indexSetWithIndex:FormulaeSideBarItemInstalled] byExtendingSelection:NO];
+	[self.sidebar selectRowIndexes:[NSIndexSet indexSetWithIndex:kCiSidebarRowInstalledFormulae] byExtendingSelection:NO];
 	[self.sidebar setAccessibilityLabel:NSLocalizedString(@"Sidebar_VoiceOver_Tools", nil)];
 }
 

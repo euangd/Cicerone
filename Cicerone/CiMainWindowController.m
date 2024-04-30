@@ -41,7 +41,7 @@
 	]];
 }
 
-- (void)setContentViewHidden:(BOOL)hide
+- (void)setWindowContentViewHidden:(BOOL)hide
 {
 	[self.windowContentView setHidden:hide];
 }
