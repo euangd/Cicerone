@@ -2,9 +2,15 @@
 
 A GUI for the `Brew` CLI tool found at [brew.sh](https://brew.sh). `Brew` is a build artifact and/or source code distribution tool similar to `Choco` and `WinGet`, but for macOS and Linux. This GUI tool aims to make it easier to use and control on macOS. See [the Features section](#Features).
 
-Cicerone is based on Bruno Philipe's [Cicerone](https://github.com/brunophilipe/Cicerone), which itself is based on Vincent Saluzzo's [Homebrew-GUI](https://github.com/vincentsaluzzo/Homebrew-GUI). The commit histories of both are still attached to this branch in Git.
+Cicerone is based on Bruno Philipe's [Cakebrew](https://github.com/brunophilipe/Cakebrew), which itself is based on Vincent Saluzzo's [Homebrew-GUI](https://github.com/vincentsaluzzo/Homebrew-GUI). The commit histories of both are still attached to this branch in Git.
 
 See [the Credits file](Credits.MD) for more information on the historical context of the source code and other content distributed with this file.
+
+## Future
+
+### Swift Version
+
+The final idea for Cicerone is to write a fresh MIT-licensed analog of Cakebrew, built on SwiftUI; this should make it easier to add [features](#Feature-List), which is the main reason for this fork. It is not clear if or when the Swift version will be viable, so the intent is for this fork to also address some of the more trivial concerns with the current state of the source.
 
 ## Features
 
@@ -12,61 +18,65 @@ See [the Credits file](Credits.MD) for more information on the historical contex
 
 <summary>
 
-### Feature List: Current and WIP
+### Feature List
 
 </summary>
 
-- [ ] Install from URI
-    - [ ] Folders
-    - [ ] Archvial Formats:- [ ] ZIP, [ ] DMG, [?] -Tar-Ball, [?] =-Others
-    - [ ] GUI-Convenience (such-as: Pull in Folder or URI Text)
-    - [ ] Auto-Paste
-- [ ] Browse
-    - Casual Browsable List of Distributions (Formulae)
-- [-] Search
+- [~] Cask Formulae
+    - [+] Cellar Control Features
+    - [+] Browse
+    - [ ] Search
+- [ ] Use Interface Builder
+
+#### Swift Version Features
+
+- [ ] Better Browse
+    - Sort List of Formulae
+    - Show More Information in List
+- [ ] Search
     - [ ] Looser Matches
-        - [ ] Meta Information (if Available)
-    - [ ] GitHub Search
-    - [ ] Cask (Formulae for Distributable Binaries) Search
-    - [ ] Match Distributions (Formulae) from Known Alternate Feeds and Self-Contained Distribution Entries (Formulae, such-as: Git-Hosted, Local (Known Other Folder or Drive, et cetera), et cetera)
+        - [ ] Match Meta Information
 - [ ] Better Installs
-    - [ ] Browse and Install Chosen Version
-    - [ ] Install Git-Hosted Direct Distributions (Formulae and Casks)
+    - [ ] Choose Version
+    - [ ] Parallel Alternate-Version Installs
 - [ ] Better Information
-    - [ ] Content Preview
-    - [ ] Possible Actions Preview
-- [-] Follow Alternative Feeds
-    - [ ] Allow Browse:- [ ] Even Casks
-    - [ ] Fix Cask Installs
-- [-] Edit and View Local Installs (Leaves)
-- [ ] Power Tools
-    - [ ] Control Addition of Installed Files to Shell Search Paths
-        - [ ] Different Selections for Each Shell and/or Terminal
-        - [ ] Version Switch (think: Xcodes)
-    - [ ] Re-Build Formulae
-    - [ ] Use Alternate Versions of Sub-Referenced Distributions (Formulae)
-- [ ] Allow Non-Default Brew Installation with Simulated Defaults (as-in: Installed on Different Drive or Folder, et cetera)
-- [?] Embedded Brew Instance
-    - [?] Self-Contained Distribution (as-in: Includes Brew)
+    - [ ] Rich Links to Related Formulae
+- [ ] Better Cellar Features
+    - [ ] Non-Default Location
+    - [ ] Move Cellar
+    - [ ] Multiple Cellars
 - [ ] Better Tasks
     - [ ] Editable Queue
-    - [ ] Worker Tasks
-        - [?] Parallel
-        - [ ] While in Non-Alerted State, Allow:
-            - [ ] Access to Browse and Search
-            - [ ] Addition of Tasks to Queue
-    - [ ] Better View into and Information on Current Tasks (such as: Install, Delete, Build, et cetera)
-        - [-] Real-Time Verbose Terminal Standard Out Echo
-        - [ ] Information:- [ ] Task Name, [] Process Name and ID
-        - [ ] Link to macOS Console for Process
-- [ ] Local Action Tracked Histories
-    - [ ] View Previous States
-        - [ ] from Errored States
-- [ ] Publish Distributions (Formulae)
-    - [ ] Generate Local Distribution Entries (Formulae)
-- [?] Other Distribution Tools
-    - [?] Differences Between Distributions
-- [?] Cross-Platform
+    - [ ] Better Status
+        - [ ] Default-Hidden Verbose Status
+        - [ ] Access to Process Information
+            - [ ] Link to macOS Console for Process
+- [ ] More Brew Tools
+    - [ ] Link to Cellar Shell Search Path
+    - [ ] Re-Build Formulae
+    - [ ] Create & Edit Formulae
+
+#### Pipedreams
+
+- [ ] Search
+    - [ ] Tags
+        - [ ] Related Packages
+- [ ] Better Browse
+    - [ ] Browse & Search Feed
+- [ ] Better Installs
+    - [ ] Pick Formula File
+- [ ] Power Tools
+    - [ ] Content Tree Previews
+        - [ ] Compare
+    - [ ] Per-Shell Search Path Link
+    - [ ] Create, Edit, & Publish Feeds
+    - [ ] Publish Formulae
+    - [ ] Pick Version for Dependencies
+- [ ] Better Tasks
+    - [ ] Better Status
+        - [ ] Brew Sub-Tasks
+- [ ] Other Distribution Tools
+    - [ ] Differences Between Equivalent Packages
 
 </details>
 
@@ -74,18 +84,8 @@ Feel free to contibute! See [the license](#License).
 
 ### Points
 
-- Easier to Browse Distributables
-- More Control Over Local Files
-- Less Error-Prone
-- Easier to Fix Local Errored States
-- Easier Use of Non-Defaults
-- Easier to Use Source Code from Various Locations (Git, Local Folder, Archive File, Remote Location (FTP, NGinX, et cetera))
-
-### Future
-
-#### Swift Version
-
-The intent with Cicerone is to write a fresh MIT-licensed version of Cicerone, built on Swift and SwiftUI. The current source tree has some serious bloat (no shade!) for a CLI tool GUI, which can be solved with the more modern sensibilities aforementioned around choice of native macOS stack. This should make it easier to add features, which is the essential driver behind the existence of this fork, but the intent is to address some of the more trivial concerns with the current state of the source beforehand; it is not at all clear if or when the Swift version will be viable, hence the current QoL edits to the structure and meta files, and the current and future edits to the actual source code.
+- Modern macOS (14.4) Idioms
+- Easier to Use With Modern Homebrew (Casks, Multiple Cellars – for Rosetta 2, et cetera)
 
 ## Pictures
 
@@ -103,7 +103,7 @@ Contributions are welcome, but otherwise no further localization work will be do
 
 The source code and other content distributed with this file is licensed under [Version `3.0+` of the `GNU General Public License` (the `GPL`)](https://www.gnu.org/licenses/gpl-3.0-standalone.html); [SPDX: `GPL-3.0-or-later`](https://spdx.org/licenses/GPL-3.0-or-later.html).
 
-Copyright © 2014-2021 Bruno Philipe, © 2023 Alex Fânaț. All rights reserved.
+Copyright © 2014–2021 Bruno Philipe, © 2023–2024 Alex Fânaț. All rights reserved.
 
 <details>
 
