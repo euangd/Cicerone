@@ -53,12 +53,12 @@ static NSString *kToolbarItemMultiActionIdentifier = @"toolbarItemMultiAction";
 	if (self)
 	{
         self.sizeMode = [CiStyle toolbarSize];
+        self.showsBaselineSeparator = NO;
 		
 		_mode = kCiToolbarModeBlank;
         
         self.mode = kCiToolbarModeCore;
 		[self setLock:YES];
-		[self setAllowsUserCustomization:YES];
 	}
     
 	return self;
@@ -288,7 +288,7 @@ static NSString *kToolbarItemMultiActionIdentifier = @"toolbarItemMultiAction";
 		self.searchField.delegate = self;
 		self.searchField.continuous = YES;
         self.searchField.recentsAutosaveName = @"RecentSearches";
-
+        
         _searchToolbarItem.searchField = self.searchField;
 	}
     

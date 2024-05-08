@@ -42,10 +42,8 @@ unichar SPACE_CHARACTER = 0x0020;
 	//OUR superview is NSClipView
 	totalWidth = [[self superview] frame].size.width;
 
-	if (@available(macOS 11.0, *)) {
-		NSRect marginsFrame = [[[self superview] layoutMarginsGuide] frame];
-		totalWidth -= marginsFrame.origin.x * 2;
-	}
+    NSRect marginsFrame = [[[self superview] layoutMarginsGuide] frame];
+    totalWidth -= marginsFrame.origin.x * 2;
 	
 	switch (self.mode) {
 		case kCiListModeAllFormulae:

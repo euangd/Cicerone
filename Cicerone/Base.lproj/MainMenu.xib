@@ -584,7 +584,7 @@ CA
             </items>
             <point key="canvasLocation" x="-235" y="154"/>
         </menu>
-        <window title="Cicerone" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" frameAutosaveName="MainWindow" animationBehavior="default" titlebarAppearsTransparent="YES" id="371" userLabel="CIcerone" customClass="CiWindow">
+        <window title="Cicerone" separatorStyle="none" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" frameAutosaveName="MainWindow" animationBehavior="default" id="371" userLabel="CIcerone" customClass="CiWindow">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES" fullSizeContentView="YES"/>
             <windowCollectionBehavior key="collectionBehavior" fullScreenPrimary="YES"/>
             <rect key="contentRect" x="629" y="349" width="826" height="439"/>
@@ -602,6 +602,11 @@ CA
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <connections>
                         <action selector="installSelectedFormula:" target="547" id="EgY-xn-NcS"/>
+                        <binding destination="547" name="enabled" keyPath="selectedFormula" id="I1M-wt-H7C">
+                            <dictionary key="options">
+                                <string key="NSValueTransformerName">NSIsNotNil</string>
+                            </dictionary>
+                        </binding>
                         <binding destination="547" name="enabled2" keyPath="selectedFormula.isInstalled" previousBinding="I1M-wt-H7C" id="SzH-i5-mpt">
                             <dictionary key="options">
                                 <integer key="NSMultipleValuesPlaceholder" value="-1"/>
@@ -611,17 +616,17 @@ CA
                                 <string key="NSValueTransformerName">NSNegateBoolean</string>
                             </dictionary>
                         </binding>
-                        <binding destination="547" name="enabled" keyPath="selectedFormula" id="I1M-wt-H7C">
-                            <dictionary key="options">
-                                <string key="NSValueTransformerName">NSIsNotNil</string>
-                            </dictionary>
-                        </binding>
                     </connections>
                 </menuItem>
                 <menuItem title="Install Formula with Options..." alternate="YES" id="Vio-Nc-WTc">
                     <modifierMask key="keyEquivalentModifierMask" option="YES"/>
                     <connections>
                         <action selector="installFormulaWithOptions:" target="547" id="W9n-92-JB6"/>
+                        <binding destination="547" name="enabled" keyPath="selectedFormula" id="7WX-BV-UWD">
+                            <dictionary key="options">
+                                <string key="NSValueTransformerName">NSIsNotNil</string>
+                            </dictionary>
+                        </binding>
                         <binding destination="547" name="enabled2" keyPath="selectedFormula.installed" previousBinding="7WX-BV-UWD" id="kU6-B7-Nwh">
                             <dictionary key="options">
                                 <integer key="NSMultipleValuesPlaceholder" value="-1"/>
@@ -629,11 +634,6 @@ CA
                                 <integer key="NSNotApplicablePlaceholder" value="-1"/>
                                 <integer key="NSNullPlaceholder" value="-1"/>
                                 <string key="NSValueTransformerName">NSNegateBoolean</string>
-                            </dictionary>
-                        </binding>
-                        <binding destination="547" name="enabled" keyPath="selectedFormula" id="7WX-BV-UWD">
-                            <dictionary key="options">
-                                <string key="NSValueTransformerName">NSIsNotNil</string>
                             </dictionary>
                         </binding>
                     </connections>

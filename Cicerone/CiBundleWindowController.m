@@ -97,14 +97,10 @@
 	self.importOutputString = [NSMutableString new];
 	__weak CiBundleWindowController *weakSelf = self;
 	
-	[[CiHomebrewInterface sharedInterface] importWithPath:[fileURL path]
-													withReturnsBlock:^(NSString *output)
-	{
-		[self.importOutputString appendString:output];
-		[weakSelf.textViewImport performSelectorOnMainThread:@selector(setString:)
-												  withObject:self.importOutputString
-											   waitUntilDone:YES];
-	}];
+	[self.importOutputString appendString:[[CiHomebrewInterface sharedInterface] importWithPath:[fileURL path]]];
+    [weakSelf.textViewImport performSelectorOnMainThread:@selector(setString:)
+                                              withObject:self.importOutputString
+                                           waitUntilDone:YES];
 	
 	[self.progressLabelImport setHidden:YES];
 	[self.buttonClose setEnabled:YES];

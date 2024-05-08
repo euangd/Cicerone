@@ -48,7 +48,7 @@ typedef NS_ENUM(NSUInteger, CiWindowOperation) {
 
 // Cocoa bindings
 @property BOOL enableUpgradeFormulasMenu;
-@property CiFormula *selectedFormula; // used to be (copy) but then -[setSelectedFormula:] would freeze, at least when @synchronized (self) up the call stack
+@property (nonatomic, readonly) CiFormula *selectedFormula; // used to be (copy) but then -[setSelectedFormula:] would freeze, at least when @synchronized (self) up the call stack
 
 - (BOOL)isHomebrewInstalled;
 

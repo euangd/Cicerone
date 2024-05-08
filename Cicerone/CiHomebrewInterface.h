@@ -89,7 +89,7 @@ typedef NS_ENUM(NSInteger, CiListMode) {
  *
  *  @return `YES` if successful.
  */
-- (NSString *)upgradeWithFormulaeNames:(NSArray*)formulae;
+- (NSString *)upgradeWithFormulaeNames:(NSArray *)formulae;
 
 /**
  *  Install formula with options.
@@ -100,7 +100,7 @@ typedef NS_ENUM(NSInteger, CiListMode) {
  *
  *  @return `YES` if successful.
  */
-- (NSString *)installWithFormulaName:(NSString*)formula withOptions:(NSArray*)options;
+- (NSString *)installWithFormulaName:(NSString *)formula withOptions:(NSArray*)options;
 
 /**
  *  Uninstalls a formula.
@@ -110,7 +110,7 @@ typedef NS_ENUM(NSInteger, CiListMode) {
  *
  *  @return `YES` if successful.
  */
-- (NSString *)uninstallWithFormulaName:(NSString*)formula;
+- (NSString *)uninstallWithFormulaName:(NSString *)formula;
 
 /**
  *  Taps a repo.
@@ -120,7 +120,7 @@ typedef NS_ENUM(NSInteger, CiListMode) {
  *
  *  @return `YES` if successful.
  */
-- (NSString *)tapWithRepositoryName:(NSString*)repository;
+- (NSString *)tapWithRepositoryName:(NSString *)repository;
 
 /**
  *  Untaps a repo.
@@ -130,7 +130,7 @@ typedef NS_ENUM(NSInteger, CiListMode) {
  *
  *  @return `YES` if successful.
  */
-- (NSString *)untapWithRepositoryName:(NSString*)repository;
+- (NSString *)untapWithRepositoryName:(NSString *)repository;
 
 /**
  *  Runs Homebrew cleanup tool.
@@ -148,7 +148,7 @@ typedef NS_ENUM(NSInteger, CiListMode) {
  *
  *  @return `YES` if successful.
  */
-- (NSString *)doctor:(void (^)(NSString*))block;
+- (NSString *)doctor;
 
 /**
  *  Runs Homebrew bundle dump tool. Will request instalation of Homebrew-Bundle tap if it is not already tapped.
@@ -157,7 +157,7 @@ typedef NS_ENUM(NSInteger, CiListMode) {
  *
  *  @return `nil` on success (no output), or the error in case something goes wrong.
  */
-- (NSError *)exportWithPath:(NSString*)path;
+- (NSError *)exportWithPath:(NSString *)path;
 
 /**
  *  Runs Homebrew bundle import tool. Will request instalation of Homebrew-Bundle tap if it is not already tapped.
@@ -167,7 +167,7 @@ typedef NS_ENUM(NSInteger, CiListMode) {
  *
  *  @return `YES` on success, `NO` otherwise.
  */
-- (BOOL)importWithPath:(NSString*)path withReturnsBlock:(void (^)(NSString *))block;
+- (NSString *)importWithPath:(NSString *)path;
 
 #pragma mark - Operations that return on finish
 

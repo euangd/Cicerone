@@ -338,7 +338,7 @@ to pass to async tasks, even though this never happened, to run the update block
     }
 }
 
-- (NSString *)upgradeWithFormulaeNamed:(NSArray*)formulae withReturnBlock:(void (^)(NSString*output))block
+- (NSString *)upgradeWithFormulaeNames:(NSArray *)formulae
 {
     @try {
         return [self brewToolStandardOutputWithArguments:[@[@"upgrade"] arrayByAddingObjectsFromArray:formulae]];
@@ -347,7 +347,7 @@ to pass to async tasks, even though this never happened, to run the update block
     }
 }
 
-- (NSString *)installWithFormulaNamed:(NSString*)formula withOptions:(NSArray*)options andReturnBlock:(void (^)(NSString*output))block
+- (NSString *)installWithFormulaName:(NSString *)formula withOptions:(NSArray *)options
 {
     NSArray *arguments = @[@"install", formula];
     
@@ -362,7 +362,7 @@ to pass to async tasks, even though this never happened, to run the update block
     }
 }
 
-- (NSString *)uninstallWithFormulaNamed:(NSString*)formula withReturnBlock:(void (^)(NSString*output))block
+- (NSString *)uninstallWithFormulaName:(NSString*)formula
 {
     @try {
         return [self brewToolStandardOutputWithArguments:@[@"uninstall", formula]];
@@ -371,7 +371,7 @@ to pass to async tasks, even though this never happened, to run the update block
     }
 }
 
-- (NSString *)tapWithRepositoryNamed:(NSString *)repository withReturnsBlock:(void (^)(NSString *))block
+- (NSString *)tapWithRepositoryName:(NSString *)repository
 {
     @try {
         return [self brewToolStandardOutputWithArguments:@[@"tap", repository]];
@@ -380,7 +380,7 @@ to pass to async tasks, even though this never happened, to run the update block
     }
 }
 
-- (NSString *)untapWithRepositoryNamed:(NSString *)repository withReturnsBlock:(void (^)(NSString *))block
+- (NSString *)untapWithRepositoryName:(NSString *)repository
 {
     @try {
         return [self brewToolStandardOutputWithArguments:@[@"untap", repository]];
@@ -389,12 +389,14 @@ to pass to async tasks, even though this never happened, to run the update block
     }
 }
 
-- (NSString *)cleanup:(void (^)(NSString*output))block
+// todo: stream output for realtime output tasks like cleanup doctor import and export
+
+- (NSString *)cleanup
 {
-	return [self brewToolStandardOutputWithArguments:@[@"cleanup"]];
+    return [self brewToolStandardOutputWithArguments:@[@"cleanup"]];
 }
 
-- (NSString *)doctor:(void (^)(NSString*output))block
+- (NSString *)doctor
 {
     @try {
         return [self brewToolStandardOutputWithArguments:@[@"doctor"]];
@@ -409,7 +411,7 @@ to pass to async tasks, even though this never happened, to run the update block
 //                     code:2701
 //                 userInfo:@{NSLocalizedDescriptionKey: errorLine}];
 
-- (NSString *)exportWithPath:(NSString*)path
+- (NSString *)exportWithPath:(NSString *)path
 {
 	NSString *output = [self brewToolStandardOutputWithArguments:@[@"bundle",
 																   @"dump",

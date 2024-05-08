@@ -8,35 +8,36 @@
 
 #import "CiWindow.h"
 
+@interface CiWindow ()
+@end
+
 @implementation CiWindow
 
 - (instancetype)initWithContentRect:(NSRect)contentRect styleMask:(NSWindowStyleMask)style backing:(NSBackingStoreType)backingStoreType defer:(BOOL)flag
 {
 	self = [super initWithContentRect:contentRect styleMask:style backing:backingStoreType defer:flag];
-	if (self) {
+	
+    if (self) {
 		[self sharedInit];
 	}
-	return self;
+	
+    return self;
 }
 
 - (instancetype)initWithContentRect:(NSRect)contentRect styleMask:(NSWindowStyleMask)style backing:(NSBackingStoreType)backingStoreType defer:(BOOL)flag screen:(nullable NSScreen *)screen
 {
 	self = [super initWithContentRect:contentRect styleMask:style backing:backingStoreType defer:flag screen:screen];
-	if (self) {
+	
+    if (self) {
 		[self sharedInit];
 	}
-	return self;
+	
+    return self;
 }
 
 - (void)sharedInit
 {
-	if (@available(macOS 11.0, *)) {
-		NSWindowStyleMask mask = [self styleMask];
-		mask |= NSWindowStyleMaskFullSizeContentView;
-		[self setStyleMask:mask];
-	} else {
-		[self setContentBorderThickness:22 forEdge:NSRectEdgeMinY];
-	}
+    self.styleMask |= NSWindowStyleMaskFullSizeContentView;
 }
 
 - (BOOL)validateMenuItem:(NSMenuItem *)menuItem

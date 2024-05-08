@@ -227,9 +227,7 @@ NSOpenSavePanelDelegate>
     self.toolbar.homebrewViewController = self;
     
     [[[self view] window] setToolbar:self.toolbar];
-    if (@available(macOS 11.0, *)) {
-        [self.toolbar setDisplayMode:NSToolbarDisplayModeIconOnly];
-    }
+    [self.toolbar setDisplayMode:NSToolbarDisplayModeIconOnly];
     
     [self.toolbar setLock:YES];
 }
@@ -441,7 +439,7 @@ NSOpenSavePanelDelegate>
     {
         [[self.formulaeTableView menu] cancelTracking];
         
-        self.selectedFormula = nil;
+//        self.selectedFormula = nil;
         self.selectedFormulaViewController.formulae = nil;
         
         [self.mainWindowController setWindowContentViewHidden:NO];
@@ -573,8 +571,12 @@ NSOpenSavePanelDelegate>
 
 - (void)selectedFormulaViewDidUpdateFormulaInfoForFormula:(CiFormula *)formula
 {
-    if (formula) _selectedFormula = formula;
-    // send KVO change notification for selectedFormula; maybe in manual setter?
+    // Change the value here without using the setter
+//    if (formula) {
+//        [self willChangeValueForKey:NSStringFromSelector(@selector(selectedFormula))];
+//        _selectedFormula = formula;
+//        [self didChangeValueForKey:NSStringFromSelector(@selector(selectedFormula))];
+//    }
 }
 
 #pragma mark - CiSideBarDelegate Delegate
@@ -595,7 +597,7 @@ NSOpenSavePanelDelegate>
     }
     
     [self.formulaeTableView deselectAll:nil];
-    [self setSelectedFormula:nil];
+//    [self setSelectedFormula:nil];
     
     [self updateInterfaceItems];
     

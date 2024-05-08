@@ -18,7 +18,6 @@ NS_ASSUME_NONNULL_BEGIN
 @property (readonly, strong) NSSplitViewController *splitViewController;
 
 - (void)setUpViews;
-
 - (void)setWindowContentViewHidden:(BOOL)hide;
 
 @end

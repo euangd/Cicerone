@@ -173,7 +173,7 @@ NSString *const kCiFormulaDidUpdateNotification = @"CiFormulaDidUpdateNotificati
 	
 	if (locationOfLastSlash.location != NSNotFound)
 	{
-		return [self.name substringFromIndex:locationOfLastSlash.location+1];
+		return [self.name substringFromIndex:locationOfLastSlash.location + 1];
 	}
 	else
 	{
