@@ -32,15 +32,15 @@ static NSString *kToolbarItemBrewInfoToolIdentifier = @"toolbarItemInformation";
 static NSString *kToolbarItemSearchIdentifier = @"toolbarItemSearch";
 static NSString *kToolbarItemMultiActionIdentifier = @"toolbarItemMultiAction";
 
-@interface CiToolbar() <NSSearchFieldDelegate>
+@interface CiToolbar() <NSSearchFieldDelegate, NSToolbarItemValidation>
 
 @property (strong) NSSearchField *searchField;
 
-@property (readonly) NSArray *systemToolbarItemIdentifiers;
-@property (readonly) NSDictionary *customToolbarItemIdentifierToolbarItemLookupDictionary;
+@property (nonatomic) NSArray *systemToolbarItemIdentifiers;
+@property (nonatomic, strong) NSDictionary<NSString *, NSToolbarItem *> *customToolbarItemsLookup;
 
-@property (readonly) NSToolbarItem *brewUpdateToolToolbarItem, *brewInfoToolToolbarItem, *multiActionToolbarItem;
-@property (readonly) NSSearchToolbarItem *searchToolbarItem;
+@property (nonatomic) NSToolbarItem *brewUpdateToolToolbarItem, *brewInfoToolToolbarItem, *multiActionToolbarItem;
+@property (nonatomic) NSSearchToolbarItem *searchToolbarItem;
 
 @end
 
@@ -54,30 +54,56 @@ static NSString *kToolbarItemMultiActionIdentifier = @"toolbarItemMultiAction";
 	{
         self.sizeMode = [CiStyle toolbarSize];
         self.showsBaselineSeparator = NO;
-		
-		_mode = kCiToolbarModeBlank;
+
+        self.delegate = self;
         
-        self.mode = kCiToolbarModeCore;
-		[self setLock:YES];
+        _mode = (CiToolbarMode)-1;
+        self.mode = kCiToolbarModeDud;
 	}
     
 	return self;
 }
 
-- (NSToolbarItem *)toolbarItemWithIdentifier:(NSString *)identifier withVisual:(NSImage *)image withLabel:(NSString *)label withAction:(SEL)action
+- (BOOL)validateToolbarItem:(NSToolbarItem *)item
 {
-    NSToolbarItem *item = [[NSToolbarItem alloc] initWithItemIdentifier:identifier];
+    switch (self.mode) {
+        case kCiToolbarModeDud:
+            return NO;
+    }
     
-    [self modifyToolbarItem:item withVisual:image withLabel:label withAction:action];
+    if ([item.itemIdentifier isEqualToString:kToolbarItemBrewInfoToolIdentifier]) {
+        switch (self.mode) {
+        case kCiToolbarModeCore:
+        case kCiToolbarModeTap:
+        case kCiToolbarModeTappedRepository:
+            return NO;
+        }
+    } else if ([item.itemIdentifier isEqualToString:kToolbarItemMultiActionIdentifier]) {
+        switch (self.mode) {
+            case kCiToolbarModeCore:
+                return NO;
+        }
+    }
     
-    item.paletteLabel = label;
-    
-    item.autovalidates = YES;
-    
-    return item;
+    return item.enabled = YES;
 }
 
-- (void)setMode:(CiLToolbarMode)mode
+- (void)disableToolbarItem:(NSToolbarItem *)item withTarget:(id)target withValidation:(BOOL)valid
+{
+    // autovalidate will cause the item to be disabled when it does not have both a valid target and selector
+    // abusing autovalidate here is holdover from older logic, which was only used to lock the whole toolbar by doing this for each item
+    // the current code not only does item disabling via autovalidate with target but also uses -[NSToolbarItemValidation validateToolbarItem:] to determine visibility automatically when the framework requests it, but
+    //  visibility only ever changes if the mode changes
+    // so maybe investigate either not using mode, and getting rid of autovalidate (because it doesn't even do search bar validation)
+    
+    // side note that side bar validation is done via mode.
+    // another side note that autovalidation-only mode-setting instant validation must be done via -[NSApp updateWindows], and again, cannot validate the search bar
+    
+    item.target = valid ? target : nil;
+    item.enabled = valid;
+}
+
+- (void)setMode:(CiToolbarMode)mode
 {
 	@synchronized (self) {
         if (self.mode == mode)
@@ -86,86 +112,77 @@ static NSString *kToolbarItemMultiActionIdentifier = @"toolbarItemMultiAction";
         }
         
         _mode = mode;
-        NSToolbarItem *brewInfoToolToolbarItem = self.brewInfoToolToolbarItem;
+        [self actualizeToolbarItems];
         
-        if (mode == kCiToolbarModeTap || mode == kCiToolbarModeTappedRepository || mode == kCiToolbarModeOutdatedPackages || mode == kCiToolbarModeCore)
-        {
-            // will force toolbar to show empty nonclickable item
-            [self modifyToolbarItem:brewInfoToolToolbarItem withVisual:nil withLabel:nil withAction:nil];
-        }
-        else
-        {
-            [self modifyToolbarItem:brewInfoToolToolbarItem withVisual:[CiStyle toolbarImageForMoreInformation] withLabel:NSLocalizedString(@"Toolbar_More_Information", nil) withAction:@selector(infoForSelectedFormula:)];
-        }
-        
-        NSToolbarItem *localVariedActionsItem = [self multiActionToolbarItem];
-
-        switch (mode) {
-            case kCiToolbarModeCore:
-                [self modifyToolbarItem:localVariedActionsItem withVisual:nil withLabel:nil withAction:nil];
-                break;
-                
-            case kCiToolbarModeNotInstalledPackage:
-                [self modifyToolbarItem:localVariedActionsItem withVisual:[CiStyle toolbarImageForInstall] withLabel:NSLocalizedString(@"Toolbar_Install_Formula", nil) withAction:@selector(installSelectedFormula:)];
-                break;
-                
-            case kCiToolbarModeInstalledPackage:
-                [self modifyToolbarItem:localVariedActionsItem withVisual:[CiStyle toolbarImageForUninstall] withLabel:NSLocalizedString(@"Toolbar_Uninstall_Formula", nil) withAction:@selector(uninstallSelectedFormula:)];
-                break;
-                
-            case kCiToolbarModeTap:
-                [self modifyToolbarItem:localVariedActionsItem withVisual:[CiStyle toolbarImageForTap] withLabel:NSLocalizedString(@"Toolbar_Tap_Repo", nil) withAction:@selector(tap:)];
-                break;
-                
-            case kCiToolbarModeTappedRepository:
-                [self modifyToolbarItem:localVariedActionsItem withVisual:[CiStyle toolbarImageForUntap] withLabel:NSLocalizedString(@"Toolbar_Untap_Repo", nil) withAction:@selector(untapSelectedRepository:)];
-                break;
-                
-            case kCiToolbarModeOutdatedPackage:
-                [self modifyToolbarItem:localVariedActionsItem withVisual:[CiStyle toolbarImageForUpdate] withLabel:NSLocalizedString(@"Toolbar_Update_Formula", nil) withAction:@selector( upgradeSelectedFormulae:)];
-                break;
-                
-            case kCiToolbarModeOutdatedPackages:
-                [self modifyToolbarItem:localVariedActionsItem withVisual:[CiStyle toolbarImageForUpdate] withLabel:NSLocalizedString(@"Toolbar_Update_Selected", nil) withAction:@selector(upgradeSelectedFormulae:)];
-                break;
-                
-            default:
-                break;
-        }
-        
-        [self validateVisibleItems];
+        [NSApp updateWindows];
     }
 }
 
-- (void)setToolbarItemHomebrewController:(id)controller
+- (void)validateVisibleItems
 {
-    NSDictionary *supportedItems = [self customToolbarItemIdentifierToolbarItemLookupDictionary];
-    [supportedItems enumerateKeysAndObjectsUsingBlock:^(id key, NSToolbarItem *object, BOOL *stop){
-        [object setTarget:controller];
-        [object setEnabled:controller != nil]; // Disables the searchbox toolbar item
+    [super validateVisibleItems];
+    
+    [self.visibleItems enumerateObjectsUsingBlock:^(__kindof NSToolbarItem * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        [self disableToolbarItem:obj withTarget:_homebrewViewController withValidation:[self validateToolbarItem:obj]];
     }];
 }
 
-- (void)setLock:(BOOL)shut
+- (void)actualizeToolbarItems
 {
-    _lock = shut;
+    [self.visibleItems enumerateObjectsUsingBlock:^(__kindof NSToolbarItem * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        [self actualizeToolbarItem:obj];
+    }];
     
-    self.toolbarItemHomebrewController = shut ? nil : _homebrewViewController;
     [self validateVisibleItems];
+}
+
+- (void)actualizeToolbarItem:(NSToolbarItem *)item
+{
+    if ([item.itemIdentifier isEqualToString:kToolbarItemMultiActionIdentifier]) {
+        switch (self.mode) {
+            case kCiToolbarModeNotInstalledPackage:
+                [self modifyToolbarItem:_multiActionToolbarItem withVisual:[CiStyle toolbarImageForInstall] withLabel:NSLocalizedString(@"Toolbar_Install_Formula", nil)
+                             withAction:@selector(installSelectedFormula:)];
+                break;
+                
+            case kCiToolbarModeInstalledPackage:
+                [self modifyToolbarItem:_multiActionToolbarItem withVisual:[CiStyle toolbarImageForUninstall] withLabel:NSLocalizedString(@"Toolbar_Uninstall_Formula", nil)
+                             withAction:@selector(uninstallSelectedFormula:)];
+                break;
+                
+            case kCiToolbarModeTap:
+                [self modifyToolbarItem:_multiActionToolbarItem withVisual:[CiStyle toolbarImageForTap] withLabel:NSLocalizedString(@"Toolbar_Tap_Repo", nil)
+                             withAction:@selector(tap:)];
+                break;
+                
+            case kCiToolbarModeTappedRepository:
+                [self modifyToolbarItem:_multiActionToolbarItem withVisual:[CiStyle toolbarImageForUntap] withLabel:NSLocalizedString(@"Toolbar_Untap_Repo", nil)
+                             withAction:@selector(untapSelectedRepository:)];
+                break;
+                
+            case kCiToolbarModeOutdatedPackage:
+                [self modifyToolbarItem:_multiActionToolbarItem withVisual:[CiStyle toolbarImageForUpdate] withLabel:NSLocalizedString(@"Toolbar_Update_Selected", nil) // Toolbar_Update_Formula
+                             withAction:@selector(upgradeSelectedFormulae:)];
+                break;
+                
+            default:
+                [self modifyToolbarItem:_multiActionToolbarItem withVisual:[CiStyle toolbarImageForInstall] withLabel:@"Add Item"
+                             withAction:@selector(installSelectedFormula:)];
+                break;
+        }
+    }
 }
 
 // NSToolbarDelegate
 
 - (NSToolbarItem *)toolbar:(NSToolbar *)toolbar itemForItemIdentifier:(NSString *)itemIdentifier willBeInsertedIntoToolbar:(BOOL)flag
 {
-	NSDictionary *supportedItems = [self customToolbarItemIdentifierToolbarItemLookupDictionary];
-    
-	if (![supportedItems objectForKey:itemIdentifier])
+	if (![self.customToolbarItemsLookup objectForKey:itemIdentifier])
 	{
 		return nil;
 	}
     
-	return supportedItems[itemIdentifier];
+	return self.customToolbarItemsLookup[itemIdentifier];
 }
 
 // NSToolbar
@@ -197,9 +214,7 @@ static NSString *kToolbarItemMultiActionIdentifier = @"toolbarItemMultiAction";
 
 - (NSArray *)systemToolbarItemIdentifiers
 {
-	static NSArray *_systemToolbarItemIdentifiers = nil;
-    
-    if (!_systemToolbarItemIdentifiers) {
+	if (!_systemToolbarItemIdentifiers) {
         _systemToolbarItemIdentifiers = @[
             NSToolbarSpaceItemIdentifier,
             NSToolbarFlexibleSpaceItemIdentifier,
@@ -211,70 +226,61 @@ static NSString *kToolbarItemMultiActionIdentifier = @"toolbarItemMultiAction";
 	return _systemToolbarItemIdentifiers;
 }
 
-- (NSDictionary *)customToolbarItemIdentifierToolbarItemLookupDictionary
+- (NSDictionary *)customToolbarItemsLookup
 {
-	static NSDictionary *_customToolbarItems = nil;
-    
-	if (!_customToolbarItems)
+	if (!_customToolbarItemsLookup)
 	{
-		_customToolbarItems = @{
-            kToolbarItemBrewUpdateToolIdentifier : self.brewUpdateToolToolbarItem,
+		_customToolbarItemsLookup = @{
+            kToolbarItemBrewUpdateToolIdentifier :self.brewUpdateToolToolbarItem,
             kToolbarItemBrewInfoToolIdentifier : self.brewInfoToolToolbarItem,
             kToolbarItemSearchIdentifier : self.searchToolbarItem,
             kToolbarItemMultiActionIdentifier : self.multiActionToolbarItem
         };
 	}
     
-	return _customToolbarItems;
+	return _customToolbarItemsLookup;
 }
 
 - (NSToolbarItem *)brewUpdateToolToolbarItem
 {
-	static NSToolbarItem* toolbarItemHomebrewUpdate = nil;
-    
-	if (!toolbarItemHomebrewUpdate)
+	if (!_brewUpdateToolToolbarItem)
 	{
-        toolbarItemHomebrewUpdate = [self toolbarItemWithIdentifier:kToolbarItemBrewUpdateToolIdentifier 
-                                                         withVisual:[CiStyle toolbarImageForUpgrade]
-                                                          withLabel:NSLocalizedString(@"Toolbar_Homebrew_Update", nil) 
-                                                         withAction:@selector(update:)];
+        _brewUpdateToolToolbarItem = [self toolbarItemWithIdentifier:kToolbarItemBrewUpdateToolIdentifier
+                                                          withVisual:[CiStyle toolbarImageForUpgrade]
+                                                    withPaletteLabel:NSLocalizedString(@"Toolbar_Homebrew_Update", nil)
+                                                          withAction:@selector(update:)];
 	}
     
-	return toolbarItemHomebrewUpdate;
+	return _brewUpdateToolToolbarItem;
 }
 
 - (NSToolbarItem *)brewInfoToolToolbarItem
 {
-	static NSToolbarItem* toolbarItemInformation = nil;
-    
-	if (!toolbarItemInformation)
+	if (!_brewInfoToolToolbarItem)
 	{
-		toolbarItemInformation = [self toolbarItemWithIdentifier:kToolbarItemBrewInfoToolIdentifier 
-                                                      withVisual:[CiStyle toolbarImageForMoreInformation]
-                                                       withLabel:NSLocalizedString(@"Toolbar_More_Information", nil)
-                                                      withAction:@selector(infoForSelectedFormula:)];
+		_brewInfoToolToolbarItem = [self toolbarItemWithIdentifier:kToolbarItemBrewInfoToolIdentifier
+                                                        withVisual:[CiStyle toolbarImageForMoreInformation]
+                                                  withPaletteLabel:NSLocalizedString(@"Toolbar_More_Information", nil)
+                                                        withAction:@selector(infoForSelectedFormula:)];
 	}
     
-	return toolbarItemInformation;
+	return _brewInfoToolToolbarItem;
 }
 
 
 - (NSToolbarItem *)multiActionToolbarItem
 {
-	static NSToolbarItem* toolbarItemMultiAction = nil;
+    if (!_multiActionToolbarItem)
+    {
+        _multiActionToolbarItem = [self toolbarItemWithIdentifier:kToolbarItemMultiActionIdentifier withVisual:nil withPaletteLabel:nil withAction:nil];
+        [self actualizeToolbarItem:_multiActionToolbarItem];
+    }
     
-	if (!toolbarItemMultiAction)
-	{
-		toolbarItemMultiAction = [self toolbarItemWithIdentifier:kToolbarItemMultiActionIdentifier withVisual:nil withLabel:nil withAction:nil];
-	}
-    
-	return toolbarItemMultiAction;
+	return _multiActionToolbarItem;
 }
 
 - (NSSearchToolbarItem *)searchToolbarItem
 {
-	static NSSearchToolbarItem *_searchToolbarItem = nil;
-    
 	if (!_searchToolbarItem)
 	{
         _searchToolbarItem = [[NSSearchToolbarItem alloc] initWithItemIdentifier:kToolbarItemSearchIdentifier];
@@ -301,26 +307,25 @@ static NSString *kToolbarItemMultiActionIdentifier = @"toolbarItemMultiAction";
 	[[searchView window] makeFirstResponder:searchView];
 }
 
+- (NSToolbarItem *)toolbarItemWithIdentifier:(NSString *)identifier withVisual:(NSImage *)image withPaletteLabel:(NSString *)label withAction:(SEL)action
+{
+    NSToolbarItem *item = [[NSToolbarItem alloc] initWithItemIdentifier:identifier];
+    
+    item.autovalidates = YES;
+    
+    item.paletteLabel = label;
+    item.bordered = YES;
+    
+    [self modifyToolbarItem:item withVisual:image withLabel:label withAction:action];
+    
+    return item;
+}
+
 - (void)modifyToolbarItem:(NSToolbarItem *)item withVisual:(NSImage *)visual withLabel:(NSString *)label withAction:(SEL)action
 {
     assert([NSThread isMainThread]);
-    
-    if (!visual)
-    {
-        item.view = nil;
-    }
-    else
-    {
-        NSButton *button = [NSButton buttonWithImage:visual target:_homebrewViewController action:action];
-        
-        [button setBezelStyle:NSBezelStyleTexturedRounded];
-        [button setButtonType:NSButtonTypeMomentaryPushIn];
-        [button setBordered:YES];
-        
-        [button setAlignment:NSTextAlignmentCenter];
-        
-        item.view = button;
-    }
+
+    item.image = visual;
     
     item.target = _homebrewViewController;
     item.action = action;

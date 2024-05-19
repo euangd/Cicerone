@@ -35,13 +35,13 @@
 - (void)uninstallSelectedFormula:(id)sender;
 @end
 
-@interface CiToolbar : NSToolbar <NSToolbarDelegate>
+@interface CiToolbar : NSToolbar <NSToolbarDelegate, NSToolbarItemValidation>
 
 // bar use mode, as in the mode which affects how the bar would be used
 
-typedef NS_ENUM(NSUInteger, CiLToolbarMode)
+typedef NS_ENUM(NSUInteger, CiToolbarMode)
 {
-	kCiToolbarModeBlank,
+	kCiToolbarModeDud,
     
 	kCiToolbarModeCore,
     
@@ -49,15 +49,12 @@ typedef NS_ENUM(NSUInteger, CiLToolbarMode)
 	kCiToolbarModeInstalledPackage,
     
 	kCiToolbarModeOutdatedPackage,
-	kCiToolbarModeOutdatedPackages,
     
 	kCiToolbarModeTap,
 	kCiToolbarModeTappedRepository
 };
 
-@property (nonatomic) BOOL lock;
-
-@property (nonatomic) CiLToolbarMode mode;
+@property (nonatomic) CiToolbarMode mode;
 
 @property (nonatomic, weak) id homebrewViewController;
 

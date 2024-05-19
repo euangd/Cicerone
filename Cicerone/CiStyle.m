@@ -20,21 +20,8 @@
 //
 
 #import "CiStyle.h"
-#import "CiUtilities.h"
-
-static BOOL shouldUseFlatUserInterface;
 
 @implementation CiStyle
-
-+ (void)load
-{
-	shouldUseFlatUserInterface = [CiUtilities isRunningYosemiteOrLater];
-}
-
-+ (BOOL)isFlat
-{
-	return shouldUseFlatUserInterface;
-}
 
 + (NSFont *)defaultFixedWidthFont
 {
@@ -62,12 +49,7 @@ static BOOL shouldUseFlatUserInterface;
 
 + (NSToolbarSizeMode)toolbarSize
 {
-	if (self.isFlat)
-	{
-		return NSToolbarSizeModeSmall;
-	}
-    
-	return NSToolbarSizeModeDefault;
+    return NSToolbarSizeModeSmall;
 }
 
 + (NSImage *)toolbarImageForInstall
@@ -76,7 +58,7 @@ static BOOL shouldUseFlatUserInterface;
     
 	if (!image)
     {
-		image = [self appropriateIconForToolbarWithName:@"download" orSymbol:@"plus.circle.fill"];
+		image = [self appropriateIconForToolbarWithName:@"download" orSymbol:@"arrow.down.to.line.compact"];
 	}
 	
 	return image;
@@ -88,7 +70,7 @@ static BOOL shouldUseFlatUserInterface;
     
 	if (!image)
     {
-		image = [self appropriateIconForToolbarWithName:@"delete" orSymbol:@"xmark.circle.fill"];
+		image = [self appropriateIconForToolbarWithName:@"delete" orSymbol:@"trash.fill"];
 	}
 	
 	return image;
@@ -100,7 +82,7 @@ static BOOL shouldUseFlatUserInterface;
     
 	if (!image)
     {
-		image = [self appropriateIconForToolbarWithName:@"download" orSymbol:@"plus.circle.fill"];
+		image = [self appropriateIconForToolbarWithName:@"download" orSymbol:@"plus.rectangle.on.folder"];
 	}
 	
 	return image;
@@ -112,7 +94,7 @@ static BOOL shouldUseFlatUserInterface;
     
 	if (!image)
     {
-		image = [self appropriateIconForToolbarWithName:@"delete" orSymbol:@"xmark.circle.fill"];
+		image = [self appropriateIconForToolbarWithName:@"delete" orSymbol:@"trash.fill"];
 	}
 	
 	return image;
@@ -124,7 +106,7 @@ static BOOL shouldUseFlatUserInterface;
     
 	if (!image)
     {
-		image = [self appropriateIconForToolbarWithName:@"reload" orSymbol:@"arrow.triangle.2.circlepath.circle.fill"];
+		image = [self appropriateIconForToolbarWithName:@"reload" orSymbol:@"arrow.triangle.capsulepath"];
 	}
 	
 	return image;
@@ -136,7 +118,7 @@ static BOOL shouldUseFlatUserInterface;
     
 	if (!image)
     {
-		image = [self appropriateIconForToolbarWithName:@"label" orSymbol:@"info.circle.fill"];
+		image = [self appropriateIconForToolbarWithName:@"label" orSymbol:@"list.dash.header.rectangle"];
 	}
 	
 	return image;
@@ -148,7 +130,7 @@ static BOOL shouldUseFlatUserInterface;
     
 	if (!image)
     {
-		image = [self appropriateIconForToolbarWithName:@"globe" orSymbol:@"globe"];
+		image = [self appropriateIconForToolbarWithName:@"globe" orSymbol:@"arrow.circlepath"];
 	}
 	
 	return image;
@@ -156,18 +138,7 @@ static BOOL shouldUseFlatUserInterface;
 
 + (NSImage *)appropriateIconForToolbarWithName:(NSString *)name orSymbol:(NSString *)symbol
 {
-	if (@available(macOS 11.0, *))
-    {
-		return [NSImage imageWithSystemSymbolName:symbol accessibilityDescription:name];
-	}
-    else if ([self isFlat])
-    {
-		return [NSImage imageNamed:[NSString stringWithFormat:@"%@_flat", name]];
-	}
-    else
-    {
-		return [NSImage imageNamed:[NSString stringWithFormat:@"%@.icns", name]];
-	}
+    return [NSImage imageWithSystemSymbolName:symbol accessibilityDescription:name];
 }
 
 #pragma mark Popover
@@ -178,14 +149,7 @@ static BOOL shouldUseFlatUserInterface;
     
 	if (!color)
     {
-		if (@available(macOS 10.14, *))
-        {
-			color = [NSColor textColor];
-		}
-        else
-        {
-			color = [self isFlat] ? [NSColor blackColor] : [NSColor whiteColor];
-		}
+        color = [NSColor textColor];
 	}
 	
 	return color;
@@ -197,14 +161,7 @@ static BOOL shouldUseFlatUserInterface;
     
 	if (!color)
     {
-		if (@available(macOS 10.14, *))
-        {
-			color = [NSColor textColor];
-		}
-        else
-        {
-			color = [self isFlat] ? [NSColor blackColor] : [NSColor whiteColor];
-		}
+        color = [NSColor textColor];
 	}
 	
 	return color;

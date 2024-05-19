@@ -56,7 +56,7 @@ typedef NS_ENUM(NSUInteger, CiHomebrewViewTabViewTabOption) {
 
 static const CGFloat kPreferedHeightSelectedFormulaView = 120.f;
 
-@interface CiHomebrewViewController () <NSTableViewDelegate,
+@interface CiHomebrewViewController () <NSTableViewDelegate, NSToolbarItemValidation,
 CiSideBarControllerDelegate,
 CiSelectedFormulaViewControllerDelegate,
 CiHomebrewManagerDelegate,
@@ -91,6 +91,11 @@ NSOpenSavePanelDelegate>
 @implementation CiHomebrewViewController
 {
     CiHomebrewManager *homebrewManager;
+}
+
+- (BOOL)validateToolbarItem:(NSToolbarItem *)item
+{
+    return [self.toolbar validateToolbarItem:item];
 }
 
 - (CiFormulaPopoverViewController *)formulaPopoverViewController
@@ -223,13 +228,12 @@ NSOpenSavePanelDelegate>
 - (void)addToolbar
 {
     self.toolbar = [[CiToolbar alloc] initWithIdentifier:@"MainToolbar"];
-    self.toolbar.delegate = self.toolbar;
     self.toolbar.homebrewViewController = self;
     
-    [[[self view] window] setToolbar:self.toolbar];
-    [self.toolbar setDisplayMode:NSToolbarDisplayModeIconOnly];
+    self.view.window.toolbar = self.toolbar;
+    self.toolbar.displayMode = NSToolbarDisplayModeIconOnly;
     
-    [self.toolbar setLock:YES];
+    self.toolbar.mode = kCiToolbarModeDud;
 }
 
 - (void)addDisabledView
@@ -240,11 +244,7 @@ NSOpenSavePanelDelegate>
     
     NSView *referenceView;
     
-    if (@available(macOS 11.0, *)) {
-        referenceView = self.mainWindowController.windowContentView;
-    } else {
-        referenceView = self.view;
-    }
+    referenceView = self.mainWindowController.windowContentView;
     
     [NSLayoutConstraint activate:@[
         [NSLayoutConstraint constraintWithItem:referenceView attribute:NSLayoutAttributeLeading
@@ -442,11 +442,10 @@ NSOpenSavePanelDelegate>
 //        self.selectedFormula = nil;
         self.selectedFormulaViewController.formulae = nil;
         
-        [self.mainWindowController setWindowContentViewHidden:NO];
+        self.mainWindowController.windowContentViewHidden = NO;
         [self.informationTextField setHidden:NO];
         
         self.toolbar.mode = kCiToolbarModeCore;
-        self.toolbar.lock = NO;
         
         [homebrewManager.formulaeDataSource refreshBackingArray];
         
@@ -478,9 +477,9 @@ NSOpenSavePanelDelegate>
     if (yesOrNo)
     {
         [self addDisabledView];
-        [self.informationTextField setHidden:YES];
-        [self.mainWindowController setWindowContentViewHidden:YES];
-        [self.toolbar setLock:YES];
+        self.informationTextField.hidden = YES;
+        self.mainWindowController.windowContentViewHidden = YES;
+        self.toolbar.mode = kCiToolbarModeDud;
         
         NSAlert *alert = [[NSAlert alloc] init];
         [alert setMessageText:NSLocalizedString(@"Generic_Error", nil)];
@@ -511,7 +510,7 @@ NSOpenSavePanelDelegate>
         [self.informationTextField setHidden:NO];
         [self.mainWindowController setWindowContentViewHidden:NO];
         
-        [self.toolbar setLock:NO];
+        self.toolbar.mode = kCiToolbarModeDud;
         
         [[CiHomebrewManager sharedManager] loadHomebrewStateWithCacheRebuild:YES];
     }
