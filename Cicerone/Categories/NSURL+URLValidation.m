@@ -19,15 +19,25 @@
 //	along with this program.	If not, see <http://www.gnu.org/licenses/>.
 //
 
-#import "NSString+URLValidation.h"
+#import "NSURL+URLValidation.h"
 
-@implementation NSString (URLValidation)
+@implementation NSURL (URLValidation)
 
-- (BOOL)bp_containsValidURL
-{
-    //TODO: Implement more sophisticated validation
-    NSURL *URL = [NSURL URLWithString:self];
-    return URL != nil;
++ (NSURL *)validatedURLWithString:(NSString *)urlString {
+    // Check for nil or empty string
+    if (urlString == nil || [urlString length] == 0) {
+        return nil;
+    }
+    
+    // Attempt to create a URL
+    NSURL *url = [NSURL URLWithString:urlString];
+    
+    // Check if the URL is valid
+    if (url && url.scheme && url.host) {
+        return url;
+    } else {
+        return nil;
+    }
 }
 
 @end

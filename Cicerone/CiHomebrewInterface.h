@@ -187,7 +187,7 @@ typedef NS_ENUM(NSInteger, CiListMode) {
  *
  *  @return The information for the parameter formula as output by Homebrew.
  */
-- (NSString *)informationWithFormulaName:(NSString *)name;
+- (NSString *)informationWithFormulaName:(NSString *)name cask:(BOOL)isCask;
 
 /**
  *  Executes `brew uses` for parameter formula name.

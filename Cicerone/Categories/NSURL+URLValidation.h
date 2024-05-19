@@ -21,8 +21,8 @@
 
 #import <Foundation/Foundation.h>
 
-@interface NSString (URLValidation)
+@interface NSURL (URLValidation)
 
-- (BOOL)bp_containsValidURL;
++ (NSURL *)validatedURLWithString:(NSString *)urlString;
 
 @end

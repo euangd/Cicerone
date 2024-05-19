@@ -124,20 +124,16 @@ NSString *const kCiCacheDataKey	= @"CiCacheDataKey";
 
 - (void)updateSearchWithName:(NSString *)name
 {
-	NSMutableArray *matches = [NSMutableArray array];
-	NSRange range;
-	
-	for (CiFormula *formula in _allFormulae) {
-		range = [[formula name] rangeOfString:name options:NSCaseInsensitiveSearch];
-		if (range.location != NSNotFound) {
-			[matches addObject:formula];
-		}
-	}
-	
-	_searchFormulae = matches;
+    _searchFormulae = [[_allFormulae arrayByAddingObjectsFromArray:_allCasks] filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id  _Nullable evaluatedObject, NSDictionary<NSString *,id> * _Nullable bindings) {
+        if ([[evaluatedObject name] rangeOfString:name options:NSCaseInsensitiveSearch].location != NSNotFound) {
+            return true;
+        }
+        
+        return false;
+    }]];
 
 	dispatch_async(dispatch_get_main_queue(), ^{
-		[self.delegate homebrewManager:self didFinishSearchReturningSearchResults:matches];
+		[self.delegate homebrewManager:self didFinishSearchReturningSearchResults:self.searchFormulae];
 	});
 }
 
@@ -262,7 +258,7 @@ NSString *const kCiCacheDataKey	= @"CiCacheDataKey";
 
 - (CiFormulaStatus)statusForListedPackage:(CiFormula *)package
 {
-    [self.formulaeDataSource statusForFormula:package];
+    return [self.formulaeDataSource statusForFormula:package];
 }
 
 - (void)cleanUp

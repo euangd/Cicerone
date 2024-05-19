@@ -27,8 +27,9 @@ static NSString * const shellHeaderEndMarker = @"+++++ Cicerone +++++";
 @interface CiHomebrewInterfaceListCall : NSObject
 
 @property (strong, readonly) NSArray *arguments;
+@property (readonly) BOOL casks;
 
-- (instancetype)initWithArguments:(NSArray *)arguments;
+- (instancetype)initWithArguments:(NSArray *)arguments casks:(BOOL)casks;
 - (NSArray *)parseData:(NSString *)data;
 - (CiFormula *)parseFormulaItem:(NSString *)item;
 
@@ -288,9 +289,9 @@ to pass to async tasks, even though this never happened, to run the update block
 	}
 }
 
-- (NSString *)informationWithFormulaName:(NSString *)name;
+- (NSString *)informationWithFormulaName:(NSString *)name cask:(BOOL)isCask;
 {
-	return [self brewToolStandardOutputWithArguments:@[@"info", name]];
+    return [self brewToolStandardOutputWithArguments:@[@"info", name, isCask ? @"--cask" : @"--formula"]];
 }
 
 - (NSString *)dependentsWithFormulaName:(NSString *)name installed:(BOOL)onlyInstalled
@@ -465,11 +466,12 @@ to pass to async tasks, even though this never happened, to run the update block
 
 @implementation CiHomebrewInterfaceListCall
 
-- (instancetype)initWithArguments:(NSArray *)arguments
+- (instancetype)initWithArguments:(NSArray *)arguments casks:(BOOL)casks
 {
 	self = [super init];
 	if (self) {
 		_arguments = arguments;
+        _casks = casks;
 	}
 	return self;
 }
@@ -492,7 +494,7 @@ to pass to async tasks, even though this never happened, to run the update block
 
 - (CiFormula *)parseFormulaItem:(NSString *)item
 {
-	return [CiFormula formulaWithName:item];
+	return [CiFormula formulaWithName:item cask:self.casks];
 }
 
 @end
@@ -501,13 +503,13 @@ to pass to async tasks, even though this never happened, to run the update block
 
 - (instancetype)init
 {
-	return (CiHomebrewInterfaceListCallInstalledFormulae *)[super initWithArguments:@[@"list", @"--versions", @"--formulae"]];
+	return (CiHomebrewInterfaceListCallInstalledFormulae *)[super initWithArguments:@[@"list", @"--versions", @"--formulae"] casks:NO];
 }
 
 - (CiFormula *)parseFormulaItem:(NSString *)item
 {
 	NSArray *aux = [item componentsSeparatedByString:@" "];
-	return [CiFormula formulaWithName:[aux firstObject] withVersion:[aux lastObject]];
+	return [CiFormula formulaWithName:[aux firstObject] withVersion:[aux lastObject] cask:self.casks];
 }
 
 @end
@@ -516,7 +518,7 @@ to pass to async tasks, even though this never happened, to run the update block
 
 - (instancetype)init
 {
-	return (CiHomebrewInterfaceListCallInstalledCasks *)[super initWithArguments:@[@"list", @"--versions", @"--casks"]];
+	return (CiHomebrewInterfaceListCallInstalledCasks *)[super initWithArguments:@[@"list", @"--versions", @"--casks"] casks:YES];
 }
 
 @end
@@ -525,7 +527,7 @@ to pass to async tasks, even though this never happened, to run the update block
 
 - (instancetype)init
 {
-	return (CiHomebrewInterfaceListCallAllFormulae *)[super initWithArguments:@[@"formulae"]];
+	return (CiHomebrewInterfaceListCallAllFormulae *)[super initWithArguments:@[@"formulae"] casks:NO];
 }
 
 @end
@@ -534,7 +536,7 @@ to pass to async tasks, even though this never happened, to run the update block
 
 - (instancetype)init
 {
-	return (CiHomebrewInterfaceListCallAllCasks *)[super initWithArguments:@[@"casks"]];
+	return (CiHomebrewInterfaceListCallAllCasks *)[super initWithArguments:@[@"casks"] casks:YES];
 }
 
 @end
@@ -543,12 +545,12 @@ to pass to async tasks, even though this never happened, to run the update block
 
 - (instancetype)init
 {
-	return (CiHomebrewInterfaceListCallUpgradeableFormulae *)[super initWithArguments:@[@"outdated", @"--verbose", @"--formulae"]];
+	return (CiHomebrewInterfaceListCallUpgradeableFormulae *)[super initWithArguments:@[@"outdated", @"--verbose", @"--formulae"] casks:NO];
 }
 
 - (CiFormula *)parseFormulaItem:(NSString *)item
 {
-	static NSString *regexString = @"(\\S+)\\s\\(((.*, )*(.*))\\) < (\\S+)";
+	static NSString *regexString = @"(\\S+)\\s\\(((.*, )*(.*))\\) (<|!=) (\\S+)";
 	
 	CiFormula __block *formula = nil;
 	NSError *error = nil;
@@ -560,17 +562,18 @@ to pass to async tasks, even though this never happened, to run the update block
 		if (result.resultType == NSTextCheckingTypeRegularExpression && [result numberOfRanges] >= 4)
 		{
 			NSString *formulaName = [item substringWithRange:[result rangeAtIndex:1]];
-			NSString *installedVersion = [item substringWithRange:[result rangeAtIndex:[result numberOfRanges] - 2]];
+			NSString *installedVersion = [item substringWithRange:[result rangeAtIndex:[result numberOfRanges] - 3]];
 			NSString *latestVersion = [item substringWithRange:[result rangeAtIndex:[result numberOfRanges] - 1]];
 
 			formula = [CiFormula formulaWithName:formulaName
-										 withVersion:installedVersion
-								withLatestVersion:latestVersion];
+                                     withVersion:installedVersion
+                               withLatestVersion:latestVersion
+                                            cask:self.casks];
 		}
 	}];
 	
 	if (!formula) {
-		formula = [CiFormula formulaWithName:item];
+		formula = [CiFormula formulaWithName:item cask:self.casks];
 	}
 	
 	return formula;
@@ -583,7 +586,7 @@ to pass to async tasks, even though this never happened, to run the update block
 
 - (instancetype)init
 {
-	return (CiHomebrewInterfaceListCallUpgradeableCasks *)[super initWithArguments:@[@"outdated", @"--verbose", @"--casks"]];
+	return (CiHomebrewInterfaceListCallUpgradeableCasks *)[super initWithArguments:@[@"outdated", @"--verbose", @"--casks"] casks:YES];
 }
 
 @end
@@ -593,7 +596,7 @@ to pass to async tasks, even though this never happened, to run the update block
 
 - (instancetype)init
 {
-	return (CiHomebrewInterfaceListCallLeaves *)[super initWithArguments:@[@"leaves"]];
+	return (CiHomebrewInterfaceListCallLeaves *)[super initWithArguments:@[@"leaves"] casks:NO];
 }
 
 @end
@@ -603,7 +606,7 @@ to pass to async tasks, even though this never happened, to run the update block
 
 - (instancetype)init
 {
-	return (CiHomebrewInterfaceListCallRepositories *)[super initWithArguments:@[@"tap"]];
+	return (CiHomebrewInterfaceListCallRepositories *)[super initWithArguments:@[@"tap"] casks:NO];
 }
 
 @end

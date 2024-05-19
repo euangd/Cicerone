@@ -25,12 +25,6 @@
 #import "CiFormulaeDataSource.h"
 #import "CiSelectedFormulaViewController.h"
 
-
-//#import "CiCask.h"
-//#import "CiCaskOptionsWindowController.h"
-//#import "CiCasksDataSource.h"
-//#import "CiSelectedCaskViewController.h"
-
 #import "CiHomebrewViewController.h"
 #import "CiHomebrewManager.h"
 #import "CiHomebrewInterface.h"
@@ -809,7 +803,7 @@ apply:
             return;
         }
         
-        CiFormula *lformula = [CiFormula formulaWithName:name];
+        CiFormula *lformula = [CiFormula formulaWithName:name cask:NO];
         self.operationWindowController = [CiInstallationWindowController runWithOperation:kCiWindowOperationTap formulae:@[lformula] options:nil];
     }
 }

@@ -83,7 +83,7 @@
 		D2C3E02D1B8E15D5000D89BB /* Loading.xib in Resources */ = {isa = PBXBuildFile; fileRef = D2C3E02F1B8E15D5000D89BB /* Loading.xib */; };
 		D2C4278B1B8E055B001C1F80 /* CiDisabledView.m in Sources */ = {isa = PBXBuildFile; fileRef = D2C427881B8E055B001C1F80 /* CiDisabledView.m */; };
 		D2CC8CA71B90F04C00F763DF /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2CC8CA61B90F04C00F763DF /* Security.framework */; };
-		D2F732F119190B75002B2512 /* NSString+URLValidation.m in Sources */ = {isa = PBXBuildFile; fileRef = D2F732F019190B75002B2512 /* NSString+URLValidation.m */; };
+		D2F732F119190B75002B2512 /* NSURL+URLValidation.m in Sources */ = {isa = PBXBuildFile; fileRef = D2F732F019190B75002B2512 /* NSURL+URLValidation.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -313,8 +313,8 @@
 		D2C427871B8E055B001C1F80 /* CiDisabledView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CiDisabledView.h; path = Views/CiDisabledView.h; sourceTree = "<group>"; };
 		D2C427881B8E055B001C1F80 /* CiDisabledView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CiDisabledView.m; path = Views/CiDisabledView.m; sourceTree = "<group>"; };
 		D2CC8CA61B90F04C00F763DF /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
-		D2F732EF19190B75002B2512 /* NSString+URLValidation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+URLValidation.h"; sourceTree = "<group>"; };
-		D2F732F019190B75002B2512 /* NSString+URLValidation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+URLValidation.m"; sourceTree = "<group>"; };
+		D2F732EF19190B75002B2512 /* NSURL+URLValidation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSURL+URLValidation.h"; sourceTree = "<group>"; };
+		D2F732F019190B75002B2512 /* NSURL+URLValidation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSURL+URLValidation.m"; sourceTree = "<group>"; };
 		F752F54A1C79875400C0DEFE /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Loading.strings; sourceTree = "<group>"; };
 		F752F54B1C79875400C0DEFE /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/CiFormulaOptionsWindow.strings; sourceTree = "<group>"; };
 		F752F54C1C79875400C0DEFE /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/CiSelectedFormula.strings; sourceTree = "<group>"; };
@@ -595,8 +595,8 @@
 		D2F732EE19190B75002B2512 /* Categories */ = {
 			isa = PBXGroup;
 			children = (
-				D2F732EF19190B75002B2512 /* NSString+URLValidation.h */,
-				D2F732F019190B75002B2512 /* NSString+URLValidation.m */,
+				D2F732EF19190B75002B2512 /* NSURL+URLValidation.h */,
+				D2F732F019190B75002B2512 /* NSURL+URLValidation.m */,
 				15A89D3725F2F467003D33F5 /* NSLayoutConstraint+Shims.h */,
 				15A89D3825F2F467003D33F5 /* NSLayoutConstraint+Shims.m */,
 				B7247B6B2BD52CA800C13021 /* NSString+Summarization.h */,
@@ -891,7 +891,6 @@
 			files = (
 				15BBA18E1BD031C9002C0127 /* CiBackgroundView.m in Sources */,
 				15D28A121AE1BD27005C8A3E /* BPTimedDispatch.m in Sources */,
-				D2A3A82F1B8C9F5200D05469 /* CiUtilities.m in Sources */,
 				150AEC4D1B3F999A00163767 /* CiFormulaOptionsWindowController.m in Sources */,
 				15A89D3925F2F467003D33F5 /* NSLayoutConstraint+Shims.m in Sources */,
 				150AEC531B3F999A00163767 /* CiSelectedFormulaViewController.m in Sources */,
@@ -911,7 +910,7 @@
 				D23620E11B8B3094006D293D /* CiTask.m in Sources */,
 				15C34CBF19512DE100B92E36 /* CiAutoScrollTextView.m in Sources */,
 				D2B3A3B019B9D7FC00DE23B5 /* CiFormulaeDataSource.m in Sources */,
-				D2F732F119190B75002B2512 /* NSString+URLValidation.m in Sources */,
+				D2F732F119190B75002B2512 /* NSURL+URLValidation.m in Sources */,
 				D2A3A82D1B8C9F5200D05469 /* CiStyle.m in Sources */,
 				15EC1B0C25CEE4C200C93861 /* CiMainWindowController.m in Sources */,
 				150AEC511B3F999A00163767 /* CiInstallationWindowController.m in Sources */,

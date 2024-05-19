@@ -125,10 +125,12 @@
     return index;
 }
 
-// temporary measure (ha ha... i mean it)
 
 - (CiFormulaStatus)statusForFormula:(CiFormula *)formula {
-    BOOL cask = self.mode >= kCiListModeAllCasks;
+    BOOL cask = formula.isCask;
+    
+    // temporary measure (ha ha... i mean it)... (I apparently actually meant it?????)
+    //self.mode >= kCiListModeAllCasks;
     
     if ([self searchForFormula:formula inArray:cask ? CiHomebrewManager.sharedManager.installedCasks : CiHomebrewManager.sharedManager.installedFormulae] >= 0) {
         if ([self searchForFormula:formula inArray:cask ? CiHomebrewManager.sharedManager.outdatedCasks : CiHomebrewManager.sharedManager.outdatedFormulae] >= 0) {
@@ -151,19 +153,19 @@
 		// the Person field value appropriate for the column.
 		if ([columnIdentifer isEqualToString:kColumnIdentifierName]) {
 			if ([element isKindOfClass:[CiFormula class]]) {
-				return [(CiFormula*)element name];
+				return [(CiFormula *)element name];
 			} else {
 				return element;
 			}
 		} else if ([columnIdentifer isEqualToString:kColumnIdentifierVersion]) {
 			if ([element isKindOfClass:[CiFormula class]]) {
-				return [(CiFormula*)element version];
+				return [(CiFormula *)element version];
 			} else {
 				return element;
 			}
 		} else if ([columnIdentifer isEqualToString:kColumnIdentifierLatestVersion]) {
 			if ([element isKindOfClass:[CiFormula class]]) {
-				return [(CiFormula*)element shortLatestVersion];
+				return [(CiFormula *)element shortLatestVersion];
 			} else {
 				return element;
 			}

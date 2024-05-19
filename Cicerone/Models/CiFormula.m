@@ -23,6 +23,7 @@
 #import "CiFormulaOption.h"
 #import "CiHomebrewManager.h"
 #import "CiHomebrewInterface.h"
+#import "NSURL+URLValidation.h"
 
 static void *kCiFormulaContext = &kCiFormulaContext;
 
@@ -32,22 +33,36 @@ NSString *const kCi_ENCODE_FORMULA_LVER = @"Ci_ENCODE_FORMULA_LVER";
 NSString *const kCi_ENCODE_FORMULA_PATH = @"Ci_ENCODE_FORMULA_PATH";
 NSString *const kCi_ENCODE_FORMULA_WURL = @"Ci_ENCODE_FORMULA_WURL";
 NSString *const kCi_ENCODE_FORMULA_DEPS = @"Ci_ENCODE_FORMULA_DEPS";
-NSString *const kCi_ENCODE_FORMULA_INST = @"Ci_ENCODE_FORMULA_INST";
+NSString *const kCi_ENCODE_FORMULA_INST = @"Ci_ENCODE_FORMULA_INST"; // load not implemented
 NSString *const kCi_ENCODE_FORMULA_CNFL = @"Ci_ENCODE_FORMULA_CNFL";
 NSString *const kCi_ENCODE_FORMULA_SDSC = @"Ci_ENCODE_FORMULA_SDSC";
 NSString *const kCi_ENCODE_FORMULA_INFO = @"Ci_ENCODE_FORMULA_INFO";
 NSString *const kCi_ENCODE_FORMULA_OPTN = @"Ci_ENCODE_FORMULA_OPTN";
+NSString *const kCi_ENCODE_FORMULA_REQS = @"Ci_ENCODE_FORMULA_REQS"; // not implemented
+NSString *const kCi_ENCODE_FORMULA_CASK = @"Ci_ENCODE_FORMULA_CASK";
 
-NSString *const kCiIdentifierDependencies = @"==> Dependencies";
-NSString *const kCiIdentifierOptions = @"==> Options";
-NSString *const kCiIdentifierCaveats = @"==> Caveats";
+NSString *const kCiBrewInfoSectionHeaderIndicator = @"==>";
+
+NSString *const kCiFormulaInfoSectionHeaderDependencies = @"==> Dependencies"; // never in cask
+NSString *const kCiFormulaInfoSectionHeaderRequirements = @"==> Requirements"; // never in cask
+NSString *const kCiFormulaInfoSectionHeaderOptions = @"==> Options"; // never in cask
+
+// casks only
+NSString *const kCiCaskInfoSectionHeaderName = @"==> Name";
+NSString *const kCiCaskInfoSectionHeaderDescription = @"==> Description";
+NSString *const kCiCaskInfoSectionHeaderLanguages = @"==> Languages";
+NSString *const kCiCaskInfoSectionHeaderArtifacts = @"==> Artifacts";
+
+NSString *const kCiFormulaInfoSectionHeaderCaveats = @"==> Caveats";
+NSString *const kCiFormulaInfoSectionHeaderAnalytics = @"==> Analytics";
+
 
 NSString *const kCiFormulaDidUpdateNotification = @"CiFormulaDidUpdateNotification";
 
 @interface CiFormula ()
 
-@property (getter=isInstalled) BOOL installed;
-@property (getter=isOutdated) BOOL outdated;
+@property (getter=isInstalled, readonly) BOOL installed;
+@property (getter=isOutdated, readonly) BOOL outdated;
 
 @property (copy, readwrite) NSString *name;
 @property (copy, readwrite) NSString *version;
@@ -55,10 +70,13 @@ NSString *const kCiFormulaDidUpdateNotification = @"CiFormulaDidUpdateNotificati
 @property (copy, readwrite) NSString *installPath;
 @property (copy, readwrite) NSString *dependencies;
 @property (copy, readwrite) NSString *conflicts;
+@property (copy, readwrite) NSString *analytics;
 @property (copy, readwrite) NSString *shortDescription;
 @property (copy, readwrite) NSString *information;
-@property (strong, readwrite) NSURL *website;
-@property (strong, readwrite) NSArray *options;
+@property (readwrite) NSURL *website;
+@property (readwrite) NSArray *options;
+//@property (copy, readwrite) NSString *requirements;
+@property (getter=isCask, readwrite) BOOL cask;
 
 @end
 
@@ -69,7 +87,7 @@ NSString *const kCiFormulaDidUpdateNotification = @"CiFormulaDidUpdateNotificati
 	return YES;
 }
 
-+ (instancetype)formulaWithName:(NSString*)name withVersion:(NSString*)version withLatestVersion:(NSString*)latestVersion
++ (instancetype)formulaWithName:(NSString*)name withVersion:(NSString*)version withLatestVersion:(NSString*)latestVersion cask:(BOOL)isCask
 {
 	CiFormula *formula = [[self alloc] init];
 	
@@ -78,6 +96,7 @@ NSString *const kCiFormulaDidUpdateNotification = @"CiFormulaDidUpdateNotificati
 		formula.name = name;
 		formula.version = version;
 		formula.latestVersion = latestVersion;
+        formula.cask = isCask;
         
 		[formula commonInit];
 	}
@@ -85,14 +104,14 @@ NSString *const kCiFormulaDidUpdateNotification = @"CiFormulaDidUpdateNotificati
 	return formula;
 }
 
-+ (instancetype)formulaWithName:(NSString*)name withVersion:(NSString*)version
++ (instancetype)formulaWithName:(NSString*)name withVersion:(NSString*)version cask:(BOOL)isCask
 {
-	return [self formulaWithName:name withVersion:version withLatestVersion:nil];
+	return [self formulaWithName:name withVersion:version withLatestVersion:nil cask:isCask];
 }
 
-+ (instancetype)formulaWithName:(NSString*)name
++ (instancetype)formulaWithName:(NSString*)name cask:(BOOL)isCask
 {
-	return [self formulaWithName:name withVersion:nil];
+    return [self formulaWithName:name withVersion:nil cask:isCask];
 }
 
 - (void)encodeWithCoder:(NSCoder *)aCoder
@@ -107,7 +126,8 @@ NSString *const kCiFormulaDidUpdateNotification = @"CiFormulaDidUpdateNotificati
 	if (self.shortDescription)	[aCoder encodeObject:self.shortDescription	forKey:kCi_ENCODE_FORMULA_SDSC];
 	if (self.information)		[aCoder encodeObject:self.information		forKey:kCi_ENCODE_FORMULA_INFO];
 	if (self.options)			[aCoder encodeObject:self.options			forKey:kCi_ENCODE_FORMULA_OPTN];
-	[aCoder encodeObject:@([self isInstalled]) forKey:kCi_ENCODE_FORMULA_INST];
+    [aCoder encodeObject:@(self.isInstalled) forKey:kCi_ENCODE_FORMULA_INST];
+    [aCoder encodeObject:@(self.isCask)      forKey:kCi_ENCODE_FORMULA_CASK];
 }
 
 - (instancetype)initWithCoder:(NSCoder *)aDecoder
@@ -124,9 +144,9 @@ NSString *const kCiFormulaDidUpdateNotification = @"CiFormulaDidUpdateNotificati
 		self.conflicts			= [aDecoder decodeObjectOfClass:[NSString class] forKey:kCi_ENCODE_FORMULA_CNFL];
 		self.shortDescription	= [aDecoder decodeObjectOfClass:[NSString class] forKey:kCi_ENCODE_FORMULA_CNFL];
 		self.information		= [aDecoder decodeObjectOfClass:[NSString class] forKey:kCi_ENCODE_FORMULA_INFO];
-
-		NSSet *optionsClasses = [NSSet setWithArray:@[[NSArray class], [CiFormulaOption class]]];
-		self.options			= [aDecoder decodeObjectOfClasses:optionsClasses forKey:kCi_ENCODE_FORMULA_OPTN];
+		self.options			= [aDecoder decodeObjectOfClasses:[NSSet setWithArray:@[[NSArray class], [CiFormulaOption class]]] forKey:kCi_ENCODE_FORMULA_OPTN];
+        self.cask               = [aDecoder decodeObjectForKey:kCi_ENCODE_FORMULA_CASK];
+        
 		[self commonInit];
 	}
 	return self;
@@ -217,13 +237,13 @@ NSString *const kCiFormulaDidUpdateNotification = @"CiFormulaDidUpdateNotificati
 	{
 		id<CiFormulaDataProvider> dataProvider = [self dataProvider];
 		
-		if (![dataProvider respondsToSelector:@selector(informationWithFormulaName:)])
+        if (![dataProvider respondsToSelector:@selector(informationWithFormulaName:cask:)])
 		{
 			_needsInformation = NO;
 			return NO;
 		}
 
-		NSString *information = [[self dataProvider] informationWithFormulaName:self.name];
+        NSString *information = [[self dataProvider] informationWithFormulaName:self.name cask:self.isCask];
 
 		if ([information rangeOfString:@"\n"].location == NSNotFound)
 		{
@@ -263,7 +283,7 @@ NSString *const kCiFormulaDidUpdateNotification = @"CiFormulaDidUpdateNotificati
 	
 	lineIndex = 1;
 	line = [lines objectAtIndex:lineIndex];
-	id url = [NSURL URLWithString:line];
+	id url = [NSURL validatedURLWithString:line];
 	
 	if (url == nil)
 	{
@@ -311,39 +331,64 @@ NSString *const kCiFormulaDidUpdateNotification = @"CiFormulaDidUpdateNotificati
 	
 	if (![line isEqualToString:@"Not installed"])
 	{
-		if ([line isEqualToString:@""]) { //keg-only formual has no path
-			lineIndex += 1;
-			[self setInstallPath:[lines objectAtIndex:lineIndex]];
-		} else {
-			[self setInstallPath:line];
-		}
+        lineIndex++;
+        [self setInstallPath:[lines objectAtIndex:lineIndex]];
 	}
+    
+    // end first header
+    
+    // casks only
+    NSRange nameRange = [output rangeOfString:kCiCaskInfoSectionHeaderName];
+    if (nameRange.location != NSNotFound) {
+        NSString *tail = [output substringFromIndex:nameRange.location + nameRange.length];
+        
+        NSRange nextHeaderIndicatorRange = [tail rangeOfString:kCiBrewInfoSectionHeaderIndicator];
+        if (nextHeaderIndicatorRange.location != NSNotFound) {
+            NSString *name = [[tail substringToIndex:nextHeaderIndicatorRange.location] stringByTrimmingCharactersInSet:[NSCharacterSet newlineCharacterSet]];
+            tail = [tail substringFromIndex:nextHeaderIndicatorRange.location];
+            
+            NSRange descriptionRange = [tail rangeOfString:kCiCaskInfoSectionHeaderDescription];
+            if (descriptionRange.location != NSNotFound) {
+                tail = [tail substringFromIndex:descriptionRange.location + descriptionRange.length];
+                nextHeaderIndicatorRange = [tail rangeOfString:kCiBrewInfoSectionHeaderIndicator];
+                tail = [(nextHeaderIndicatorRange.location != NSNotFound ? [tail substringToIndex:nextHeaderIndicatorRange.location] : tail) stringByTrimmingCharactersInSet:[NSCharacterSet newlineCharacterSet]];
+                self.shortDescription = [name isEqualToString:self.name] ? tail : [NSString stringWithFormat:@"%@;\n%@", name, tail];
+            }
+        } else {
+            self.shortDescription = [tail stringByTrimmingCharactersInSet:[NSCharacterSet newlineCharacterSet]];
+        }
+    }
 	
-	NSRange range_deps = [output rangeOfString:kCiIdentifierDependencies];
-	NSRange range_opts = [output rangeOfString:kCiIdentifierOptions];
-	NSRange range_cvts = [output rangeOfString:kCiIdentifierCaveats];
+	NSRange dependenciesRange = [output rangeOfString:kCiFormulaInfoSectionHeaderDependencies];
+	NSRange optionsRange = [output rangeOfString:kCiFormulaInfoSectionHeaderOptions];
+	NSRange caveatsRange = [output rangeOfString:kCiFormulaInfoSectionHeaderCaveats];
+    NSRange analyticsRange = [output rangeOfString:kCiFormulaInfoSectionHeaderAnalytics];
 	
 	// Find dependencies
-	if (range_deps.location != NSNotFound)
+	if (dependenciesRange.location != NSNotFound)
 	{
-		range_deps.location = range_deps.length+range_deps.location+1;
+		dependenciesRange.location = dependenciesRange.location + dependenciesRange.length + 1;
 
-		if (range_opts.location != NSNotFound)
+		if (optionsRange.location != NSNotFound)
 		{
-			range_deps.length = range_opts.location-range_deps.location;
+			dependenciesRange.length = optionsRange.location - dependenciesRange.location;
 		}
-		else if (range_cvts.location != NSNotFound)
+		else if (caveatsRange.location != NSNotFound)
 		{
-			range_deps.length = range_cvts.location-range_deps.location;
+			dependenciesRange.length = caveatsRange.location - dependenciesRange.location;
 		}
+        else if (analyticsRange.location != NSNotFound)
+        {
+            dependenciesRange.length = analyticsRange.location - dependenciesRange.location;
+        }
 		else
 		{
-			range_deps.length = [output length] - range_deps.location;
+			dependenciesRange.length = [output length] - dependenciesRange.location;
 		}
 		
 		NSMutableArray<NSString *> __block *dependencies = [NSMutableArray new];
 		
-		[output enumerateSubstringsInRange:range_deps
+		[output enumerateSubstringsInRange:dependenciesRange
 								   options:NSStringEnumerationByLines usingBlock:^(NSString *substring,
 																				   NSRange substringRange,
 																				   NSRange enclosingRange,
@@ -361,16 +406,20 @@ NSString *const kCiFormulaDidUpdateNotification = @"CiFormulaDidUpdateNotificati
 	}
 	
 	// Find options
-	if (range_opts.location != NSNotFound)
+	if (optionsRange.location != NSNotFound)
 	{
-		NSString *optionsString = [output substringFromIndex:range_opts.length+range_opts.location+1];
+		NSString *optionsString = [output substringFromIndex:optionsRange.length + optionsRange.location + 1];
 		NSMutableArray *options = [NSMutableArray arrayWithCapacity:10];
 		
-		range_cvts = [optionsString rangeOfString:kCiIdentifierCaveats];
+		caveatsRange = [optionsString rangeOfString:kCiFormulaInfoSectionHeaderCaveats];
+        analyticsRange = [optionsString rangeOfString:kCiFormulaInfoSectionHeaderAnalytics];
 		
-		if (range_cvts.location != NSNotFound) {
-			optionsString = [optionsString substringToIndex:range_cvts.location];
+		if (caveatsRange.location != NSNotFound) {
+			optionsString = [optionsString substringToIndex:caveatsRange.location];
 		}
+        else if (analyticsRange.location != NSNotFound) {
+            optionsString = [optionsString substringToIndex:analyticsRange.location];
+        }
 		
 		CiFormulaOption __block *formulaOption = nil;
 		[optionsString enumerateLinesUsingBlock:^(NSString *line, BOOL *stop) {

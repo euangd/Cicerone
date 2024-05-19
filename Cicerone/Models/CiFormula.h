@@ -26,7 +26,7 @@ extern NSString *const kCiFormulaDidUpdateNotification;
 
 @protocol CiFormulaDataProvider <NSObject>
 @required
-- (NSString *)informationWithFormulaName:(NSString *)name;
+- (NSString *)informationWithFormulaName:(NSString *)name cask:(BOOL)isCask;
 @end
 
 @interface CiFormula : NSObject <NSSecureCoding, NSCopying>
@@ -36,19 +36,19 @@ extern NSString *const kCiFormulaDidUpdateNotification;
 @property (copy, readonly) NSString *latestVersion;
 @property (copy, readonly) NSString *shortLatestVersion;
 @property (copy, readonly) NSString *information;
-@property (nonatomic, copy, readonly) NSString *installPath;
-@property (nonatomic, copy, readonly) NSString *dependencies;
-@property (nonatomic, copy, readonly) NSString *conflicts;
-@property (nonatomic, copy, readonly) NSString *shortDescription;
-@property (nonatomic, strong, readonly) NSURL    *website;
-@property (nonatomic, strong, readonly) NSArray  *options;
-
+@property (copy, readonly) NSString *installPath;
+@property (copy, readonly) NSString *dependencies;
+@property (copy, readonly) NSString *conflicts;
+@property (copy, readonly) NSString *shortDescription;
+@property (strong, readonly) NSURL *website;
+@property (strong, readonly) NSArray *options;
+@property (getter=isCask, readonly) BOOL cask;
 
 @property BOOL needsInformation;
 
-+ (instancetype)formulaWithName:(NSString*)name withVersion:(NSString*)version withLatestVersion:(NSString*)latestVersion;
-+ (instancetype)formulaWithName:(NSString*)name withVersion:(NSString*)version;
-+ (instancetype)formulaWithName:(NSString*)name;
++ (instancetype)formulaWithName:(NSString*)name withVersion:(NSString*)version withLatestVersion:(NSString*)latestVersion cask:(BOOL)isCask;
++ (instancetype)formulaWithName:(NSString*)name withVersion:(NSString*)version cask:(BOOL)isCask;
++ (instancetype)formulaWithName:(NSString*)name cask:(BOOL)isCask;
 
 /**
  *  The short name for the formula. Useful for taps. Returns the remaining substring after the last slash character.
