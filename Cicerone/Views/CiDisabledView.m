@@ -37,7 +37,7 @@
 
 - (void)commonInit
 {
-	NSNib *nib = [[NSNib alloc] initWithNibNamed:@"Disabled" bundle:nil];
+	NSNib *nib = [[NSNib alloc] initWithNibNamed:@"CiDisabledView" bundle:nil];
 	[nib instantiateWithOwner:self topLevelObjects:NULL];
 	[self addSubview:self.view];
 	

@@ -11,7 +11,7 @@
 
 @interface CiSelectedFormulaViewController ()
 
-@property (strong) CiTimedDispatch *timedDispatch;
+@property (strong) BPTimedDispatch *timedDispatch;
 
 @end
 
@@ -24,7 +24,7 @@
 												 name:NSViewFrameDidChangeNotification
 											   object:self.view];
 	
-	[self setTimedDispatch:[CiTimedDispatch new]];
+    self.timedDispatch = [BPTimedDispatch new];
 }
 
 - (void)dealloc
@@ -36,7 +36,7 @@
 {
 	if ([self.formulaDependenciesLabel respondsToSelector:@selector(preferredMaxLayoutWidth)])
 	{
-		self.formulaDescriptionLabel.preferredMaxLayoutWidth = self.formulaDescriptionLabel.frame.size.width;
+		self.formulaDescriptionLabel.preferredMaxLayoutWidth    = self.formulaDescriptionLabel.frame.size.width;
 		self.formulaDependenciesLabel.preferredMaxLayoutWidth	= self.formulaDependenciesLabel.frame.size.width;
 		self.formulaConflictsLabel.preferredMaxLayoutWidth		= self.formulaConflictsLabel.frame.size.width;
 		self.formulaVersionLabel.preferredMaxLayoutWidth		= self.formulaVersionLabel.frame.size.width;
@@ -47,7 +47,7 @@
 
 - (NSString *)nibName
 {
-	return @"CiSelectedFormula";
+	return @"CiSelectedFormulaView";
 }
 
 - (void)setFormulae:(NSArray *)formulae
@@ -68,10 +68,10 @@
 	[self.timedDispatch scheduleDispatchAfterTimeInterval:0.3
 												  inQueue:dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0)
 												  ofBlock:^
-	 {
-		 CiFormula *formula = [self.formulae firstObject];
-		 [formula setNeedsInformation:YES];
-	 }];
+    {
+        CiFormula *formula = [self.formulae firstObject];
+        formula.needsInformation = YES;
+    }];
 }
 
 - (void)updateFormulaInformation:(NSNotification *)notification
@@ -89,11 +89,11 @@
 	
 	if (!self.formulae || [self.formulae count] == 0)
 	{
-		[self.formulaDescriptionLabel	setStringValue:emptyString];
-		[self.formulaPathLabel			setStringValue:emptyString];
-		[self.formulaVersionLabel		setStringValue:emptyString];
-		[self.formulaDependenciesLabel	setStringValue:emptyString];
-		[self.formulaConflictsLabel		setStringValue:emptyString];
+        self.formulaDescriptionLabel.stringValue = emptyString;
+        self.formulaPathLabel.stringValue = emptyString;
+        self.formulaVersionLabel.stringValue = emptyString;
+        self.formulaDependenciesLabel.stringValue = emptyString;
+        self.formulaConflictsLabel.stringValue = emptyString;
 	}
 	
 	if ([self.formulae count] == 1)
@@ -104,52 +104,52 @@
 		{
 			if ([formula.installPath length])
 			{
-				[self.formulaPathLabel setStringValue:formula.installPath];
+                self.formulaPathLabel.stringValue = formula.installPath;
 			}
 			else
 			{
-				[self.formulaPathLabel setStringValue:emptyString];
+                self.formulaPathLabel.stringValue = emptyString;
 			}
 		}
 		else
 		{
-			[self.formulaPathLabel setStringValue:NSLocalizedString(@"Info_View_Formula_Not_Installed", nil)];
+            self.formulaPathLabel.stringValue = NSLocalizedString(@"Info_View_Formula_Not_Installed", nil);
 		}
 		
 		if (formula.latestVersion)
 		{
-			[self.formulaVersionLabel setStringValue:formula.latestVersion];
+            self.formulaVersionLabel.stringValue = formula.latestVersion;
 		}
 		else
 		{
-			[self.formulaVersionLabel setStringValue:emptyString];
+            self.formulaVersionLabel.stringValue = emptyString;
 		}
 		
 		if (formula.dependencies)
 		{
-			[self.formulaDependenciesLabel setStringValue:formula.dependencies];
+            self.formulaDependenciesLabel.stringValue = formula.dependencies;
 		}
 		else
 		{
-			[self.formulaDependenciesLabel setStringValue:NSLocalizedString(@"Info_View_Formula_No_Dependencies", nil)];
+            self.formulaDependenciesLabel.stringValue = NSLocalizedString(@"Info_View_Formula_No_Dependencies", nil);
 		}
 		
 		if (formula.conflicts)
 		{
-			[self.formulaConflictsLabel setStringValue:formula.conflicts];
+            self.formulaConflictsLabel.stringValue = formula.conflicts;
 		}
 		else
 		{
-			[self.formulaConflictsLabel setStringValue:NSLocalizedString(@"Info_View_Formula_No_Conflicts", nil)];
+            self.formulaConflictsLabel.stringValue = NSLocalizedString(@"Info_View_Formula_No_Conflicts", nil);
 		}
 		
 		if (formula.shortDescription)
 		{
-			[self.formulaDescriptionLabel setStringValue:formula.shortDescription];
+            self.formulaDescriptionLabel.stringValue = formula.shortDescription;
 		}
 		else
 		{
-			[self.formulaDescriptionLabel setStringValue:NSLocalizedString(@"Info_View_Formula_No_Description", nil)];
+            self.formulaDescriptionLabel.stringValue = NSLocalizedString(@"Info_View_Formula_No_Description", nil);
 		}
 		
 		if ([self.delegate respondsToSelector:@selector(selectedFormulaViewDidUpdateFormulaInfoForFormula:)])
@@ -159,11 +159,12 @@
 		
 		if ([self.formulae count] > 1)
 		{
-			[self.formulaPathLabel setStringValue:multipleString];
-			[self.formulaDependenciesLabel setStringValue:multipleString];
-			[self.formulaConflictsLabel setStringValue:multipleString];
-			[self.formulaVersionLabel setStringValue:multipleString];
+            self.formulaPathLabel.stringValue = multipleString;
+            self.formulaDependenciesLabel.stringValue = multipleString;
+            self.formulaConflictsLabel.stringValue = multipleString;
+            self.formulaVersionLabel.stringValue = multipleString;
 		}
 	}
 }
+
 @end

@@ -177,7 +177,7 @@ NSString *const kCiCacheDataKey	= @"CiCacheDataKey";
 		   NSError *error = nil;
 
 		   if (@available(macOS 10.13, *)) {
-			   NSSet *classes = [NSSet setWithArray:@[[NSString class], [NSDictionary class], [NSMutableArray class], [CiFormula class]]];
+			   NSSet *classes = [NSSet setWithArray:@[[NSString class], [NSDictionary class], [NSMutableArray class], [CiFormula class], [NSNumber class]]];
 			   cacheDict = [NSKeyedUnarchiver unarchivedObjectOfClasses:classes fromData:data error:&error];
 			   if (error) {
 				   NSLog(@"Failed decoding data: %@", [error localizedDescription]);

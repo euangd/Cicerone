@@ -42,7 +42,7 @@
 
 - (void)commonInit
 {
-	NSNib *nib = [[NSNib alloc] initWithNibNamed:@"Loading" bundle:nil];
+	NSNib *nib = [[NSNib alloc] initWithNibNamed:@"CiLoadingView" bundle:nil];
 	[nib instantiateWithOwner:self topLevelObjects:NULL];
 	self.view.frame = self.bounds;
 	[self addSubview:self.view];

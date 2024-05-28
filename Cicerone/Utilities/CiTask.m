@@ -20,7 +20,7 @@
 //
 
 #import "CiTask.h"
-#import "Categories/NSString+Summarization.h"
+#import "NSString+Summarization.h"
 
 NSString *const kDidBeginBackgroundActivityNotification	= @"DidBeginBackgroundActivityNotification";
 NSString *const kDidEndBackgroundActivityNotification	= @"DidEndBackgroundActivityNotification";

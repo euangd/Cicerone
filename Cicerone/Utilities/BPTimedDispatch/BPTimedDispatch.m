@@ -8,7 +8,7 @@
 
 #import "BPTimedDispatch.h"
 
-@interface CiTimedDispatch ()
+@interface BPTimedDispatch ()
 
 @property (nonatomic, copy) void (^schedulledBlock)(void);
 @property (atomic, strong) NSTimer *dispatchTimer;
@@ -16,7 +16,7 @@
 
 @end
 
-@implementation CiTimedDispatch
+@implementation BPTimedDispatch
 
 - (void)scheduleDispatchAfterTimeInterval:(NSTimeInterval)interval ofBlock:(void (^)(void))block
 {
@@ -25,25 +25,25 @@
 
 - (void)scheduleDispatchAfterTimeInterval:(NSTimeInterval)interval inQueue:(dispatch_queue_t)queue ofBlock:(void (^)(void))block
 {
-	[self setSchedulledBlock:block];
-	[self setDispatchQueue:queue];
+    self.schedulledBlock = block;
+    self.dispatchQueue = queue;
 	
 	if (self.dispatchTimer)
 	{
 		[self.dispatchTimer invalidate];
 	}
 		 
-	[self setDispatchTimer:[NSTimer scheduledTimerWithTimeInterval:interval
-															target:self
-														  selector:@selector(dispatchBlockTimerDidFire:)
-														  userInfo:nil
-														   repeats:NO]];
+	self.dispatchTimer = [NSTimer scheduledTimerWithTimeInterval:interval
+                                                          target:self
+                                                        selector:@selector(dispatchBlockTimerDidFire:)
+                                                        userInfo:nil
+                                                         repeats:NO];
 }
 
 - (void)dispatchBlockTimerDidFire:(NSTimer*)sender
 {
 	void (^localBlock)(void) = self.schedulledBlock;
-	[self setSchedulledBlock:nil];
+    self.schedulledBlock = nil;
 	
 	dispatch_async(self.dispatchQueue, ^{
 		if (localBlock) localBlock();

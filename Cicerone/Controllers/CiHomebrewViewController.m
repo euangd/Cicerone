@@ -567,7 +567,7 @@ NSOpenSavePanelDelegate>
 
 - (void)loadSearchResults
 {
-    [self.sidebarController.sidebar selectRowIndexes:[NSIndexSet indexSet] byExtendingSelection:NO];
+    [self.sidebarController.sidebar deselectAll:self];
     self.searching = YES;
     [self configureTableForListing:kCiListModeSearchFormulae];
 }

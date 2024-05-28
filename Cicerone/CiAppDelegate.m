@@ -23,7 +23,7 @@
 #import "DCOAboutWindowController.h"
 #import "CiAppDelegate.h"
 
-NSString *const kCi_HOMEBREW_WEBSITE = @"https://github.com/TheFanatr/Cicerone";
+NSString *const kCi_CICERONE_WEBSITE = @"https://github.com/TheFanatr/Cicerone";
 
 
 @interface CiAppDelegate () <NSUserNotificationCenterDelegate>
@@ -42,8 +42,9 @@ NSString *const kCi_HOMEBREW_WEBSITE = @"https://github.com/TheFanatr/Cicerone";
 {
 	if (!_aboutWindowController){
 		_aboutWindowController = [[DCOAboutWindowController alloc] init];
-		[_aboutWindowController setAppWebsiteURL:[NSURL URLWithString:kCi_HOMEBREW_WEBSITE]];
+        _aboutWindowController.appWebsiteURL = [NSURL URLWithString:kCi_CICERONE_WEBSITE];
 	}
+    
 	return _aboutWindowController;
 }
 
@@ -55,7 +56,7 @@ NSString *const kCi_HOMEBREW_WEBSITE = @"https://github.com/TheFanatr/Cicerone";
 	
 	[[CiHomebrewManager sharedManager] loadHomebrewStateWithCacheRebuild:NO];
 	
-	[[NSUserNotificationCenter defaultUserNotificationCenter] setDelegate:self];
+	[NSUserNotificationCenter defaultUserNotificationCenter].delegate = self;
 }
 
 - (BOOL)applicationShouldHandleReopen:(NSApplication *)sender hasVisibleWindows:(BOOL)flag
@@ -134,12 +135,13 @@ NSString *const kCi_HOMEBREW_WEBSITE = @"https://github.com/TheFanatr/Cicerone";
 
 - (void)displayBackgroundWarning
 {
-	static NSAlert *alert= nil;
+	static NSAlert *alert = nil;
+    
 	if (!alert) {
 		alert = [[NSAlert alloc] init];
-		[alert setMessageText:NSLocalizedString(@"Message_BGTask_Title", nil)];
+        alert.messageText = NSLocalizedString(@"Message_BGTask_Title", nil);
 		[alert addButtonWithTitle:NSLocalizedString(@"Generic_OK", nil)];
-		[alert setInformativeText:NSLocalizedString(@"Message_BGTask_Body", nil)];
+        alert.informativeText = NSLocalizedString(@"Message_BGTask_Body", nil);
 	}
 
 	[alert runModal];
@@ -155,8 +157,8 @@ NSString *const kCi_HOMEBREW_WEBSITE = @"https://github.com/TheFanatr/Cicerone";
 	}
 	
 	NSUserNotification *userNotification = [NSUserNotification new];
-	[userNotification setTitle:title];
-	[userNotification setSubtitle:desc];
+    userNotification.title = title;
+    userNotification.subtitle = desc;
 	
 	[[NSUserNotificationCenter defaultUserNotificationCenter] scheduleNotification:userNotification];
 }
@@ -171,7 +173,7 @@ NSString *const kCi_HOMEBREW_WEBSITE = @"https://github.com/TheFanatr/Cicerone";
 
 - (IBAction)openWebsite:(id)sender
 {
-	[[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:kCi_HOMEBREW_WEBSITE]];
+	[[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:kCi_CICERONE_WEBSITE]];
 }
 
 #pragma mark - User Notification Center Delegate

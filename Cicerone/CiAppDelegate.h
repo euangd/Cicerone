@@ -25,7 +25,7 @@
 
 extern NSString *const kCi_HOMEBREW_PATH;
 extern NSString *const kCi_HOMEBREW_PATH_KEY;
-extern NSString *const kCi_HOMEBREW_WEBSITE;
+extern NSString *const kCi_CICERONE_WEBSITE;
 
 @interface CiAppDelegate : NSObject <NSApplicationDelegate>
 

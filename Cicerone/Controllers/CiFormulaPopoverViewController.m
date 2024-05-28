@@ -14,7 +14,7 @@
 
 @interface CiFormulaPopoverViewController ()
 
-@property (strong) CiTimedDispatch *timedDispatch;
+@property (strong) BPTimedDispatch *timedDispatch;
 
 @end
 
@@ -26,7 +26,7 @@
 	[self.formulaTextView setFont:font];
 	[self.formulaTextView setTextColor:[CiStyle popoverTextViewColor]];
 	[self.formulaPopover setContentViewController:self];
-	[self setTimedDispatch:[CiTimedDispatch new]];
+	[self setTimedDispatch:[BPTimedDispatch new]];
 	[self.formulaTitleLabel setTextColor:[CiStyle popoverTitleColor]];
 	[self setInfoType:kCiFormulaInfoTypeGeneral];
 }
