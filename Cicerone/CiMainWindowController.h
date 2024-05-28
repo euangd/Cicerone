@@ -16,9 +16,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property (weak) IBOutlet NSView *windowContentView;
 
 @property (readonly, strong) NSSplitViewController *splitViewController;
+@property BOOL windowContentViewHidden;
 
 - (void)setUpViews;
-- (void)setWindowContentViewHidden:(BOOL)hide;
 
 @end
 

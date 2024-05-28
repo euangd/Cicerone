@@ -21,11 +21,17 @@
 
 #import <Cocoa/Cocoa.h>
 
+extern NSString *const kToolbarIdentifier;
+
+extern NSString *const kToolbarItemBrewUpdateToolIdentifier;
+extern NSString *const kToolbarItemBrewInfoToolIdentifier;
+extern NSString *const kToolbarItemSearchIdentifier;
+extern NSString *const kToolbarItemMultiActionIdentifier;
+extern NSString *const kToolbarItemBewTapToolIdentifier;
+
 @protocol CiToolbarProtocol <NSObject>
 
 @required
-- (void)performSearchWithString:(NSString *)search;
-
 - (void)update:(id)sender;
 - (void)upgradeSelectedFormulae:(id)sender;
 - (void)infoForSelectedFormula:(id)sender;
@@ -33,6 +39,10 @@
 - (void)untapSelectedRepository:(id)sender;
 - (void)installSelectedFormula:(id)sender;
 - (void)uninstallSelectedFormula:(id)sender;
+
+- (void)performSearchWithString:(NSString *)search;
+
+- (void)actualizeToolbarItem:(NSToolbarItem *)item;
 @end
 
 @interface CiToolbar : NSToolbar <NSToolbarDelegate, NSToolbarItemValidation>
@@ -60,5 +70,8 @@ typedef NS_ENUM(NSUInteger, CiToolbarMode)
 
 - (void)showSearch;
 - (NSSearchField*)searchField;
+
+- (void)actualizeVisibleItems;
+- (void)actualizeToolbarItem:(NSToolbarItem *)item;
 
 @end

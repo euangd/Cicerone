@@ -63,27 +63,23 @@
 
 - (void)setWindowContentViewHidden:(BOOL)hide
 {
-	[self.windowContentView setHidden:hide];
+    self.windowContentView.hidden = hide;
 }
 
 - (NSSplitViewItem *)makeSidebarSplitViewItem
 {
 	NSViewController *sidebarViewController = [[NSViewController alloc] initWithNibName:nil bundle:nil];
 	[sidebarViewController setView:[self sidebarView]];
-	NSSplitViewItem *sidebarSplitViewItem;
 
-    sidebarSplitViewItem = [NSSplitViewItem sidebarWithViewController:sidebarViewController];
-
-	return sidebarSplitViewItem;
+	return [NSSplitViewItem sidebarWithViewController:sidebarViewController];
 }
 
 - (NSSplitViewItem *)makeContentSplitViewItem
 {
 	NSViewController *contentViewController = [[NSViewController alloc] initWithNibName:nil bundle:nil];
-	[contentViewController setView:[self windowContentView]];
-	NSSplitViewItem *sidebarContentViewItem = [NSSplitViewItem splitViewItemWithViewController:contentViewController];
+    contentViewController.view = self.windowContentView;
 
-	return sidebarContentViewItem;
+	return [NSSplitViewItem splitViewItemWithViewController:contentViewController];
 }
 
 @end

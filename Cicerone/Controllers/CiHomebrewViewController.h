@@ -47,16 +47,17 @@ typedef NS_ENUM(NSUInteger, CiWindowOperation) {
 @property (weak) IBOutlet NSMenu                   *menu_formula;
 
 // Cocoa bindings
-@property BOOL enableUpgradeFormulasMenu;
-@property (nonatomic, readonly) CiFormula *selectedFormula; // used to be (copy) but then -[setSelectedFormula:] would freeze, at least when @synchronized (self) up the call stack
+@property (readonly) BOOL hasUpgrades; // todo: possibly make this just read upgrade count directly instead of waiting for -hombrewManagerDidFinishUpdating:
+@property (readonly, getter=isSearching) BOOL searching;
+@property (readonly, getter=isListingPackages) BOOL listingPackages;
+@property (readonly, getter=isHomebrewInstalled) BOOL homebrewInstalled; // used to have -isHomebrewInstalled selector separately, then ~synthesized into property with getter= for implementation (on empty category interface)
 
-- (BOOL)isHomebrewInstalled;
+@property (nonatomic, readonly) CiFormula *selectedFormula; // used to be (copy) but then -[setSelectedFormula:] would freeze, at least when @synchronized (self) up the call stack
 
 - (IBAction)showFormulaInfo:(id)sender;
 - (IBAction)installFormulaWithOptions:(id)sender;
 - (IBAction)upgradeSelectedFormulae:(id)sender;
 - (IBAction)upgradeAllOutdatedFormulae:(id)sender;
-- (IBAction)updateHomebrew:(id)sender;
 - (IBAction)openSelectedFormulaWebsite:(id)sender;
 - (IBAction)beginFormulaSearch:(id)sender;
 - (IBAction)runHomebrewCleanup:(id)sender;

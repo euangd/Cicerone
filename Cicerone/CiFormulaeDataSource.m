@@ -139,6 +139,9 @@
             return kCiFormulaStatusInstalled;
         }
     } else {
+        if ([self searchForFormula:formula inArray:CiHomebrewManager.sharedManager.repositoriesFormulae]) {
+            return kCiFormulaStatusInstalled;
+        }
         return kCiFormulaStatusNotInstalled;
     }
 }

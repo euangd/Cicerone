@@ -58,7 +58,7 @@
     
 	if (!image)
     {
-		image = [self appropriateIconForToolbarWithName:@"download" orSymbol:@"arrow.down.to.line.compact"];
+		image = [NSImage imageWithSystemSymbolName:@"arrow.down.to.line.compact" accessibilityDescription:@"download"];
 	}
 	
 	return image;
@@ -70,7 +70,7 @@
     
 	if (!image)
     {
-		image = [self appropriateIconForToolbarWithName:@"delete" orSymbol:@"trash.fill"];
+		image = [NSImage imageWithSystemSymbolName:@"trash.fill" accessibilityDescription:@"delete"];
 	}
 	
 	return image;
@@ -82,7 +82,7 @@
     
 	if (!image)
     {
-		image = [self appropriateIconForToolbarWithName:@"download" orSymbol:@"plus.rectangle.on.folder"];
+		image = [NSImage imageWithSystemSymbolName:@"plus.rectangle.on.folder" accessibilityDescription:@"download"];
 	}
 	
 	return image;
@@ -94,7 +94,7 @@
     
 	if (!image)
     {
-		image = [self appropriateIconForToolbarWithName:@"delete" orSymbol:@"trash.fill"];
+		image = [NSImage imageWithSystemSymbolName:@"minus" accessibilityDescription:@"delete"];
 	}
 	
 	return image;
@@ -106,7 +106,7 @@
     
 	if (!image)
     {
-		image = [self appropriateIconForToolbarWithName:@"reload" orSymbol:@"arrow.triangle.capsulepath"];
+		image = [NSImage imageWithSystemSymbolName:@"arrow.circlepath" accessibilityDescription:@"upgrade"];
 	}
 	
 	return image;
@@ -118,7 +118,7 @@
     
 	if (!image)
     {
-		image = [self appropriateIconForToolbarWithName:@"label" orSymbol:@"list.dash.header.rectangle"];
+		image = [NSImage imageWithSystemSymbolName:@"doc.plaintext" accessibilityDescription:@"info text"];
 	}
 	
 	return image;
@@ -130,15 +130,10 @@
     
 	if (!image)
     {
-		image = [self appropriateIconForToolbarWithName:@"globe" orSymbol:@"arrow.circlepath"];
+		image = [NSImage imageWithSystemSymbolName:@"arrow.triangle.capsulepath" accessibilityDescription:@"refresh"];
 	}
 	
 	return image;
-}
-
-+ (NSImage *)appropriateIconForToolbarWithName:(NSString *)name orSymbol:(NSString *)symbol
-{
-    return [NSImage imageWithSystemSymbolName:symbol accessibilityDescription:name];
 }
 
 #pragma mark Popover

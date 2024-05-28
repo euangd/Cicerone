@@ -62,8 +62,9 @@ NSOpenSavePanelDelegate>
 
 @property NSUInteger lastSelectedSidebarIndex;
 
-@property (getter=isSearching)			BOOL searching;
-@property (getter=isHomebrewInstalled)	BOOL homebrewInstalled;
+@property (readwrite) BOOL searching;
+@property (readwrite) BOOL hasUpgrades;
+@property (readwrite) BOOL homebrewInstalled;
 
 @property (strong, nonatomic) CiFormulaOptionsWindowController	*formulaOptionsWindowController;
 @property (strong, nonatomic) NSWindowController				*operationWindowController;
@@ -80,6 +81,8 @@ NSOpenSavePanelDelegate>
 @property (weak) IBOutlet NSProgressIndicator		*backgroundActivityIndicator;
 @property (weak) IBOutlet CiMainWindowController	*mainWindowController;
 
+@property (readonly) CiListMode listMode;
+
 @end
 
 @implementation CiHomebrewViewController
@@ -87,9 +90,36 @@ NSOpenSavePanelDelegate>
     CiHomebrewManager *homebrewManager;
 }
 
+- (CiListMode)listMode
+{
+    return homebrewManager.formulaeDataSource.mode;
+}
+
+- (BOOL)isListingPackages
+{
+    switch (self.listMode) {
+        case kCiListModeRepositories:
+            return false;
+            
+        default:
+            return true;
+    }
+}
+
 - (BOOL)validateToolbarItem:(NSToolbarItem *)item
 {
+    if ([item.itemIdentifier isEqualToString:kToolbarItemBrewInfoToolIdentifier]) {
+        if (self.formulaeTableView.selectedRowIndexes.count > 1) {
+            return NO;
+        }
+    }
     return [self.toolbar validateToolbarItem:item];
+}
+
+- (void)actualizeToolbarItem:(NSToolbarItem *)item
+{
+    // todo: maybe don't even use this to update icons and future popupbutton
+    return [self.toolbar actualizeToolbarItem:item];
 }
 
 - (CiFormulaPopoverViewController *)formulaPopoverViewController
@@ -119,7 +149,6 @@ NSOpenSavePanelDelegate>
     }
     return self;
 }
-
 
 - (void)commonInit
 {
@@ -209,7 +238,7 @@ NSOpenSavePanelDelegate>
                                               metrics:nil
                                               views:@{@"view": selectedFormulaView}]];
     
-    [self.sidebarController setDelegate:self];
+    self.sidebarController.delegate = self;
     [self.sidebarController refreshSidebarBadges];
     [self.sidebarController configureSidebarSettings];
     
@@ -312,9 +341,7 @@ NSOpenSavePanelDelegate>
             self.toolbar.mode = kCiToolbarModeCore;
             break;
         default:
-            showFormulaInfo = true;
-            
-            self.selectedFormulaViewController.formulae = selectedFormulae;
+            self.selectedFormulaViewController.formulae = (showFormulaInfo = allSelectedListIndeces.count == 1) ? selectedFormulae : nil;
             
             if (mostRecentlySelectedListIndex != -1) {
                 switch ([homebrewManager.formulaeDataSource statusForFormula:[homebrewManager.formulaeDataSource formulaAtIndex:mostRecentlySelectedListIndex]]) {
@@ -337,6 +364,7 @@ NSOpenSavePanelDelegate>
     }
     
     self.selectedFormulaView.hidden = !showFormulaInfo;
+    [self.toolbar actualizeVisibleItems];
 }
 
 - (void)configureTableForListing:(CiListMode)mode
@@ -433,7 +461,7 @@ NSOpenSavePanelDelegate>
     {
         [[self.formulaeTableView menu] cancelTracking];
         
-//        self.selectedFormula = nil;
+        //        self.selectedFormula = nil;
         self.selectedFormulaViewController.formulae = nil;
         
         self.mainWindowController.windowContentViewHidden = NO;
@@ -449,7 +477,7 @@ NSOpenSavePanelDelegate>
         [self.sidebarController refreshSidebarBadges];
         [self.sidebarController.sidebar reloadData];
         
-        [self setEnableUpgradeFormulasMenu:([[CiHomebrewManager sharedManager] outdatedFormulae].count > 0)];
+        self.hasUpgrades = ([[CiHomebrewManager sharedManager] outdatedFormulae].count > 0);
         
         if (shouldReselectFirstRow) {
             [self.sidebarController.sidebar selectRowIndexes:[NSIndexSet indexSetWithIndex:kCiSidebarRowInstalledFormulae] byExtendingSelection:NO];
@@ -466,7 +494,7 @@ NSOpenSavePanelDelegate>
 
 - (void)homebrewManager:(CiHomebrewManager *)manager didNotFindBrew:(BOOL)yesOrNo
 {
-    [self setHomebrewInstalled:!yesOrNo];
+    self.homebrewInstalled = !yesOrNo;
     
     if (yesOrNo)
     {
@@ -501,8 +529,8 @@ NSOpenSavePanelDelegate>
     {
         [self.disabledView removeFromSuperview];
         self.disabledView = nil;
-        [self.informationTextField setHidden:NO];
-        [self.mainWindowController setWindowContentViewHidden:NO];
+        self.informationTextField.hidden = NO;
+        self.mainWindowController.windowContentViewHidden = NO;
         
         self.toolbar.mode = kCiToolbarModeDud;
         
@@ -526,8 +554,8 @@ NSOpenSavePanelDelegate>
         return;
     }
     
-    [self.formulaPopoverViewController setInfoType:type];
-    [self.formulaPopoverViewController setFormula:formula];
+    self.formulaPopoverViewController.infoType = type;
+    self.formulaPopoverViewController.formula = formula;
     
     NSRect anchorRect = [self.formulaeTableView rectOfRow:selectedIndex];
     anchorRect.origin = [self.scrollView_formulae convertPoint:anchorRect.origin fromView:self.formulaeTableView];
@@ -565,11 +593,11 @@ NSOpenSavePanelDelegate>
 - (void)selectedFormulaViewDidUpdateFormulaInfoForFormula:(CiFormula *)formula
 {
     // Change the value here without using the setter
-//    if (formula) {
-//        [self willChangeValueForKey:NSStringFromSelector(@selector(selectedFormula))];
-//        _selectedFormula = formula;
-//        [self didChangeValueForKey:NSStringFromSelector(@selector(selectedFormula))];
-//    }
+    //    if (formula) {
+    //        [self willChangeValueForKey:NSStringFromSelector(@selector(selectedFormula))];
+    //        _selectedFormula = formula;
+    //        [self didChangeValueForKey:NSStringFromSelector(@selector(selectedFormula))];
+    //    }
 }
 
 #pragma mark - CiSideBarDelegate Delegate
@@ -590,7 +618,7 @@ NSOpenSavePanelDelegate>
     }
     
     [self.formulaeTableView deselectAll:nil];
-//    [self setSelectedFormula:nil];
+    //    [self setSelectedFormula:nil];
     
     [self updateInterfaceItems];
     
@@ -831,12 +859,6 @@ apply:
     }
 }
 
-- (IBAction)updateHomebrew:(id)sender
-{
-    [self.sidebarController.sidebar selectRowIndexes:[NSIndexSet indexSetWithIndex:kCiSidebarRowUpdate] byExtendingSelection:NO];
-    [self.updateViewController runStopUpdate:nil];
-}
-
 - (IBAction)openSelectedFormulaWebsite:(id)sender
 {
     CiFormula *formula = [self selectedFormula];
@@ -865,11 +887,10 @@ apply:
     [self showFormulaInfo:sender];
 }
 
-
 - (void)update:(id)sender {
-    [self updateHomebrew:sender];
+    [self.sidebarController.sidebar selectRowIndexes:[NSIndexSet indexSetWithIndex:kCiSidebarRowUpdate] byExtendingSelection:NO];
+    [self.updateViewController runStopUpdate:nil];
 }
-
 
 - (IBAction)beginFormulaSearch:(id)sender
 {

@@ -44,28 +44,27 @@ extern NSString *const kCiFormulaDidUpdateNotification;
 @property (strong, readonly) NSArray *options;
 @property (getter=isCask, readonly) BOOL cask;
 
-@property BOOL needsInformation;
+/**
+ *  @return `YES` if the formula is installed, or `NO` otherwise.
+ */
+@property (getter=isInstalled, readonly) BOOL installed;
 
-+ (instancetype)formulaWithName:(NSString*)name withVersion:(NSString*)version withLatestVersion:(NSString*)latestVersion cask:(BOOL)isCask;
-+ (instancetype)formulaWithName:(NSString*)name withVersion:(NSString*)version cask:(BOOL)isCask;
-+ (instancetype)formulaWithName:(NSString*)name cask:(BOOL)isCask;
+/**
+ *  @return `YES` if the formula is installed and outdated, or `NO` otherwise.
+ */
+@property (getter=isOutdated, readonly) BOOL outdated;
 
 /**
  *  The short name for the formula. Useful for taps. Returns the remaining substring after the last slash character.
  *
  *  @return The last substring after the last slash character.
  */
-- (NSString*)installedName;
+@property (readonly) NSString *installedName;
 
+@property BOOL needsInformation;
 
-/**
- *  @return `YES` if the formula is installed, or `NO` otherwise.
- */
-- (BOOL)isInstalled;
-
-/**
- *  @return `YES` if the formula is installed and outdated, or `NO` otherwise.
- */
-- (BOOL)isOutdated;
++ (instancetype)formulaWithName:(NSString*)name withVersion:(NSString*)version withLatestVersion:(NSString*)latestVersion cask:(BOOL)isCask;
++ (instancetype)formulaWithName:(NSString*)name withVersion:(NSString*)version cask:(BOOL)isCask;
++ (instancetype)formulaWithName:(NSString*)name cask:(BOOL)isCask;
 
 @end

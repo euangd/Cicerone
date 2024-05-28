@@ -61,9 +61,6 @@ NSString *const kCiFormulaDidUpdateNotification = @"CiFormulaDidUpdateNotificati
 
 @interface CiFormula ()
 
-@property (getter=isInstalled, readonly) BOOL installed;
-@property (getter=isOutdated, readonly) BOOL outdated;
-
 @property (copy, readwrite) NSString *name;
 @property (copy, readwrite) NSString *version;
 @property (copy, readwrite) NSString *latestVersion;
@@ -76,7 +73,7 @@ NSString *const kCiFormulaDidUpdateNotification = @"CiFormulaDidUpdateNotificati
 @property (readwrite) NSURL *website;
 @property (readwrite) NSArray *options;
 //@property (copy, readwrite) NSString *requirements;
-@property (getter=isCask, readwrite) BOOL cask;
+@property (readwrite) BOOL cask;
 
 @end
 
@@ -187,7 +184,7 @@ NSString *const kCiFormulaDidUpdateNotification = @"CiFormulaDidUpdateNotificati
 	return formula;
 }
 
-- (NSString*)installedName
+- (NSString *)installedName
 {
 	NSRange locationOfLastSlash = [self.name rangeOfString:@"/" options:NSBackwardsSearch];
 	
