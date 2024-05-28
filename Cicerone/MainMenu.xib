@@ -76,9 +76,9 @@
                         </items>
                     </menu>
                 </menuItem>
-                <menuItem title="Packages" id="NmF-5a-a6b">
+                <menuItem title="Listing" id="NmF-5a-a6b">
                     <modifierMask key="keyEquivalentModifierMask"/>
-                    <menu key="submenu" title="Packages" id="sBH-Ta-Jft">
+                    <menu key="submenu" title="Listing" id="sBH-Ta-Jft">
                         <items>
                             <menuItem title="Install…" id="fhF-VX-squ">
                                 <string key="keyEquivalent" base64-UTF8="YES">
@@ -111,7 +111,7 @@ DQ
                                     </binding>
                                 </connections>
                             </menuItem>
-                            <menuItem title="Configure Options…" alternate="YES" id="X74-Yx-eRm">
+                            <menuItem title="Configure Options…" id="X74-Yx-eRm">
                                 <string key="keyEquivalent" base64-UTF8="YES">
 DQ
 </string>
@@ -227,7 +227,7 @@ CA
                                 </connections>
                             </menuItem>
                             <menuItem isSeparatorItem="YES" id="nlg-1m-MvM"/>
-                            <menuItem title="List Dependents" alternate="YES" id="Jwb-Ou-88s">
+                            <menuItem title="List Dependents" id="Jwb-Ou-88s">
                                 <modifierMask key="keyEquivalentModifierMask" option="YES"/>
                                 <connections>
                                     <action selector="showFormulaDependents:" target="547" id="6Qv-Wh-Vgn"/>
@@ -240,6 +240,25 @@ CA
                                         </dictionary>
                                     </binding>
                                     <binding destination="547" name="enabled" keyPath="selectedFormula" id="v50-yf-XH4">
+                                        <dictionary key="options">
+                                            <string key="NSValueTransformerName">NSIsNotNil</string>
+                                        </dictionary>
+                                    </binding>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="List Installed Dependents" alternate="YES" id="JtF-26-dF7">
+                                <modifierMask key="keyEquivalentModifierMask" option="YES"/>
+                                <connections>
+                                    <action selector="showFormulaDependents:" target="547" id="mX1-b3-MUL"/>
+                                    <binding destination="547" name="enabled2" keyPath="isListingPackages" previousBinding="VNZ-an-4ch" id="COi-Ae-IrH">
+                                        <dictionary key="options">
+                                            <integer key="NSMultipleValuesPlaceholder" value="-1"/>
+                                            <integer key="NSNoSelectionPlaceholder" value="-1"/>
+                                            <integer key="NSNotApplicablePlaceholder" value="-1"/>
+                                            <integer key="NSNullPlaceholder" value="-1"/>
+                                        </dictionary>
+                                    </binding>
+                                    <binding destination="547" name="enabled" keyPath="selectedFormula" id="VNZ-an-4ch">
                                         <dictionary key="options">
                                             <string key="NSValueTransformerName">NSIsNotNil</string>
                                         </dictionary>
@@ -636,6 +655,9 @@ CA
                     </menu>
                 </menuItem>
             </items>
+            <connections>
+                <outlet property="delegate" destination="547" id="eSU-eT-ubl"/>
+            </connections>
             <point key="canvasLocation" x="-235" y="154"/>
         </menu>
         <window title="Cicerone" separatorStyle="none" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" frameAutosaveName="MainWindow" animationBehavior="default" id="371" userLabel="CIcerone" customClass="CiWindow">
@@ -659,7 +681,11 @@ CA
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <connections>
                         <action selector="installSelectedFormula:" target="547" id="qiL-RX-azg"/>
-                        <binding destination="547" name="hidden" keyPath="isListingPackages" previousBinding="8RM-YG-bWz" id="sCc-7X-fBu"/>
+                        <binding destination="547" name="hidden" keyPath="isListingPackages" previousBinding="8RM-YG-bWz" id="Wza-0U-fXg">
+                            <dictionary key="options">
+                                <string key="NSValueTransformerName">NSNegateBoolean</string>
+                            </dictionary>
+                        </binding>
                         <binding destination="547" name="enabled" keyPath="selectedFormula" id="ah2-Ag-3QQ">
                             <dictionary key="options">
                                 <string key="NSValueTransformerName">NSIsNotNil</string>
@@ -676,11 +702,15 @@ CA
                         </binding>
                     </connections>
                 </menuItem>
-                <menuItem title="Configure Options…" alternate="YES" id="4CZ-OB-FIp">
+                <menuItem title="Configure Options…" id="4CZ-OB-FIp">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <connections>
                         <action selector="installFormulaWithOptions:" target="547" id="g49-k6-vTj"/>
-                        <binding destination="547" name="hidden" keyPath="isListingPackages" previousBinding="dTP-gn-I03" id="O8r-3D-HXY"/>
+                        <binding destination="547" name="hidden" keyPath="isListingPackages" previousBinding="dTP-gn-I03" id="yKg-vI-MnN">
+                            <dictionary key="options">
+                                <string key="NSValueTransformerName">NSNegateBoolean</string>
+                            </dictionary>
+                        </binding>
                         <binding destination="547" name="enabled" keyPath="selectedFormula" id="IEE-AW-NhX">
                             <dictionary key="options">
                                 <string key="NSValueTransformerName">NSIsNotNil</string>
@@ -702,12 +732,20 @@ CA
                     <connections>
                         <action selector="upgradeSelectedFormulae:" target="547" id="60X-RF-YuO"/>
                         <binding destination="547" name="enabled" keyPath="hasUpgrades" id="ttk-E2-f5P"/>
-                        <binding destination="547" name="hidden" keyPath="isListingPackages" previousBinding="ttk-E2-f5P" id="aNV-5d-gc9"/>
+                        <binding destination="547" name="hidden" keyPath="isListingPackages" previousBinding="ttk-E2-f5P" id="6Lt-pN-zZT">
+                            <dictionary key="options">
+                                <string key="NSValueTransformerName">NSNegateBoolean</string>
+                            </dictionary>
+                        </binding>
                     </connections>
                 </menuItem>
                 <menuItem isSeparatorItem="YES" id="H98-Bd-COV">
                     <connections>
-                        <binding destination="547" name="hidden" keyPath="isListingPackages" id="Phj-Km-ASi"/>
+                        <binding destination="547" name="hidden" keyPath="isListingPackages" id="V0O-se-djX">
+                            <dictionary key="options">
+                                <string key="NSValueTransformerName">NSNegateBoolean</string>
+                            </dictionary>
+                        </binding>
                     </connections>
                 </menuItem>
                 <menuItem title="Remove…" id="k6k-bi-mRz">
@@ -731,14 +769,22 @@ CA
                 </menuItem>
                 <menuItem isSeparatorItem="YES" id="IB0-Bp-iTy">
                     <connections>
-                        <binding destination="547" name="hidden" keyPath="isListingPackages" id="sh0-33-ph6"/>
+                        <binding destination="547" name="hidden" keyPath="isListingPackages" id="hHL-Za-l4a">
+                            <dictionary key="options">
+                                <string key="NSValueTransformerName">NSNegateBoolean</string>
+                            </dictionary>
+                        </binding>
                     </connections>
                 </menuItem>
                 <menuItem title="Show Information" id="O9z-RR-JoW">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <connections>
                         <action selector="showFormulaInfo:" target="547" id="u6S-bi-fMw"/>
-                        <binding destination="547" name="hidden" keyPath="isListingPackages" previousBinding="6LN-rb-t8l" id="DGS-gs-7HY"/>
+                        <binding destination="547" name="hidden" keyPath="isListingPackages" previousBinding="6LN-rb-t8l" id="lQb-q9-wUW">
+                            <dictionary key="options">
+                                <string key="NSValueTransformerName">NSNegateBoolean</string>
+                            </dictionary>
+                        </binding>
                         <binding destination="547" name="enabled" keyPath="selectedFormula" id="6LN-rb-t8l">
                             <dictionary key="options">
                                 <string key="NSValueTransformerName">NSIsNotNil</string>
@@ -750,7 +796,11 @@ CA
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <connections>
                         <action selector="openSelectedFormulaWebsite:" target="547" id="AUq-Wf-bLz"/>
-                        <binding destination="547" name="hidden" keyPath="isListingPackages" previousBinding="Ppu-ZQ-pIB" id="4bb-7V-Sjk"/>
+                        <binding destination="547" name="hidden" keyPath="isListingPackages" previousBinding="Ppu-ZQ-pIB" id="lmO-k4-fdw">
+                            <dictionary key="options">
+                                <string key="NSValueTransformerName">NSNegateBoolean</string>
+                            </dictionary>
+                        </binding>
                         <binding destination="547" name="enabled" keyPath="selectedFormula" id="IaE-TD-blj">
                             <dictionary key="options">
                                 <string key="NSValueTransformerName">NSIsNotNil</string>
@@ -769,17 +819,41 @@ CA
                 </menuItem>
                 <menuItem isSeparatorItem="YES" id="d1j-gV-10l">
                     <connections>
-                        <binding destination="547" name="hidden" keyPath="isListingPackages" id="w9N-uR-bpV"/>
+                        <binding destination="547" name="hidden" keyPath="isListingPackages" id="L1A-ah-WNi">
+                            <dictionary key="options">
+                                <string key="NSValueTransformerName">NSNegateBoolean</string>
+                            </dictionary>
+                        </binding>
                     </connections>
                 </menuItem>
-                <menuItem title="List Dependents" alternate="YES" id="EwX-VA-H2N">
+                <menuItem title="List Dependents" id="EwX-VA-H2N">
                     <modifierMask key="keyEquivalentModifierMask" option="YES"/>
                     <connections>
                         <action selector="showFormulaDependents:" target="547" id="r8k-hL-txF"/>
-                        <binding destination="547" name="hidden" keyPath="isListingPackages" previousBinding="cHh-RD-uEU" id="IuB-36-pOo"/>
+                        <binding destination="547" name="hidden" keyPath="isListingPackages" previousBinding="cHh-RD-uEU" id="aef-Rn-2tM">
+                            <dictionary key="options">
+                                <string key="NSValueTransformerName">NSNegateBoolean</string>
+                            </dictionary>
+                        </binding>
                         <binding destination="547" name="enabled" keyPath="selectedFormula" id="cHh-RD-uEU">
                             <dictionary key="options">
                                 <string key="NSValueTransformerName">NSIsNotNil</string>
+                            </dictionary>
+                        </binding>
+                    </connections>
+                </menuItem>
+                <menuItem title="List Installed Dependents" alternate="YES" id="vQj-U6-G8M">
+                    <modifierMask key="keyEquivalentModifierMask" option="YES"/>
+                    <connections>
+                        <action selector="showFormulaDependents:" target="547" id="Utb-sm-R2X"/>
+                        <binding destination="547" name="enabled" keyPath="selectedFormula" id="ilo-lF-3AD">
+                            <dictionary key="options">
+                                <string key="NSValueTransformerName">NSIsNotNil</string>
+                            </dictionary>
+                        </binding>
+                        <binding destination="547" name="hidden" keyPath="isListingPackages" previousBinding="ilo-lF-3AD" id="6AM-pw-cb4">
+                            <dictionary key="options">
+                                <string key="NSValueTransformerName">NSNegateBoolean</string>
                             </dictionary>
                         </binding>
                     </connections>
@@ -788,7 +862,7 @@ CA
             <connections>
                 <outlet property="delegate" destination="547" id="TTZ-f3-aNF"/>
             </connections>
-            <point key="canvasLocation" x="-475" y="-187"/>
+            <point key="canvasLocation" x="-475" y="-187.5"/>
         </menu>
         <customObject id="494" customClass="CiAppDelegate">
             <connections>

@@ -107,21 +107,21 @@
 {
 	NSString *name = [self.formula name];
 
-	[self.formulaTextView setString:@""];
+    self.formulaTextView.string = @"";
 	[self.progressIndicator startAnimation:nil];
 
 	if (self.infoType == kCiFormulaInfoTypeInstalledDependents)
 	{
-		[self.formulaTitleLabel setStringValue:[NSString stringWithFormat:NSLocalizedString(@"Formula_Installed_Dependents_Title", nil), name]];
+        self.formulaTitleLabel.stringValue = [NSString stringWithFormat:NSLocalizedString(@"Formula_Installed_Dependents_Title", nil), name];
 
 		dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
 			NSString *string = [[CiHomebrewInterface sharedInterface] dependentsWithFormulaName:name installed:YES];
 
 			dispatch_async(dispatch_get_main_queue(), ^{
 				[self.progressIndicator stopAnimation:nil];
-				[self.formulaTextView setString:string];
+                self.formulaTextView.string = string;
 				[self.formulaTextView scrollToBeginningOfDocument:nil];
-				[self.formulaTextView setNeedsDisplay:YES];
+                self.formulaTextView.needsDisplay = YES;
 			});
 		});
 	}
@@ -134,9 +134,9 @@
 
 			dispatch_async(dispatch_get_main_queue(), ^{
 				[self.progressIndicator stopAnimation:nil];
-				[self.formulaTextView setString:string];
+                self.formulaTextView.string = string;
 				[self.formulaTextView scrollToBeginningOfDocument:nil];
-				[self.formulaTextView setNeedsDisplay:YES];
+                self.formulaTextView.needsDisplay = YES;
 			});
 
 		});

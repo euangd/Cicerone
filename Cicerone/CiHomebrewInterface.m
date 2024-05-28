@@ -294,21 +294,12 @@ to pass to async tasks, even though this never happened, to run the update block
     return [self brewToolStandardOutputWithArguments:@[@"info", name, isCask ? @"--cask" : @"--formula"]];
 }
 
-- (NSString *)dependentsWithFormulaName:(NSString *)name installed:(BOOL)onlyInstalled
+- (NSString *)dependentsWithFormulaName:(NSString *)name installed:(BOOL)installedOnly
 {
-	NSMutableArray *arguments = [NSMutableArray arrayWithObject:@"uses"];
-
-	if (onlyInstalled)
-	{
-		[arguments addObject:@"--installed"];
-	}
-
-	[arguments addObject:name];
-
-	return [self brewToolStandardOutputWithArguments:arguments];
+	return [self brewToolStandardOutputWithArguments:@[@"uses", name, installedOnly ? @"--installed" : @"--eval-all"]];
 }
 
-- (NSString*)substringAfterMarker:(NSString*)string {
+- (NSString *)substringAfterMarker:(NSString *)string {
 	if (string) {
 		NSRange range = [string rangeOfString:shellHeaderEndMarker];
         
@@ -322,7 +313,7 @@ to pass to async tasks, even though this never happened, to run the update block
 	return nil;
 }
 
-- (NSString*)removeNewLineFromString:(NSString*)string {
+- (NSString *)removeNewLineFromString:(NSString*)string {
 	if (string) {
 		return [string stringByReplacingOccurrencesOfString:@"\n" withString:@""];
 	}

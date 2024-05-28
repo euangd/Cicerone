@@ -284,7 +284,7 @@ NSOpenSavePanelDelegate>
                                      attribute:NSLayoutAttributeBottom multiplier:1 constant:0],
     ]];
     
-    [self setDisabledView:disabledView];
+    self.disabledView = disabledView;
 }
 
 - (void)addLoadingView
@@ -315,7 +315,7 @@ NSOpenSavePanelDelegate>
 
 - (void)dealloc
 {
-    [homebrewManager setDelegate:nil];
+    homebrewManager.delegate = nil;
     
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
@@ -465,7 +465,7 @@ NSOpenSavePanelDelegate>
         self.selectedFormulaViewController.formulae = nil;
         
         self.mainWindowController.windowContentViewHidden = NO;
-        [self.informationTextField setHidden:NO];
+        self.informationTextField.hidden = NO;
         
         self.toolbar.mode = kCiToolbarModeCore;
         
@@ -504,11 +504,11 @@ NSOpenSavePanelDelegate>
         self.toolbar.mode = kCiToolbarModeDud;
         
         NSAlert *alert = [[NSAlert alloc] init];
-        [alert setMessageText:NSLocalizedString(@"Generic_Error", nil)];
+        alert.messageText = NSLocalizedString(@"Generic_Error", nil);
         [alert addButtonWithTitle:NSLocalizedString(@"Message_No_Homebrew_Title", nil)];
         [alert addButtonWithTitle:NSLocalizedString(@"Generic_Cancel", nil)];
-        [alert setInformativeText:NSLocalizedString(@"Message_No_Homebrew_Body", nil)];
-        [alert.window setTitle:NSLocalizedString(@"Cicerone", nil)];
+        alert.informativeText = NSLocalizedString(@"Message_No_Homebrew_Body", nil);
+        alert.window.title = NSLocalizedString(@"Cicerone", nil);
         
         NSURL *brew_URL = [NSURL URLWithString:@"http://brew.sh"];
         
@@ -567,16 +567,16 @@ NSOpenSavePanelDelegate>
 
 - (void)loadSearchResults
 {
-    [self.sidebarController.sidebar selectRowIndexes:[NSIndexSet indexSetWithIndex:kCiSidebarRowAllFormulae]
-                                byExtendingSelection:NO];
-    [self setSearching:YES];
+    [self.sidebarController.sidebar selectRowIndexes:[NSIndexSet indexSet] byExtendingSelection:NO];
+    self.searching = YES;
     [self configureTableForListing:kCiListModeSearchFormulae];
 }
 
 - (void)endSearchAndCleanup
 {
-    [self.toolbar.searchField setStringValue:@""];
-    [self setSearching:NO];
+    [self.sidebarController.sidebar selectRowIndexes:[NSIndexSet indexSetWithIndex:kCiSidebarRowInstalledFormulae] byExtendingSelection:NO];
+    self.toolbar.searchField.stringValue = @"";
+    self.searching = NO;
     [self configureTableForListing:kCiListModeAllFormulae];
     [self updateInfoLabelWithSidebarSelection];
 }
@@ -691,14 +691,10 @@ apply:
     
     if ([sender isKindOfClass:[NSMenuItem class]])
     {
-        onlyInstalledFormulae = ![sender isAlternate];
+        onlyInstalledFormulae = [sender isAlternate];
     }
     
-    CiFormulaInfoType type = onlyInstalledFormulae ?
-    kCiFormulaInfoTypeInstalledDependents :
-    kCiFormulaInfoTypeAllDependents;
-    
-    [self showFormulaInfoForCurrentlySelectedFormulaUsingInfoType:type];
+    [self showFormulaInfoForCurrentlySelectedFormulaUsingInfoType:onlyInstalledFormulae ? kCiFormulaInfoTypeInstalledDependents : kCiFormulaInfoTypeAllDependents];
 }
 
 - (IBAction)installSelectedFormula:(id)sender
@@ -712,13 +708,12 @@ apply:
     }
     
     NSAlert *alert = [[NSAlert alloc] init];
-    [alert setMessageText:NSLocalizedString(@"Generic_Attention", nil)];
+    alert.messageText = NSLocalizedString(@"Generic_Attention", nil);
     [alert addButtonWithTitle:NSLocalizedString(@"Generic_Yes", nil)];
     [alert addButtonWithTitle:NSLocalizedString(@"Generic_Cancel", nil)];
-    [alert setInformativeText:[NSString stringWithFormat:NSLocalizedString(@"Confirmation_Install_Formula", nil),
-                               formula.name]];
+    alert.informativeText = [NSString stringWithFormat:NSLocalizedString(@"Confirmation_Install_Formula", nil), formula.name];
     
-    [alert.window setTitle:NSLocalizedString(@"Cicerone", nil)];
+    alert.window.title = NSLocalizedString(@"Cicerone", nil);
     
     if ([alert runModal] == NSAlertFirstButtonReturn)
     {

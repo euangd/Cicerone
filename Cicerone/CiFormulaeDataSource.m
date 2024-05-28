@@ -138,10 +138,9 @@
         } else {
             return kCiFormulaStatusInstalled;
         }
+    } else if ([self searchForFormula:formula inArray:CiHomebrewManager.sharedManager.repositoriesFormulae] >= 0) { // todo: have ListingKind or something
+        return kCiFormulaStatusInstalled;
     } else {
-        if ([self searchForFormula:formula inArray:CiHomebrewManager.sharedManager.repositoriesFormulae]) {
-            return kCiFormulaStatusInstalled;
-        }
         return kCiFormulaStatusNotInstalled;
     }
 }
