@@ -265,10 +265,11 @@ NSString *const kCiFormulaDidUpdateNotification = @"CiFormulaDidUpdateNotificati
 		NSLog(@"Error parsing formula with name: %@", [self name]);
 
 		_needsInformation = NO;
-		[self setInformation:nil];
-		[self setLatestVersion:nil];
-		[self setVersion:nil];
-		[self setShortDescription:nil];
+        self.information = nil;
+        self.latestVersion = nil;
+        self.version = nil;
+        self.shortDescription = nil;
+        
 		return YES;
 	}
 	
@@ -276,7 +277,7 @@ NSString *const kCiFormulaDidUpdateNotification = @"CiFormulaDidUpdateNotificati
 	
 	lineIndex = 0;
 	line = [lines objectAtIndex:lineIndex];
-	[self setLatestVersion:[line substringFromIndex:[line rangeOfString:@":"].location+2]];
+    self.latestVersion = [line substringFromIndex:[line rangeOfString:@":"].location+2];
 	
 	lineIndex = 1;
 	line = [lines objectAtIndex:lineIndex];
@@ -284,15 +285,15 @@ NSString *const kCiFormulaDidUpdateNotification = @"CiFormulaDidUpdateNotificati
 	
 	if (url == nil)
 	{
-		[self setShortDescription:line];
+        self.shortDescription = line;
 		
 		lineIndex = 2;
 		line = [lines objectAtIndex:lineIndex];
-		[self setWebsite:[NSURL URLWithString:line]];
+        self.website = [NSURL URLWithString:line];
 	}
 	else
 	{
-		[self setWebsite:url];
+        self.website = url;
 	}
 	
 	lineIndex++;
@@ -316,11 +317,11 @@ NSString *const kCiFormulaDidUpdateNotification = @"CiFormulaDidUpdateNotificati
 			}
 			while ([line hasPrefix:@"  "]);
 
-			[self setConflicts:[conflicts componentsJoinedByString:@", "]];
+            self.conflicts = [conflicts componentsJoinedByString:@", "];
 		}
 		else
 		{
-			[self setConflicts:[line substringFromIndex:16]];
+            self.conflicts = [line substringFromIndex:16];
 			lineIndex++;
 			line = [lines objectAtIndex:lineIndex];
 		}
@@ -329,7 +330,7 @@ NSString *const kCiFormulaDidUpdateNotification = @"CiFormulaDidUpdateNotificati
 	if (![line isEqualToString:@"Not installed"])
 	{
         lineIndex++;
-        [self setInstallPath:[lines objectAtIndex:lineIndex]];
+        self.installPath = [lines objectAtIndex:lineIndex];
 	}
     
     // end first header
@@ -397,9 +398,9 @@ NSString *const kCiFormulaDidUpdateNotification = @"CiFormulaDidUpdateNotificati
 			 }
 		 }];
 		
-		[self setDependencies:[dependencies componentsJoinedByString:@"; "]];
+        self.dependencies = [dependencies componentsJoinedByString:@"; "];
 	} else {
-		[self setDependencies:nil];
+        self.dependencies = nil;
 	}
 	
 	// Find options

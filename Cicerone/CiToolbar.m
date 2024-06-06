@@ -191,6 +191,7 @@ NSString *const kToolbarItemBrewTapToolIdentifier = @"toolbarItemTap";
 - (NSArray *)toolbarDefaultItemIdentifiers:(NSToolbar *)toolbar
 {
     return @[
+        NSToolbarToggleSidebarItemIdentifier,
         NSToolbarFlexibleSpaceItemIdentifier,
         kToolbarItemBrewUpdateToolIdentifier,
         kToolbarItemBrewTapToolIdentifier,
@@ -223,7 +224,8 @@ NSString *const kToolbarItemBrewTapToolIdentifier = @"toolbarItemTap";
             NSToolbarSpaceItemIdentifier,
             NSToolbarFlexibleSpaceItemIdentifier,
             NSToolbarSidebarTrackingSeparatorItemIdentifier,
-            NSToolbarSeparatorItemIdentifier
+            NSToolbarSeparatorItemIdentifier,
+            NSToolbarToggleSidebarItemIdentifier
         ];
     }
     
@@ -252,8 +254,8 @@ NSString *const kToolbarItemBrewTapToolIdentifier = @"toolbarItemTap";
     {
         _brewTapToolToolbarItem = [self toolbarItemWithIdentifier:kToolbarItemBrewTapToolIdentifier
                                                        withVisual:[CiStyle toolbarImageForTap]
-                                                    withPaletteLabel:NSLocalizedString(@"Toolbar_Tap_Repo", nil)
-                                                          withAction:@selector(tap:)];
+                                                 withPaletteLabel:NSLocalizedString(@"Toolbar_Tap_Repo", nil)
+                                                       withAction:@selector(tap:)];
     }
     
     return _brewTapToolToolbarItem;

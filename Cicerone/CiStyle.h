@@ -42,4 +42,12 @@
 //Sidebar
 + (NSColor *)sidebarDividerColor;
 
++ (NSImage *)installedSidebarIconImage;
++ (NSImage *)outdatedSidebarIconImage;
++ (NSImage *)allFormulaeSidebarIconImage;
++ (NSImage *)leavesSidebarIconImage;
++ (NSImage *)repositoriesSidebarIconImage;
++ (NSImage *)doctorSidebarIconImage;
++ (NSImage *)updateSidebarIconImage;
+
 @end

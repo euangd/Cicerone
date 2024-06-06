@@ -72,13 +72,13 @@ NSString *const kCiCacheDataKey	= @"CiCacheDataKey";
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-- (void)loadHomebrewStateWithCacheRebuild:(BOOL)shouldRebuildCache;
+- (void)loadHomebrewPrefixState;
 {
 	NSUInteger previousCountOfAllFormulae = [self allFormulae].count;
 	NSUInteger previousCountOfAllCasks = [self allCasks].count;
 
 	dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
-		[[CiHomebrewInterface sharedInterface] setDelegate:self];
+        [CiHomebrewInterface sharedInterface].delegate = self;
 		
 		NSArray *installedFormulae = [[CiHomebrewInterface sharedInterface] packagesWithMode:kCiListModeInstalledFormulae];
 		NSArray *leavesFormulae = [[CiHomebrewInterface sharedInterface] packagesWithMode:kCiListModeLeaves];
@@ -91,11 +91,11 @@ NSString *const kCiCacheDataKey	= @"CiCacheDataKey";
 		NSArray *allFormulae = nil;
 		NSArray *allCasks = nil;
 
-		if (![self loadAllFormulaeCaches] || previousCountOfAllFormulae <= 100 || shouldRebuildCache) {
+		if (![self loadAllFormulaeCaches] || previousCountOfAllFormulae <= 100) {
 			allFormulae = [[CiHomebrewInterface sharedInterface] packagesWithMode:kCiListModeAllFormulae];
 		}
 		
-		if (![self loadAllCasksCaches] || previousCountOfAllCasks <= 10 || shouldRebuildCache) {
+		if (![self loadAllCasksCaches] || previousCountOfAllCasks <= 10) {
 			allCasks = [[CiHomebrewInterface sharedInterface] packagesWithMode:kCiListModeAllCasks];
 		}
 
@@ -117,14 +117,14 @@ NSString *const kCiCacheDataKey	= @"CiCacheDataKey";
             self.installedCasks = installedCasks;
             self.outdatedCasks = outdatedCasks;
 			
-            [self.delegate homebrewManagerDidFinishUpdating:self];
+            [self.delegate homebrewManagerDidLoadHomebrewPrefixState:self];
 		});
 	});
 }
 
 - (void)updateSearchWithName:(NSString *)name
 {
-    _searchFormulae = [[_allFormulae arrayByAddingObjectsFromArray:_allCasks] filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id  _Nullable evaluatedObject, NSDictionary<NSString *,id> * _Nullable bindings) {
+    _searchFormulae = [[_allFormulae arrayByAddingObjectsFromArray:_allCasks] filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id _Nullable evaluatedObject, NSDictionary<NSString *,id> * _Nullable bindings) {
         if ([[evaluatedObject name] rangeOfString:name options:NSCaseInsensitiveSearch].location != NSNotFound) {
             return true;
         }
@@ -268,9 +268,9 @@ NSString *const kCiCacheDataKey	= @"CiCacheDataKey";
 
 #pragma mark - Homebrew Interface Delegate
 
-- (void)homebrewInterfaceDidUpdateFormulae
+- (void)homebrewInterfaceChangedDependedHomebrewPrefixState
 {
-	[self loadHomebrewStateWithCacheRebuild:YES];
+	[self loadHomebrewPrefixState:YES];
 }
 
 - (void)homebrewInterfaceDidNotFindBrew:(BOOL)yesOrNo

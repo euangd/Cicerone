@@ -21,7 +21,7 @@
 
 #import <Cocoa/Cocoa.h>
 
-#define CiAppDelegateRef ((CiAppDelegate*)[[NSApplication sharedApplication] delegate])
+#define CiAppDelegateRef ((CiAppDelegate *)[[NSApplication sharedApplication] delegate])
 
 extern NSString *const kCi_HOMEBREW_PATH;
 extern NSString *const kCi_HOMEBREW_PATH_KEY;

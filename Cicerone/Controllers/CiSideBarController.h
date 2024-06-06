@@ -16,16 +16,16 @@ typedef NS_ENUM(NSUInteger, CiSidebarRow)
 	kCiSidebarRowOutdatedFormulae,
 	kCiSidebarRowAllFormulae,
 	kCiSidebarRowLeaves,
-	
+    
 	kCiSidebarRowCasksHeader,
 	kCiSidebarRowInstalledCasks,
 	kCiSidebarRowOutdatedCasks,
 	kCiSidebarRowAllCasks,
-	
-	kCiSidebarRowToolsHeader,
-	kCiSidebarRowRepositories,
-	kCiSidebarRowDoctor,
-	kCiSidebarRowUpdate,
+    
+	kCiSidebarRowManagementHeader,
+    kCiSidebarRowDoctor,
+    kCiSidebarRowUpdate,
+    kCiSidebarRowRepositories,
 	
 };
 
@@ -39,9 +39,10 @@ typedef NS_ENUM(NSUInteger, CiSidebarRow)
 
 @property (weak) id <CiSideBarControllerDelegate>delegate;
 
-- (void)refreshSidebarBadges;
-- (void)configureSidebarSettings;
+@property (nonatomic, getter=isLoading) BOOL loading;
 
-- (IBAction)selectSideBarRowWithSenderTag:(id)sender;
+- (IBAction)selectSidebarRowWithSenderTag:(id)sender;
+- (void)deselectAllSidebarRows;
+- (void)selectSidebarRowWithIndex:(NSUInteger)index;
 
 @end

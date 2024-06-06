@@ -176,4 +176,46 @@
 	return color;
 }
 
++ (NSImage *)installedSidebarIconImage
+{
+    return [NSImage imageWithSystemSymbolName:@"checkmark.square"
+                     accessibilityDescription:NSLocalizedString(@"Sidebar_Item_Installed", nil)];
+}
+
++ (NSImage *)outdatedSidebarIconImage
+{
+    return [NSImage imageWithSystemSymbolName:@"clock.arrow.circlepath"
+                     accessibilityDescription:NSLocalizedString(@"Sidebar_Item_Outdated", nil)];
+}
+
++ (NSImage *)allFormulaeSidebarIconImage
+{
+    return [NSImage imageWithSystemSymbolName:@"books.vertical"
+                     accessibilityDescription:NSLocalizedString(@"Sidebar_Item_All", nil)];
+}
+
++ (NSImage *)leavesSidebarIconImage
+{
+    return [NSImage imageWithSystemSymbolName:@"leaf"
+                     accessibilityDescription:NSLocalizedString(@"Sidebar_Item_Leaves", nil)];
+}
+
++ (NSImage *)repositoriesSidebarIconImage
+{
+    return [NSImage imageWithSystemSymbolName:@"building.columns"
+                     accessibilityDescription:NSLocalizedString(@"Sidebar_Item_Repos", nil)];
+}
+
++ (NSImage *)doctorSidebarIconImage
+{
+    return [NSImage imageWithSystemSymbolName:@"stethoscope"
+                     accessibilityDescription:NSLocalizedString(@"Sidebar_Item_Doctor", nil)];
+}
+
++ (NSImage *)updateSidebarIconImage
+{
+    return [NSImage imageWithSystemSymbolName:@"arrow.triangle.2.circlepath.circle"
+                     accessibilityDescription:NSLocalizedString(@"Sidebar_Item_Update", nil)];
+}
+
 @end

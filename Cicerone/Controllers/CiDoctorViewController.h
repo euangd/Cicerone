@@ -7,8 +7,11 @@
 //
 
 #import <Cocoa/Cocoa.h>
+#import "CiHomebrewViewController.h"
 
 @interface CiDoctorViewController : NSViewController
+
+@property (weak) CiHomebrewViewController *homebrewViewController;
 
 - (IBAction)runStopDoctor:(id)sender;
 

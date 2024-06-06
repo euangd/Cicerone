@@ -46,6 +46,7 @@
 		B7247BB52C05C1BB00C13021 /* CiDoctorView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B7247BB42C05C1BB00C13021 /* CiDoctorView.xib */; };
 		B7247BB72C05C1D200C13021 /* CiBundleWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = B7247BB62C05C1D200C13021 /* CiBundleWindow.xib */; };
 		B7247BB92C066A2600C13021 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = B7247BB82C066A2600C13021 /* Localizable.xcstrings */; };
+		B7247BBE2C08408B00C13021 /* CiSourceListTableCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = B7247BBD2C08408B00C13021 /* CiSourceListTableCellView.m */; };
 		B79350782BD2ACCD00C793ED /* Pods-Cicerone in Frameworks */ = {isa = PBXBuildFile; fileRef = B79350732BD2ACB100C793ED /* Pods-Cicerone */; };
 		B79350792BD2ACCD00C793ED /* Pods-Cicerone in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = B79350732BD2ACB100C793ED /* Pods-Cicerone */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		B7BA471F29EE6EB400301D80 /* Credits.md in Resources */ = {isa = PBXBuildFile; fileRef = B7BA471E29EE6EB400301D80 /* Credits.md */; };
@@ -204,6 +205,8 @@
 		B7247BB42C05C1BB00C13021 /* CiDoctorView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CiDoctorView.xib; sourceTree = "<group>"; };
 		B7247BB62C05C1D200C13021 /* CiBundleWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CiBundleWindow.xib; sourceTree = "<group>"; };
 		B7247BB82C066A2600C13021 /* Localizable.xcstrings */ = {isa = PBXFileReference; indentWidth = 4; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
+		B7247BBC2C08408B00C13021 /* CiSourceListTableCellView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CiSourceListTableCellView.h; sourceTree = "<group>"; };
+		B7247BBD2C08408B00C13021 /* CiSourceListTableCellView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CiSourceListTableCellView.m; sourceTree = "<group>"; };
 		B79350652BD2ACB100C793ED /* Pods.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Pods.xcodeproj; path = Pods/Pods.xcodeproj; sourceTree = "<group>"; };
 		B7BA471E29EE6EB400301D80 /* Credits.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = Credits.md; sourceTree = SOURCE_ROOT; };
 		B7BA472029F0F7BF00301D80 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; indentWidth = 2; path = Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
@@ -322,6 +325,8 @@
 				150AEC4B1B3F999A00163767 /* CiUpdateViewController.m */,
 				15EC1B0525CED52C00C93861 /* CiWindow.h */,
 				15EC1B0625CED52C00C93861 /* CiWindow.m */,
+				B7247BBC2C08408B00C13021 /* CiSourceListTableCellView.h */,
+				B7247BBD2C08408B00C13021 /* CiSourceListTableCellView.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -767,6 +772,7 @@
 				150AEC4D1B3F999A00163767 /* CiFormulaOptionsWindowController.m in Sources */,
 				15A89D3925F2F467003D33F5 /* NSLayoutConstraint+Shims.m in Sources */,
 				150AEC531B3F999A00163767 /* CiSelectedFormulaViewController.m in Sources */,
+				B7247BBE2C08408B00C13021 /* CiSourceListTableCellView.m in Sources */,
 				150AEC541B3F999A00163767 /* CiSideBarController.m in Sources */,
 				1570BA5618EE50BD001C3C5C /* CiFormula.m in Sources */,
 				B7247B6D2BD52CA800C13021 /* NSString+Summarization.m in Sources */,

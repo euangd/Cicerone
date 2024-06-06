@@ -43,7 +43,7 @@ typedef NS_ENUM(NSInteger, CiListMode) {
 /**
  *  Caled when the formulae cache has been updated.
  */
-- (void)homebrewInterfaceDidUpdateFormulae;
+- (void)homebrewInterfaceChangedDependedHomebrewPrefixState;
 
 /**
  *  Called if homebrew is not detected in the system.
@@ -65,6 +65,12 @@ typedef NS_ENUM(NSInteger, CiListMode) {
  *  The delegate object.
  */
 @property (weak, nonatomic) id<CiHomebrewInterfaceDelegate> delegate;
+
+@property (strong, getter=getHomebrewPrefixPath, readonly) NSString *homebrewPrefixPath;
+
+@property (strong, getter=getValidUserShellPath, readonly) NSString *shellPath;
+
+@property (strong, getter=checkForBrew, readonly) NSString *brewPath;
 
 #pragma mark - Operations with live data callback block
 

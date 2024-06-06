@@ -60,12 +60,6 @@ static NSString * const shellHeaderEndMarker = @"+++++ Cicerone +++++";
 @end
 
 @interface CiHomebrewInterface ()
-{
-    NSString *brewPath;
-}
-
-@property (strong) NSString *homebrewCellarPath;
-@property (strong) NSString *shellPath;
 
 @end
 
@@ -89,17 +83,21 @@ to pass to async tasks, even though this never happened, to run the update block
 	}
 }
 
-- (BOOL)checkForBrew
+- (NSString *)checkForBrew
 {
-	if (!self.shellPath) return NO;
-	
-    brewPath = [self removeNewLineFromString:[self shellCommandStandardOutputWithArguments:@[@"-l", @"-c", @"which brew"] addingMarkerShellCommand:NO]];
+    if (!self.shellPath) return nil;
     
+    static NSString *brewPath;
+    
+    if (!brewPath) {
+        brewPath = [self removeNewLineFromString:[self shellCommandStandardOutputWithArguments:@[@"-l", @"-c", @"which brew"] addingMarkerShellCommand:NO]];
+        
 #ifdef DEBUG
-    NSLog(@"brew: %@", brewPath);
+        NSLog(@"brew: %@", brewPath);
 #endif
+    }
     
-	return brewPath.length != 0;
+    return brewPath;
 }
 
 - (void)setDelegate:(id<CiHomebrewInterfaceDelegate>)delegate
@@ -107,16 +105,15 @@ to pass to async tasks, even though this never happened, to run the update block
 	if (_delegate != delegate) {
 		_delegate = delegate;
 		
-        self.shellPath = [self getValidUserShellPath];
+        [self getValidUserShellPath];
 		
-		if (![self checkForBrew])
-			[self showBrewNotInstalledMessage];
+        NSString *brewPath = [self checkForBrew];
+        if (!brewPath || brewPath.length == 0) {
+            [self showBrewNotInstalledMessage];
+        }
 		else
 		{
-            self.homebrewCellarPath = [self getUserCellarPath];
-#ifdef DEBUG
-			NSLog(@"cellar: %@", self.homebrewCellarPath);
-#endif
+            [self getHomebrewPrefixPath];
 		}
 	}
 }
@@ -125,61 +122,81 @@ to pass to async tasks, even though this never happened, to run the update block
 
 - (NSString *)getValidUserShellPath
 {
-	NSString *userShell = [[[NSProcessInfo processInfo] environment] objectForKey:@"SHELL"];
-	
-	// avoid executing stuff like /sbin/nologin as a shell
-	BOOL isValidShell = NO;
-	for (NSString *validShell in [[NSString stringWithContentsOfFile:@"/etc/shells" encoding:NSUTF8StringEncoding error:nil] componentsSeparatedByCharactersInSet:[NSCharacterSet newlineCharacterSet]])
-	{
-		if ([[validShell stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] isEqualToString:userShell])
-		{
-			isValidShell = YES;
-			break;
-		}
-	}
-	
-	if (!isValidShell)
-	{
-	    static NSAlert *alert = nil;
-	    dispatch_group_t waitForFinish = dispatch_group_create();
-	    dispatch_group_enter(waitForFinish);
-	    dispatch_async(dispatch_get_main_queue(), ^{
-		  if (!alert) {
-			  alert = [[NSAlert alloc] init];
-			  [alert setMessageText:NSLocalizedString(@"Message_Shell_Invalid_Title", nil)];
-			  [alert addButtonWithTitle:NSLocalizedString(@"Generic_OK", nil)];
-			  [alert setInformativeText:[NSString stringWithFormat:NSLocalizedString(@"Message_Shell_Invalid_Body", nil), userShell]];
-		  }
-		  [alert runModal];
-		  dispatch_group_leave(waitForFinish);
-	    });
-	    dispatch_group_wait(waitForFinish, DISPATCH_TIME_FOREVER);
-		NSLog(@"No valid shell found...");
-		return nil;
-	}
-
+    static NSString *userShell = nil;
+    
+    if (!userShell) {
+        userShell = [[[NSProcessInfo processInfo] environment] objectForKey:@"SHELL"];
+        
+        // avoid executing stuff like /sbin/nologin as a shell
+        BOOL isValidShell = NO;
+        
+        for (NSString *validShell in [[NSString stringWithContentsOfFile:@"/etc/shells" encoding:NSUTF8StringEncoding error:nil] componentsSeparatedByCharactersInSet:[NSCharacterSet newlineCharacterSet]])
+        {
+            if ([[validShell stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] isEqualToString:userShell])
+            {
+                isValidShell = YES;
+                break;
+            }
+        }
+        
+        if (!isValidShell)
+        {
+            static NSAlert *alert = nil;
+            
+            dispatch_group_t waitForFinish = dispatch_group_create();
+            dispatch_group_enter(waitForFinish);
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                if (!alert) {
+                    alert = [[NSAlert alloc] init];
+                    alert.messageText = NSLocalizedString(@"Message_Shell_Invalid_Title", nil);
+                    [alert addButtonWithTitle:NSLocalizedString(@"Generic_OK", nil)];
+                    alert.informativeText = [NSString stringWithFormat:NSLocalizedString(@"Message_Shell_Invalid_Body", nil), userShell];
+                }
+                
+                [alert runModal];
+                
+                dispatch_group_leave(waitForFinish);
+            });
+            
+            dispatch_group_wait(waitForFinish, DISPATCH_TIME_FOREVER);
+            
+            NSLog(@"No valid shell found...");
+            return nil;
+        }
+        
 #ifdef DEBUG
-		NSLog(@"shell: %@", userShell);
+        NSLog(@"shell: %@", userShell);
 #endif
+        
+    }
 
     return userShell;
 }
 
-- (NSString *)getUserCellarPath
+- (NSString *)getHomebrewPrefixPath
 {
-	NSString __block *path = [[NSUserDefaults standardUserDefaults] objectForKey:@"CiBrewCellarPath"];
-	
-	if (!path) {
-		NSString *brew_config = [self brewToolStandardOutputWithArguments:@[@"config"]];
-		
-		[brew_config enumerateLinesUsingBlock:^(NSString *line, BOOL *stop) {
-			if ([line hasPrefix:@"HOMEBREW_CELLAR"]) {
-				path = [line substringFromIndex:17];
-			}
-		}];
-		
-		[[NSUserDefaults standardUserDefaults] setObject:path forKey:@"CiBrewCellarPath"];
-	}
+    static NSString *path = nil;
+    
+    if (!path) {
+        path = [[NSUserDefaults standardUserDefaults] objectForKey:@"CiBrewPrefixPath"];
+        
+        if (!path) {
+            NSString *brew_config = [self brewToolStandardOutputWithArguments:@[@"config"]];
+            
+            [brew_config enumerateLinesUsingBlock:^(NSString *line, BOOL *stop) {
+                if ([line hasPrefix:@"HOMEBREW_PREFIX"]) {
+                    path = [line substringFromIndex:17];
+                }
+            }];
+            
+            [[NSUserDefaults standardUserDefaults] setObject:path forKey:@"CiBrewPrefixPath"];
+        }
+
+#ifdef DEBUG
+        NSLog(@"cellar: %@", self.homebrewPrefixPath);
+#endif
+    }
 	
 	return path;
 }
@@ -187,20 +204,23 @@ to pass to async tasks, even though this never happened, to run the update block
 - (NSArray *)makeShellArgumentsFromBrewToolArguments:(NSArray *)extraArguments addingMarkerShellCommand:(BOOL)sendOutputID
 {
 	NSString *command = nil;
-	if (sendOutputID) {
-		command = [NSString stringWithFormat:@"echo \"%@\";%@ %@", shellHeaderEndMarker, brewPath, [extraArguments componentsJoinedByString:@" "]];
+	
+    if (sendOutputID) {
+		command = [NSString stringWithFormat:@"echo \"%@\";%@ %@", shellHeaderEndMarker, self.brewPath, [extraArguments componentsJoinedByString:@" "]];
 	} else {
-		command = [NSString stringWithFormat:@"%@ %@", brewPath, [extraArguments componentsJoinedByString:@" "]];
+		command = [NSString stringWithFormat:@"%@ %@", self.brewPath, [extraArguments componentsJoinedByString:@" "]];
 	}
-	NSArray *arguments = @[@"-l", @"-c", command];
-	return arguments;
+    
+	return @[@"-l", @"-c", command];
 }
 
 - (void)showBrewNotInstalledMessage
 {
 	static BOOL isShowing = NO;
+    
 	if (!isShowing) {
 		isShowing = YES;
+        
 		if (self.delegate) {
 			id delegate = self.delegate;
 			dispatch_async(dispatch_get_main_queue(), ^{
@@ -326,7 +346,7 @@ to pass to async tasks, even though this never happened, to run the update block
     @try {
         return [self brewToolStandardOutputWithArguments:@[@"update"]];
     } @finally {
-        [self sendDelegateFormulaeUpdatedCall];
+        [self sendDependedHomebrewPrefixStateChangedDelegateCall];
     }
 }
 
@@ -335,7 +355,7 @@ to pass to async tasks, even though this never happened, to run the update block
     @try {
         return [self brewToolStandardOutputWithArguments:[@[@"upgrade"] arrayByAddingObjectsFromArray:formulae]];
     } @finally {
-        [self sendDelegateFormulaeUpdatedCall];
+        [self sendDependedHomebrewPrefixStateChangedDelegateCall];
     }
 }
 
@@ -350,7 +370,7 @@ to pass to async tasks, even though this never happened, to run the update block
     @try {
         return [self brewToolStandardOutputWithArguments:arguments];
     } @finally {
-        [self sendDelegateFormulaeUpdatedCall];
+        [self sendDependedHomebrewPrefixStateChangedDelegateCall];
     }
 }
 
@@ -359,7 +379,7 @@ to pass to async tasks, even though this never happened, to run the update block
     @try {
         return [self brewToolStandardOutputWithArguments:@[@"uninstall", formula]];
     } @finally {
-        [self sendDelegateFormulaeUpdatedCall];
+        [self sendDependedHomebrewPrefixStateChangedDelegateCall];
     }
 }
 
@@ -368,7 +388,7 @@ to pass to async tasks, even though this never happened, to run the update block
     @try {
         return [self brewToolStandardOutputWithArguments:@[@"tap", repository]];
     } @finally {
-        [self sendDelegateFormulaeUpdatedCall];
+        [self sendDependedHomebrewPrefixStateChangedDelegateCall];
     }
 }
 
@@ -377,7 +397,7 @@ to pass to async tasks, even though this never happened, to run the update block
     @try {
         return [self brewToolStandardOutputWithArguments:@[@"untap", repository]];
     } @finally {
-        [self sendDelegateFormulaeUpdatedCall];
+        [self sendDependedHomebrewPrefixStateChangedDelegateCall];
     }
 }
 
@@ -393,7 +413,7 @@ to pass to async tasks, even though this never happened, to run the update block
     @try {
         return [self brewToolStandardOutputWithArguments:@[@"doctor"]];
     } @finally {
-        [self sendDelegateFormulaeUpdatedCall];
+        [self sendDependedHomebrewPrefixStateChangedDelegateCall];
     }
 }
 
@@ -410,7 +430,7 @@ to pass to async tasks, even though this never happened, to run the update block
 																   @"--force",
 																   [NSString stringWithFormat:@"--file=%@", path]]];
 	
-	[self sendDelegateFormulaeUpdatedCall];
+	[self sendDependedHomebrewPrefixStateChangedDelegateCall];
 	
 	if ([output length] == 0)
 	{
@@ -437,16 +457,16 @@ to pass to async tasks, even though this never happened, to run the update block
     @try {
         return [self brewToolStandardOutputWithArguments:@[@"bundle", [NSString stringWithFormat:@"--file=%@", path]]];
     } @finally {
-        [self sendDelegateFormulaeUpdatedCall];
+        [self sendDependedHomebrewPrefixStateChangedDelegateCall];
     }
 }
 
-- (void)sendDelegateFormulaeUpdatedCall
+- (void)sendDependedHomebrewPrefixStateChangedDelegateCall
 {
 	if (self.delegate) {
 		id delegate = self.delegate;
 		dispatch_async(dispatch_get_main_queue(), ^{
-			[delegate homebrewInterfaceDidUpdateFormulae];
+			[delegate homebrewInterfaceChangedDependedHomebrewPrefixState];
 		});
 	}
 }

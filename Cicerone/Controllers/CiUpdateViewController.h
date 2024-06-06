@@ -7,8 +7,11 @@
 //
 
 #import <Cocoa/Cocoa.h>
+#import "CiHomebrewViewController.h"
 
 @interface CiUpdateViewController : NSViewController
+
+@property (weak) CiHomebrewViewController *homebrewViewController;
 
 - (IBAction)runStopUpdate:(id)sender;
 

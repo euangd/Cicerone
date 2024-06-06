@@ -152,6 +152,8 @@ NSOpenSavePanelDelegate>
 
 - (void)commonInit
 {
+    _lastSelectedSidebarIndex = -1;
+    
     homebrewManager = CiHomebrewManager.sharedManager;
     homebrewManager.delegate = self;
     
@@ -207,6 +209,7 @@ NSOpenSavePanelDelegate>
     
     //Creating view for update tab
     self.updateViewController = [[CiUpdateViewController alloc] initWithNibName:nil bundle:nil];
+    self.updateViewController.homebrewViewController = self;
     NSView *updateView = [self.updateViewController view];
     if ([[self.tabView tabViewItems] count] > kCiHomebrewViewTabViewTabOptionUpdateTool) {
         NSTabViewItem *updateTab = [self.tabView tabViewItemAtIndex:kCiHomebrewViewTabViewTabOptionUpdateTool];
@@ -215,6 +218,7 @@ NSOpenSavePanelDelegate>
     
     //Creating view for doctor tab
     self.doctorViewController = [[CiDoctorViewController alloc] initWithNibName:nil bundle:nil];
+    self.doctorViewController.homebrewViewController = self;
     NSView *doctorView = [self.doctorViewController view];
     if ([[self.tabView tabViewItems] count] > kCiHomebrewViewTabViewTabOptionDoctorTool) {
         NSTabViewItem *doctorTab = [self.tabView tabViewItemAtIndex:kCiHomebrewViewTabViewTabOptionDoctorTool];
@@ -239,11 +243,12 @@ NSOpenSavePanelDelegate>
                                               views:@{@"view": selectedFormulaView}]];
     
     self.sidebarController.delegate = self;
-    [self.sidebarController refreshSidebarBadges];
-    [self.sidebarController configureSidebarSettings];
     
     [self addToolbar];
     [self addLoadingView];
+    
+    [self.sidebarController selectSidebarRowWithIndex:kCiSidebarRowInstalledFormulae];
+    self.loading = YES;
     
     _appDelegate = CiAppDelegateRef;
 }
@@ -255,8 +260,6 @@ NSOpenSavePanelDelegate>
     
     self.view.window.toolbar = self.toolbar;
     self.toolbar.displayMode = NSToolbarDisplayModeIconOnly;
-    
-    self.toolbar.mode = kCiToolbarModeDud;
 }
 
 - (void)addDisabledView
@@ -310,7 +313,7 @@ NSOpenSavePanelDelegate>
                                      attribute:NSLayoutAttributeBottom multiplier:1 constant:0],
     ]];
     
-    [self setLoadingView:loadingView];
+    self.loadingView = loadingView;
 }
 
 - (void)dealloc
@@ -372,10 +375,27 @@ NSOpenSavePanelDelegate>
     [self.formulaeTableView deselectAll:nil];
     homebrewManager.formulaeDataSource.mode = mode;
     
+    [self clearTransientState];
+    
     self.formulaeTableView.mode = mode;
     [self.formulaeTableView reloadData];
     
     [self updateInterfaceItems];
+}
+
++ (NSSet<NSString *> *)keyPathsForValuesAffectingValueForKey:(NSString *)key {
+    NSSet<NSString *> *keyPaths = [super keyPathsForValuesAffectingValueForKey:key];
+    
+    if ([key isEqualToString:NSStringFromSelector(@selector(isListingPackages))]) {
+        // Add the properties that affect isListingPackages
+        keyPaths = [keyPaths setByAddingObjectsFromArray:@[NSStringFromSelector(@selector(listMode)), @"homebrewManager.formulaeDataSource.mode"]];
+    }
+    
+    if ([key isEqualToString:NSStringFromSelector(@selector(listMode))]) {
+        keyPaths = [keyPaths setByAddingObjectsFromArray:@[@"homebrewManager.formulaeDataSource.mode"]];
+    }
+    
+    return keyPaths;
 }
 
 
@@ -439,51 +459,53 @@ NSOpenSavePanelDelegate>
         }
     }
     
-    [self updateInfoLabelWithText:message];
+    self.informationTextField.stringValue = message;
 }
 
-- (void)updateInfoLabelWithText:(NSString*)message
+- (void)setLoading:(BOOL)loading
 {
-    if (message)
-    {
-        [self.informationTextField setStringValue:message];
+    if (_loading = loading) {
+        self.sidebarController.loading = YES;
+        
+        self.toolbar.mode = kCiToolbarModeDud;
+    } else {
+        [self clearTransientState];
+        
+        [homebrewManager.formulaeDataSource refreshBackingArray];
+        
+        self.sidebarController.loading = NO;
+        
+        self.hasUpgrades = ([[CiHomebrewManager sharedManager] outdatedFormulae].count > 0);
     }
+    
+}
+
+- (void)clearTransientState
+{
+    [[self.formulaeTableView menu] cancelTracking];
+    
+    //        self.selectedFormula = nil;
+    self.selectedFormulaViewController.formulae = nil;
 }
 
 #pragma mark - Homebrew Manager Delegate
 
-- (void)homebrewManagerDidFinishUpdating:(CiHomebrewManager *)manager
+- (void)homebrewManagerDidLoadHomebrewPrefixState:(CiHomebrewManager *)manager
 {
     [self.loadingView removeFromSuperview];
     self.loadingView = nil;
     
     if (self.isHomebrewInstalled)
     {
-        [[self.formulaeTableView menu] cancelTracking];
-        
-        //        self.selectedFormula = nil;
-        self.selectedFormulaViewController.formulae = nil;
+        self.loading = NO;
         
         self.mainWindowController.windowContentViewHidden = NO;
         self.informationTextField.hidden = NO;
         
-        self.toolbar.mode = kCiToolbarModeCore;
-        
-        [homebrewManager.formulaeDataSource refreshBackingArray];
-        
         // Used after unlocking the app when inserting custom homebrew installation path
-        BOOL shouldReselectFirstRow = ([self.sidebarController.sidebar selectedRow] < 0);
+        BOOL shouldReselectFirstRow = _lastSelectedSidebarIndex == -1;
         
-        [self.sidebarController refreshSidebarBadges];
-        [self.sidebarController.sidebar reloadData];
-        
-        self.hasUpgrades = ([[CiHomebrewManager sharedManager] outdatedFormulae].count > 0);
-        
-        if (shouldReselectFirstRow) {
-            [self.sidebarController.sidebar selectRowIndexes:[NSIndexSet indexSetWithIndex:kCiSidebarRowInstalledFormulae] byExtendingSelection:NO];
-        } else {
-            [self.sidebarController.sidebar selectRowIndexes:[NSIndexSet indexSetWithIndex:(NSUInteger)_lastSelectedSidebarIndex] byExtendingSelection:NO];
-        }
+        [self.sidebarController selectSidebarRowWithIndex:shouldReselectFirstRow ? kCiSidebarRowInstalledFormulae : (NSUInteger)_lastSelectedSidebarIndex];
     }
 }
 
@@ -492,16 +514,18 @@ NSOpenSavePanelDelegate>
     [self loadSearchResults];
 }
 
-- (void)homebrewManager:(CiHomebrewManager *)manager didNotFindBrew:(BOOL)yesOrNo
+- (void)homebrewManager:(CiHomebrewManager *)manager didNotFindBrew:(BOOL)didNot
 {
-    self.homebrewInstalled = !yesOrNo;
+    self.homebrewInstalled = !didNot;
     
-    if (yesOrNo)
+    if (didNot)
     {
         [self addDisabledView];
         self.informationTextField.hidden = YES;
         self.mainWindowController.windowContentViewHidden = YES;
+        self.loading = false;
         self.toolbar.mode = kCiToolbarModeDud;
+        self.sidebarController.sidebar.enabled = NO;
         
         NSAlert *alert = [[NSAlert alloc] init];
         alert.messageText = NSLocalizedString(@"Generic_Error", nil);
@@ -532,9 +556,9 @@ NSOpenSavePanelDelegate>
         self.informationTextField.hidden = NO;
         self.mainWindowController.windowContentViewHidden = NO;
         
-        self.toolbar.mode = kCiToolbarModeDud;
+        self.loading = YES;
         
-        [[CiHomebrewManager sharedManager] loadHomebrewStateWithCacheRebuild:YES];
+        [[CiHomebrewManager sharedManager] loadHomebrewPrefixState:YES];
     }
 }
 
@@ -563,21 +587,28 @@ NSOpenSavePanelDelegate>
     [popover showRelativeToRect:anchorRect ofView:self.scrollView_formulae preferredEdge:NSMaxXEdge];
 }
 
+- (void)toggleSidebar:(id)sender
+{
+    [self.mainWindowController.splitViewController toggleSidebar:sender];
+}
+
 #pragma mark - Search Mode
 
 - (void)loadSearchResults
 {
-    [self.sidebarController.sidebar deselectAll:self];
+    [self clearTransientState];
+    [self.sidebarController deselectAllSidebarRows];
     self.searching = YES;
     [self configureTableForListing:kCiListModeSearchFormulae];
 }
 
 - (void)endSearchAndCleanup
 {
-    [self.sidebarController.sidebar selectRowIndexes:[NSIndexSet indexSetWithIndex:kCiSidebarRowInstalledFormulae] byExtendingSelection:NO];
     self.toolbar.searchField.stringValue = @"";
+    [self clearTransientState];
+    [self.sidebarController selectSidebarRowWithIndex:kCiSidebarRowInstalledFormulae];
     self.searching = NO;
-    [self configureTableForListing:kCiListModeAllFormulae];
+    [self configureTableForListing:kCiListModeInstalledFormulae];
     [self updateInfoLabelWithSidebarSelection];
 }
 
@@ -747,12 +778,11 @@ apply:
     }
     
     NSAlert *alert = [[NSAlert alloc] init];
-    [alert setMessageText:NSLocalizedString(@"Generic_Attention", nil)];
+    alert.messageText = NSLocalizedString(@"Generic_Attention", nil);
     [alert addButtonWithTitle:NSLocalizedString(@"Generic_Yes", nil)];
     [alert addButtonWithTitle:NSLocalizedString(@"Generic_Cancel", nil)];
-    [alert setInformativeText:[NSString stringWithFormat:NSLocalizedString(@"Confirmation_Uninstall_Formula", nil), formula.name]];
-    
-    [alert.window setTitle:NSLocalizedString(@"Cicerone", nil)];
+    alert.informativeText = [NSString stringWithFormat:NSLocalizedString(@"Confirmation_Uninstall_Formula", nil), formula.name];
+    alert.window.title = NSLocalizedString(@"Cicerone", nil);
     
     if ([alert runModal] == NSAlertFirstButtonReturn) {
         self.operationWindowController = [CiInstallationWindowController runWithOperation:kCiWindowOperationUninstall formulae:@[formula] options:nil];
@@ -772,12 +802,12 @@ apply:
     NSString *formulaNames = [[self selectedFormulaNames] componentsJoinedByString:@", "];
     
     NSAlert *alert = [[NSAlert alloc] init];
-    [alert setMessageText:NSLocalizedString(@"Message_Update_Formulae_Title", nil)];
+    alert.messageText = NSLocalizedString(@"Message_Update_Formulae_Title", nil);
     [alert addButtonWithTitle:NSLocalizedString(@"Generic_Yes", nil)];
     [alert addButtonWithTitle:NSLocalizedString(@"Generic_Cancel", nil)];
-    [alert setInformativeText:[NSString stringWithFormat:NSLocalizedString(@"Message_Update_Formulae_Body", nil), formulaNames]];
+    alert.informativeText = [NSString stringWithFormat:NSLocalizedString(@"Message_Update_Formulae_Body", nil), formulaNames];
+    alert.window.title = NSLocalizedString(@"Cicerone", nil);
     
-    [alert.window setTitle:NSLocalizedString(@"Cicerone", nil)];
     if ([alert runModal] == NSAlertFirstButtonReturn)
     {
         self.operationWindowController = [CiInstallationWindowController runWithOperation:kCiWindowOperationUpgrade formulae:selectedFormulae options:nil];
@@ -790,11 +820,11 @@ apply:
     [self checkForBackgroundTask];
     
     NSAlert *alert = [[NSAlert alloc] init];
-    [alert setMessageText:NSLocalizedString(@"Message_Update_All_Outdated_Title", nil)];
+    alert.messageText = NSLocalizedString(@"Message_Update_All_Outdated_Title", nil);
     [alert addButtonWithTitle:NSLocalizedString(@"Generic_Yes", nil)];
     [alert addButtonWithTitle:NSLocalizedString(@"Generic_Cancel", nil)];
-    [alert setInformativeText:NSLocalizedString(@"Message_Update_All_Outdated_Body", nil)];
-    [alert.window setTitle:NSLocalizedString(@"Cicerone", nil)];
+    alert.informativeText = NSLocalizedString(@"Message_Update_All_Outdated_Body", nil);
+    alert.window.title = NSLocalizedString(@"Cicerone", nil);
     
     if ([alert runModal] == NSAlertFirstButtonReturn)
     {
@@ -807,14 +837,14 @@ apply:
     [self checkForBackgroundTask];
     
     NSAlert *alert = [[NSAlert alloc] init];
-    [alert setMessageText:NSLocalizedString(@"Message_Tap_Title", nil)];
+    alert.messageText = NSLocalizedString(@"Message_Tap_Title", nil);
     [alert addButtonWithTitle:NSLocalizedString(@"Generic_OK", nil)];
     [alert addButtonWithTitle:NSLocalizedString(@"Generic_Cancel", nil)];
-    [alert setInformativeText:NSLocalizedString(@"Message_Tap_Body", nil)];
-    [alert.window setTitle:NSLocalizedString(@"Cicerone", nil)];
+    alert.informativeText = NSLocalizedString(@"Message_Tap_Body", nil);
+    alert.window.title = NSLocalizedString(@"Cicerone", nil);
     
     NSTextField *input = [[NSTextField alloc] initWithFrame:NSMakeRect(0,0,200,24)];
-    [alert setAccessoryView:input];
+    alert.accessoryView = input;
     
     NSInteger returnValue = [alert runModal];
     if (returnValue == NSAlertFirstButtonReturn)
@@ -828,6 +858,17 @@ apply:
         
         CiFormula *lformula = [CiFormula formulaWithName:name cask:NO];
         self.operationWindowController = [CiInstallationWindowController runWithOperation:kCiWindowOperationTap formulae:@[lformula] options:nil];
+    }
+}
+
+- (IBAction)removeSelectedListing:(id)sender
+{
+    switch (self.listMode) {
+        case kCiListModeRepositories:
+            return [self untapSelectedRepository:sender];
+
+        default:
+            return [self uninstallSelectedFormula:sender];
     }
 }
 
@@ -883,7 +924,7 @@ apply:
 }
 
 - (void)update:(id)sender {
-    [self.sidebarController.sidebar selectRowIndexes:[NSIndexSet indexSetWithIndex:kCiSidebarRowUpdate] byExtendingSelection:NO];
+    [self.sidebarController selectSidebarRowWithIndex:kCiSidebarRowUpdate];
     [self.updateViewController runStopUpdate:nil];
 }
 
@@ -900,9 +941,9 @@ apply:
 - (IBAction)runHomebrewExport:(id)sender
 {
     NSSavePanel *savePanel = [NSSavePanel savePanel];
-    [savePanel setNameFieldLabel:@"Export To:"];
-    [savePanel setPrompt:@"Export"];
-    [savePanel setNameFieldStringValue:@"Brewfile"];
+    savePanel.nameFieldLabel = @"Export To:";
+    savePanel.prompt = @"Export";
+    savePanel.nameFieldStringValue = @"Brewfile";
     
     [savePanel beginSheetModalForWindow:[NSApp mainWindow] completionHandler:^(NSInteger result) {
         NSURL *fileURL = [savePanel URL];
@@ -919,13 +960,13 @@ apply:
 - (IBAction)runHomebrewImport:(id)sender
 {
     NSOpenPanel *openPanel = [NSOpenPanel openPanel];
-    [openPanel setNameFieldLabel:@"Import From:"];
-    [openPanel setPrompt:@"Import"];
-    [openPanel setNameFieldStringValue:@"Brewfile"];
-    [openPanel setAllowsMultipleSelection:NO];
-    [openPanel setCanChooseDirectories:NO];
-    [openPanel setCanChooseFiles:YES];
-    [openPanel setDelegate:self];
+    openPanel.nameFieldLabel = @"Import From:";
+    openPanel.prompt = @"Import";
+    openPanel.nameFieldStringValue = @"Brewfile";
+    openPanel.allowsMultipleSelection = NO;
+    openPanel.canChooseDirectories = NO;
+    openPanel.canChooseFiles = YES;
+    openPanel.delegate = self;
     
     [openPanel beginSheetModalForWindow:[NSApp mainWindow] completionHandler:^(NSInteger result) {
         NSURL *fileURL = [openPanel URL];

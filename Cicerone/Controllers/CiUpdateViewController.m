@@ -35,8 +35,7 @@
 @implementation CiUpdateViewController
 
 - (void)awakeFromNib {
-	NSFont *font = [CiStyle defaultFixedWidthFont];
-	[self.updateTextView setFont:font];
+    self.updateTextView.font = [CiStyle defaultFixedWidthFont];
 	self.isPerformingUpdate = NO;
 }
 
@@ -52,26 +51,25 @@
 		[appDelegate displayBackgroundWarning];
 		return;
 	}
-	[appDelegate setRunningBackgroundTask:YES];
+    appDelegate.runningBackgroundTask = YES;
 	
-	[self.updateTextView setString:@""];
+    self.updateTextView.string = @"";
 	self.isPerformingUpdate = YES;
 	[self.progressIndicator startAnimation:sender];
+    self.homebrewViewController.loading = YES;
 	
 	dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
-        NSString *standardOutput = [[CiHomebrewInterface sharedInterface] update];
+        NSString *standardOutput = [[CiHomebrewInterface sharedInterface] update]; // eventually sets self.homebrewViewController.loading = NO;
         dispatch_async(dispatch_get_main_queue(), ^{
-            [self.updateTextView setString:[self.updateTextView.string stringByAppendingString:standardOutput]];
+            self.updateTextView.string = [self.updateTextView.string stringByAppendingString:standardOutput];
         });
 
 		dispatch_async(dispatch_get_main_queue(), ^{
 			[self.progressIndicator stopAnimation:sender];
 			self.isPerformingUpdate = NO;
-			[appDelegate setRunningBackgroundTask:NO];
+            appDelegate.runningBackgroundTask = NO;
 			
-			NSString *title = [NSLocalizedString(@"Homebrew_Task_Finished", nil) capitalizedString];
-			NSString *desc = NSLocalizedString(@"Notification_Update", nil);
-			[CiAppDelegateRef requestUserAttentionWithMessageTitle:title andDescription:desc];
+			[CiAppDelegateRef requestUserAttentionWithMessageTitle:[NSLocalizedString(@"Homebrew_Task_Finished", nil) capitalizedString] andDescription:NSLocalizedString(@"Notification_Update", nil)];
 		});
 	});
 }

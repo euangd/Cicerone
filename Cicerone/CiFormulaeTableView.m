@@ -161,7 +161,19 @@ unichar SPACE_CHARACTER = 0x0020;
 	}
 }
 
-
+- (NSMenu *)menuForEvent:(NSEvent *)event
+{
+    NSPoint point = [self convertPoint:event.locationInWindow fromView:nil];
+    NSInteger row = [self rowAtPoint:point];
+    
+    if (row >= 0) {
+        [self selectRowIndexes:[NSIndexSet indexSetWithIndex:row] byExtendingSelection:NO];
+        // Now the row is visually selected, and you can show the menu
+    }
+    
+    // Return the context menu for the table view
+    return self.menu;
+}
 
 - (BOOL)performKeyEquivalent:(NSEvent *)theEvent
 {
@@ -192,7 +204,6 @@ unichar SPACE_CHARACTER = 0x0020;
 	
 	return NO;
 }
-
 
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wundeclared-selector"

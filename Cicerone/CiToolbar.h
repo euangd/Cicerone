@@ -36,6 +36,7 @@ extern NSString *const kToolbarItemBewTapToolIdentifier;
 - (void)upgradeSelectedFormulae:(id)sender;
 - (void)infoForSelectedFormula:(id)sender;
 - (void)tap:(id)sender;
+- (void)removeSelectedListing:(id)sender;
 - (void)untapSelectedRepository:(id)sender;
 - (void)installSelectedFormula:(id)sender;
 - (void)uninstallSelectedFormula:(id)sender;

@@ -71,7 +71,7 @@
 	NSDictionary *messagesMap = [self.class sharedTaskMessagesMap];
 	NSFont *font = [CiStyle defaultFixedWidthFont];
 	
-	[self.recordTextView setFont:font];
+    self.recordTextView.font = font;
 	self.windowTitleLabel.stringValue = messagesMap[@(self.windowOperation)] ?: @"";
 	
 	NSUInteger count = [self.formulae count];
@@ -113,7 +113,7 @@
 	operationWindowController.formulae = formulae;
 	operationWindowController.options = options;
 	operationWindowController.completionBlock = completionBlock;
-	[CiAppDelegateRef setRunningBackgroundTask:YES];
+    CiAppDelegateRef.runningBackgroundTask = YES;
 	
 	
 	NSWindow *operationWindow = operationWindowController.window;
@@ -133,7 +133,7 @@
 
 - (void)cleanupAfterTask
 {
-	[CiAppDelegateRef setRunningBackgroundTask:NO];
+    CiAppDelegateRef.runningBackgroundTask = NO;
 	
 	if (self.completionBlock)
 	{
@@ -148,7 +148,7 @@
 
 - (void)executeInstallation
 {
-	[self.okButton setEnabled:NO];
+    self.okButton.enabled = NO;
 	[self.progressIndicator startAnimation:nil];
 	
 	dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
@@ -208,14 +208,9 @@
 {
 	dispatch_async(dispatch_get_main_queue(), ^(){
 		[self.progressIndicator stopAnimation:nil];
-		[self.okButton setEnabled:YES];
+        self.okButton.enabled = YES;
 		
-		NSString *title = [NSLocalizedString(@"Homebrew_Task_Finished", nil) capitalizedString];
-		NSString *desc = [NSString stringWithFormat:@"%@ %@",
-						  self.windowTitleLabel.stringValue,
-						  self.formulaNameLabel.stringValue];
-		
-		[CiAppDelegateRef requestUserAttentionWithMessageTitle:title andDescription:desc];
+        [CiAppDelegateRef requestUserAttentionWithMessageTitle:[NSLocalizedString(@"Homebrew_Task_Finished", nil) capitalizedString] andDescription:[NSString stringWithFormat:@"%@ %@", self.windowTitleLabel.stringValue, self.formulaNameLabel.stringValue]];
 	});
 }
 

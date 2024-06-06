@@ -52,6 +52,8 @@ typedef NS_ENUM(NSUInteger, CiWindowOperation) {
 @property (readonly, getter=isListingPackages) BOOL listingPackages;
 @property (readonly, getter=isHomebrewInstalled) BOOL homebrewInstalled; // used to have -isHomebrewInstalled selector separately, then ~synthesized into property with getter= for implementation (on empty category interface)
 
+@property (nonatomic) BOOL loading;
+
 @property (nonatomic, readonly) CiFormula *selectedFormula; // used to be (copy) but then -[setSelectedFormula:] would freeze, at least when @synchronized (self) up the call stack
 
 - (IBAction)showFormulaInfo:(id)sender;

@@ -11,7 +11,9 @@
 #import "CiWindow.h"
 
 @interface CiMainWindowController ()
+
 @property (strong) NSSplitViewController *splitViewController;
+
 @end
 
 @implementation CiMainWindowController
@@ -29,8 +31,7 @@
     NSAssert(splitControllerView, @"View should not be nil");
     NSAssert(windowContentView, @"View should not be nil");
     
-    [splitControllerView setTranslatesAutoresizingMaskIntoConstraints:NO];
-    
+    splitControllerView.translatesAutoresizingMaskIntoConstraints = NO;
     [windowContentView addSubview:splitControllerView];
 
 	[NSLayoutConstraint activate:@[
@@ -57,7 +58,7 @@
                                      relatedBy:NSLayoutRelationEqual 
                                         toItem:windowContentView
                                      attribute:NSLayoutAttributeBottom
-                                    multiplier:1 constant:0],
+                                    multiplier:1 constant:0]
 	]];
 }
 
@@ -69,9 +70,12 @@
 - (NSSplitViewItem *)makeSidebarSplitViewItem
 {
 	NSViewController *sidebarViewController = [[NSViewController alloc] initWithNibName:nil bundle:nil];
-	[sidebarViewController setView:[self sidebarView]];
+    sidebarViewController.view = self.sidebarView;
+    
+    NSSplitViewItem *sidebarSplitViewItem = [NSSplitViewItem sidebarWithViewController:sidebarViewController];
+    sidebarSplitViewItem.minimumThickness = 250;
 
-	return [NSSplitViewItem sidebarWithViewController:sidebarViewController];
+	return sidebarSplitViewItem;
 }
 
 - (NSSplitViewItem *)makeContentSplitViewItem

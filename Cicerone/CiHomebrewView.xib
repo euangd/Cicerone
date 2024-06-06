@@ -179,7 +179,7 @@ CA
 </string>
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <connections>
-                                    <action selector="uninstallSelectedFormula:" target="547" id="IBl-Kz-Hek"/>
+                                    <action selector="removeSelectedListing:" target="547" id="YcR-mp-1hD"/>
                                     <binding destination="547" name="enabled" keyPath="selectedFormula" id="eUR-qe-OOt">
                                         <dictionary key="options">
                                             <string key="NSValueTransformerName">NSIsNotNil</string>
@@ -263,7 +263,7 @@ CA
                                 </connections>
                             </menuItem>
                             <menuItem title="List Installed Dependents" alternate="YES" id="JtF-26-dF7">
-                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <modifierMask key="keyEquivalentModifierMask" option="YES"/>
                                 <connections>
                                     <action selector="showFormulaDependents:" target="547" id="mX1-b3-MUL"/>
                                     <binding destination="547" name="enabled2" keyPath="isListingPackages" previousBinding="VNZ-an-4ch" id="COi-Ae-IrH">
@@ -563,67 +563,67 @@ CA
                         <items>
                             <menuItem title="Installed Formulae" tag="1" keyEquivalent="1" id="8gP-gb-YtQ">
                                 <connections>
-                                    <action selector="selectSideBarRowWithSenderTag:" target="SGP-Ky-0Th" id="Cet-wG-7MQ"/>
+                                    <action selector="selectSidebarRowWithSenderTag:" target="SGP-Ky-0Th" id="Cet-wG-7MQ"/>
                                     <binding destination="547" name="enabled" keyPath="self.isHomebrewInstalled" id="6cc-n7-VsC"/>
                                 </connections>
                             </menuItem>
                             <menuItem title="Outdated Formulae" tag="2" keyEquivalent="2" id="KUc-5l-twA">
                                 <connections>
-                                    <action selector="selectSideBarRowWithSenderTag:" target="SGP-Ky-0Th" id="c5K-Fg-jvj"/>
+                                    <action selector="selectSidebarRowWithSenderTag:" target="SGP-Ky-0Th" id="c5K-Fg-jvj"/>
                                     <binding destination="547" name="enabled" keyPath="self.isHomebrewInstalled" id="nxa-lg-Pas"/>
                                 </connections>
                             </menuItem>
                             <menuItem title="All Formulae" tag="3" keyEquivalent="3" id="zam-2s-isx">
                                 <connections>
-                                    <action selector="selectSideBarRowWithSenderTag:" target="SGP-Ky-0Th" id="opC-R1-TQR"/>
+                                    <action selector="selectSidebarRowWithSenderTag:" target="SGP-Ky-0Th" id="opC-R1-TQR"/>
                                     <binding destination="547" name="enabled" keyPath="self.isHomebrewInstalled" id="FJZ-kb-M6F"/>
                                 </connections>
                             </menuItem>
                             <menuItem title="Leaves" tag="4" keyEquivalent="4" id="M9N-PI-gBO">
                                 <connections>
-                                    <action selector="selectSideBarRowWithSenderTag:" target="SGP-Ky-0Th" id="Uhl-lk-qPT"/>
+                                    <action selector="selectSidebarRowWithSenderTag:" target="SGP-Ky-0Th" id="Uhl-lk-qPT"/>
                                     <binding destination="547" name="enabled" keyPath="self.isHomebrewInstalled" id="ZMY-TV-Vtp"/>
                                 </connections>
                             </menuItem>
                             <menuItem isSeparatorItem="YES" id="7hX-4M-2Wu"/>
                             <menuItem title="Installed Casks" tag="6" keyEquivalent="5" id="TD6-8x-q7W">
                                 <connections>
-                                    <action selector="selectSideBarRowWithSenderTag:" target="SGP-Ky-0Th" id="YkK-vF-cJu"/>
+                                    <action selector="selectSidebarRowWithSenderTag:" target="SGP-Ky-0Th" id="YkK-vF-cJu"/>
                                     <binding destination="547" name="enabled" keyPath="self.isHomebrewInstalled" id="CBj-Cv-SLf"/>
                                 </connections>
                             </menuItem>
                             <menuItem title="Outdated Casks" tag="7" keyEquivalent="7" id="QIT-NQ-cB6">
                                 <connections>
-                                    <action selector="selectSideBarRowWithSenderTag:" target="SGP-Ky-0Th" id="ZTN-QG-NWq"/>
+                                    <action selector="selectSidebarRowWithSenderTag:" target="SGP-Ky-0Th" id="ZTN-QG-NWq"/>
                                     <binding destination="547" name="enabled" keyPath="self.isHomebrewInstalled" id="TFV-Kq-EkV"/>
                                 </connections>
                             </menuItem>
                             <menuItem title="All Casks" tag="8" keyEquivalent="8" id="xt7-pw-HEa">
                                 <connections>
-                                    <action selector="selectSideBarRowWithSenderTag:" target="SGP-Ky-0Th" id="z9C-Xm-41L"/>
+                                    <action selector="selectSidebarRowWithSenderTag:" target="SGP-Ky-0Th" id="z9C-Xm-41L"/>
                                     <binding destination="547" name="enabled" keyPath="self.isHomebrewInstalled" id="wej-bn-hUv"/>
                                 </connections>
                             </menuItem>
                             <menuItem isSeparatorItem="YES" id="kEe-QJ-gfj"/>
-                            <menuItem title="Repositories" tag="10" keyEquivalent="1" id="dXD-3s-NhA">
+                            <menuItem title="Doctor" tag="10" keyEquivalent="1" id="eI9-b4-Rmg">
                                 <modifierMask key="keyEquivalentModifierMask" option="YES" command="YES"/>
                                 <connections>
-                                    <action selector="selectSideBarRowWithSenderTag:" target="SGP-Ky-0Th" id="s3g-8g-eFB"/>
-                                    <binding destination="547" name="enabled" keyPath="self.isHomebrewInstalled" id="Y5h-D2-XfT"/>
-                                </connections>
-                            </menuItem>
-                            <menuItem title="Doctor" tag="11" keyEquivalent="2" id="eI9-b4-Rmg">
-                                <modifierMask key="keyEquivalentModifierMask" option="YES" command="YES"/>
-                                <connections>
-                                    <action selector="selectSideBarRowWithSenderTag:" target="SGP-Ky-0Th" id="DMG-th-yEC"/>
+                                    <action selector="selectSidebarRowWithSenderTag:" target="SGP-Ky-0Th" id="DMG-th-yEC"/>
                                     <binding destination="547" name="enabled" keyPath="self.isHomebrewInstalled" id="xxS-YX-gBx"/>
                                 </connections>
                             </menuItem>
-                            <menuItem title="Update" tag="12" keyEquivalent="3" id="8Vh-lk-gYe">
+                            <menuItem title="Update" tag="11" keyEquivalent="2" id="8Vh-lk-gYe">
                                 <modifierMask key="keyEquivalentModifierMask" option="YES" command="YES"/>
                                 <connections>
-                                    <action selector="selectSideBarRowWithSenderTag:" target="SGP-Ky-0Th" id="fUp-dE-WjG"/>
+                                    <action selector="selectSidebarRowWithSenderTag:" target="SGP-Ky-0Th" id="fUp-dE-WjG"/>
                                     <binding destination="547" name="enabled" keyPath="self.isHomebrewInstalled" id="HeO-ww-Vvq"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Repositories" tag="13" keyEquivalent="3" id="dXD-3s-NhA">
+                                <modifierMask key="keyEquivalentModifierMask" option="YES" command="YES"/>
+                                <connections>
+                                    <action selector="selectSidebarRowWithSenderTag:" target="SGP-Ky-0Th" id="s3g-8g-eFB"/>
+                                    <binding destination="547" name="enabled" keyPath="self.isHomebrewInstalled" id="Y5h-D2-XfT"/>
                                 </connections>
                             </menuItem>
                         </items>
@@ -783,7 +783,7 @@ CA
                 <menuItem title="Remove…" id="k6k-bi-mRz">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <connections>
-                        <action selector="uninstallSelectedFormula:" target="547" id="b9y-Rm-KaI"/>
+                        <action selector="removeSelectedListing:" target="547" id="5eG-2G-qBP"/>
                         <binding destination="547" name="enabled" keyPath="selectedFormula" id="JGN-pc-5mS">
                             <dictionary key="options">
                                 <string key="NSValueTransformerName">NSIsNotNil</string>
@@ -875,7 +875,7 @@ CA
                     </connections>
                 </menuItem>
                 <menuItem title="List Installed Dependents" alternate="YES" id="vQj-U6-G8M">
-                    <modifierMask key="keyEquivalentModifierMask"/>
+                    <modifierMask key="keyEquivalentModifierMask" option="YES"/>
                     <connections>
                         <action selector="showFormulaDependents:" target="547" id="Utb-sm-R2X"/>
                         <binding destination="547" name="enabled" keyPath="selectedFormula" id="ilo-lF-3AD">
@@ -1150,33 +1150,35 @@ CA
                                             <outlet property="textField" destination="zqu-hn-vHh" id="EfQ-O1-U7g"/>
                                         </connections>
                                     </tableCellView>
-                                    <tableCellView identifier="MainCell" id="Emw-wX-GZR" customClass="PXSourceListTableCellView">
+                                    <tableCellView identifier="MainCell" id="Emw-wX-GZR" customClass="CiSourceListTableCellView">
                                         <rect key="frame" x="10" y="17" width="190" height="17"/>
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                         <subviews>
-                                            <stackView distribution="fill" orientation="horizontal" alignment="centerY" spacing="6" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" translatesAutoresizingMaskIntoConstraints="NO" id="ZYw-KT-mn6">
+                                            <stackView orientation="horizontal" alignment="centerY" spacing="6" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" translatesAutoresizingMaskIntoConstraints="NO" id="ZYw-KT-mn6">
                                                 <rect key="frame" x="4" y="0.0" width="182" height="17"/>
-                                                <subviews>
-                                                    <imageView wantsLayer="YES" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="Hdc-F0-dxf">
-                                                        <rect key="frame" x="0.0" y="-4" width="16" height="27"/>
+                                                <beginningViews>
+                                                    <imageView wantsLayer="YES" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Hdc-F0-dxf">
+                                                        <rect key="frame" x="0.0" y="-1" width="20" height="20"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="16" id="Zvg-lh-xgj"/>
                                                             <constraint firstAttribute="width" constant="16" id="mOk-4w-gU6"/>
                                                         </constraints>
                                                         <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="NSActionTemplate" id="toQ-NF-aTx"/>
                                                     </imageView>
-                                                    <textField horizontalHuggingPriority="249" verticalHuggingPriority="751" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="UJN-Jw-tTu">
-                                                        <rect key="frame" x="20" y="1" width="118" height="16"/>
+                                                    <textField horizontalHuggingPriority="249" verticalHuggingPriority="751" horizontalCompressionResistancePriority="250" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="UJN-Jw-tTu">
+                                                        <rect key="frame" x="24" y="1" width="114" height="16"/>
                                                         <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="Table View Cell" id="Q6g-vm-85f">
                                                             <font key="font" metaFont="system"/>
                                                             <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                                         </textFieldCell>
                                                     </textField>
-                                                    <customView horizontalHuggingPriority="252" verticalHuggingPriority="751" horizontalCompressionResistancePriority="780" verticalCompressionResistancePriority="780" placeholderIntrinsicWidth="40" placeholderIntrinsicHeight="16" translatesAutoresizingMaskIntoConstraints="NO" id="NXZ-4S-anG" customClass="PXSourceListBadgeView">
+                                                </beginningViews>
+                                                <endViews>
+                                                    <customView horizontalHuggingPriority="252" verticalHuggingPriority="751" horizontalCompressionResistancePriority="780" verticalCompressionResistancePriority="780" fixedFrame="YES" placeholderIntrinsicWidth="40" placeholderIntrinsicHeight="16" translatesAutoresizingMaskIntoConstraints="NO" id="NXZ-4S-anG" customClass="PXSourceListBadgeView">
                                                         <rect key="frame" x="142" y="1" width="40" height="16"/>
                                                     </customView>
-                                                </subviews>
+                                                </endViews>
                                                 <visibilityPriorities>
                                                     <integer value="1000"/>
                                                     <integer value="1000"/>
@@ -1199,6 +1201,112 @@ CA
                                             <outlet property="badgeView" destination="NXZ-4S-anG" id="cnN-Fx-bd2"/>
                                             <outlet property="imageView" destination="Hdc-F0-dxf" id="MIx-hw-Vmb"/>
                                             <outlet property="textField" destination="UJN-Jw-tTu" id="74s-sK-ua9"/>
+                                        </connections>
+                                    </tableCellView>
+                                    <tableCellView identifier="LoadingCell" id="E1e-a8-QHN" customClass="CiSourceListTableCellView">
+                                        <rect key="frame" x="10" y="34" width="190" height="17"/>
+                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                        <subviews>
+                                            <stackView orientation="horizontal" alignment="centerY" spacing="6" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" translatesAutoresizingMaskIntoConstraints="NO" id="IJz-kG-dYe">
+                                                <rect key="frame" x="4" y="0.0" width="182" height="17"/>
+                                                <beginningViews>
+                                                    <imageView wantsLayer="YES" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="atr-Ml-Ug1">
+                                                        <rect key="frame" x="0.0" y="-1" width="20" height="20"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="width" constant="16" id="2Vy-y3-TVy"/>
+                                                            <constraint firstAttribute="height" constant="16" id="rHh-kH-JTL"/>
+                                                        </constraints>
+                                                        <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="NSActionTemplate" id="4gZ-Xf-Dld"/>
+                                                    </imageView>
+                                                    <textField horizontalHuggingPriority="249" verticalHuggingPriority="751" horizontalCompressionResistancePriority="250" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="B9A-mk-ac2">
+                                                        <rect key="frame" x="24" y="1" width="138" height="16"/>
+                                                        <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="Table View Cell" id="1CK-Z5-D1M">
+                                                            <font key="font" metaFont="system"/>
+                                                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                        </textFieldCell>
+                                                    </textField>
+                                                </beginningViews>
+                                                <endViews>
+                                                    <progressIndicator fixedFrame="YES" maxValue="100" displayedWhenStopped="NO" indeterminate="YES" controlSize="small" style="spinning" translatesAutoresizingMaskIntoConstraints="NO" id="dsU-sU-2RS">
+                                                        <rect key="frame" x="166" y="1" width="16" height="16"/>
+                                                    </progressIndicator>
+                                                </endViews>
+                                                <visibilityPriorities>
+                                                    <integer value="1000"/>
+                                                    <integer value="1000"/>
+                                                    <integer value="1000"/>
+                                                </visibilityPriorities>
+                                                <customSpacing>
+                                                    <real value="3.4028234663852886e+38"/>
+                                                    <real value="3.4028234663852886e+38"/>
+                                                    <real value="3.4028234663852886e+38"/>
+                                                </customSpacing>
+                                            </stackView>
+                                        </subviews>
+                                        <constraints>
+                                            <constraint firstItem="IJz-kG-dYe" firstAttribute="leading" secondItem="E1e-a8-QHN" secondAttribute="leading" constant="4" id="HEG-Oi-HiI"/>
+                                            <constraint firstItem="IJz-kG-dYe" firstAttribute="top" secondItem="E1e-a8-QHN" secondAttribute="top" id="mcN-38-CFJ"/>
+                                            <constraint firstAttribute="trailing" secondItem="IJz-kG-dYe" secondAttribute="trailing" constant="4" id="wSQ-A0-n5E"/>
+                                            <constraint firstAttribute="bottom" secondItem="IJz-kG-dYe" secondAttribute="bottom" id="xll-Wx-V7r"/>
+                                        </constraints>
+                                        <connections>
+                                            <outlet property="imageView" destination="atr-Ml-Ug1" id="wim-3c-sA6"/>
+                                            <outlet property="loadingIndicator" destination="dsU-sU-2RS" id="IKT-Y1-UXa"/>
+                                            <outlet property="textField" destination="B9A-mk-ac2" id="Y3I-BD-o4q"/>
+                                        </connections>
+                                    </tableCellView>
+                                    <tableCellView identifier="ToolCell" id="ISg-a4-3st" customClass="CiSourceListTableCellView">
+                                        <rect key="frame" x="10" y="51" width="190" height="17"/>
+                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                        <subviews>
+                                            <stackView orientation="horizontal" alignment="centerY" spacing="6" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" translatesAutoresizingMaskIntoConstraints="NO" id="9Ol-TC-zQh">
+                                                <rect key="frame" x="4" y="0.0" width="182" height="17"/>
+                                                <beginningViews>
+                                                    <imageView wantsLayer="YES" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fus-Gl-qLV">
+                                                        <rect key="frame" x="0.0" y="-1" width="20" height="20"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" constant="16" id="OEl-rQ-5Wt"/>
+                                                            <constraint firstAttribute="width" constant="16" id="mxe-qo-NMx"/>
+                                                        </constraints>
+                                                        <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="NSActionTemplate" id="mwm-hV-e9T"/>
+                                                    </imageView>
+                                                    <textField horizontalHuggingPriority="249" verticalHuggingPriority="751" horizontalCompressionResistancePriority="250" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="1U4-Ww-LeF">
+                                                        <rect key="frame" x="24" y="1" width="139" height="16"/>
+                                                        <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="Table View Cell" id="tXD-i7-3ke">
+                                                            <font key="font" metaFont="system"/>
+                                                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                        </textFieldCell>
+                                                    </textField>
+                                                </beginningViews>
+                                                <endViews>
+                                                    <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="xsx-zP-2nr">
+                                                        <rect key="frame" x="167" y="2.5" width="15" height="12"/>
+                                                        <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="arrow.right" catalog="system" id="nKA-Gf-ACj"/>
+                                                    </imageView>
+                                                </endViews>
+                                                <visibilityPriorities>
+                                                    <integer value="1000"/>
+                                                    <integer value="1000"/>
+                                                    <integer value="1000"/>
+                                                </visibilityPriorities>
+                                                <customSpacing>
+                                                    <real value="3.4028234663852886e+38"/>
+                                                    <real value="3.4028234663852886e+38"/>
+                                                    <real value="3.4028234663852886e+38"/>
+                                                </customSpacing>
+                                            </stackView>
+                                        </subviews>
+                                        <constraints>
+                                            <constraint firstAttribute="bottom" secondItem="9Ol-TC-zQh" secondAttribute="bottom" id="9T2-oF-X9m"/>
+                                            <constraint firstAttribute="trailing" secondItem="9Ol-TC-zQh" secondAttribute="trailing" constant="4" id="DUc-2z-hSR"/>
+                                            <constraint firstItem="9Ol-TC-zQh" firstAttribute="top" secondItem="ISg-a4-3st" secondAttribute="top" id="E5i-b1-vfq"/>
+                                            <constraint firstItem="9Ol-TC-zQh" firstAttribute="leading" secondItem="ISg-a4-3st" secondAttribute="leading" constant="4" id="VZb-iU-1ac"/>
+                                        </constraints>
+                                        <connections>
+                                            <outlet property="imageView" destination="fus-Gl-qLV" id="kuJ-4R-PnN"/>
+                                            <outlet property="textField" destination="1U4-Ww-LeF" id="8Hd-B0-Lv1"/>
                                         </connections>
                                     </tableCellView>
                                 </prototypeCellViews>
@@ -1225,5 +1333,6 @@ CA
     </objects>
     <resources>
         <image name="NSActionTemplate" width="20" height="20"/>
+        <image name="arrow.right" catalog="system" width="15" height="12"/>
     </resources>
 </document>
