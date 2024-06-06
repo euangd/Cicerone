@@ -42,7 +42,7 @@ NSString *const kCiCacheDataKey	= @"CiCacheDataKey";
         static dispatch_once_t once;
         static CiHomebrewManager *instance;
         
-        dispatch_once(&once, ^ { instance = [[super allocWithZone:NULL] initUniqueInstance]; });
+        dispatch_once(&once, ^{ instance = [[super allocWithZone:NULL] initUniqueInstance]; });
         
         return instance;
 	}
@@ -52,6 +52,7 @@ NSString *const kCiCacheDataKey	= @"CiCacheDataKey";
 {
 	self = [super init];
 	if (self) {
+        [CiHomebrewInterface sharedInterface].delegate = self;
         _formulaeDataSource = [[CiFormulaeDataSource alloc] initWithMode:kCiListModeAllFormulae];
 	}
 	return self;
@@ -74,13 +75,15 @@ NSString *const kCiCacheDataKey	= @"CiCacheDataKey";
 
 - (void)loadHomebrewPrefixState;
 {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.delegate homebrewManagerWillLoadHomebrewPrefixState:self];
+    });
+    
 	NSUInteger previousCountOfAllFormulae = [self allFormulae].count;
 	NSUInteger previousCountOfAllCasks = [self allCasks].count;
 
 	dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
-        [CiHomebrewInterface sharedInterface].delegate = self;
-		
-		NSArray *installedFormulae = [[CiHomebrewInterface sharedInterface] packagesWithMode:kCiListModeInstalledFormulae];
+        NSArray *installedFormulae = [[CiHomebrewInterface sharedInterface] packagesWithMode:kCiListModeInstalledFormulae];
 		NSArray *leavesFormulae = [[CiHomebrewInterface sharedInterface] packagesWithMode:kCiListModeLeaves];
 		NSArray *outdatedFormulae = [[CiHomebrewInterface sharedInterface] packagesWithMode:kCiListModeOutdatedFormulae];
 		NSArray *repositoriesFormulae = [[CiHomebrewInterface sharedInterface] packagesWithMode:kCiListModeRepositories];
@@ -150,46 +153,46 @@ NSString *const kCiCacheDataKey	= @"CiCacheDataKey";
 /**
  Returns `YES` if cache exists, was created less than 24 hours ago and was loaded successfully. Otherwise returns `NO`.
  */
-- (BOOL)loadCache:(NSString*)fileName array:(NSArray<CiFormula*>*)cache
+- (BOOL)loadCache:(NSString*)fileName array:(NSArray<CiFormula *> *)cache
 {
-   NSURL *cachesFolder = [CiAppDelegate urlForApplicationCachesFolder];
-   NSURL *allFile = [cachesFolder URLByAppendingPathComponent:fileName];
+   NSURL *filePath = [[CiAppDelegate urlForApplicationCachesFolder] URLByAppendingPathComponent:fileName];
    BOOL shouldLoadCache = NO;
    
    if ([[NSUserDefaults standardUserDefaults] objectForKey:kCiCacheLastUpdateKey])
    {
-	   NSDate *storageDate = [NSDate dateWithTimeIntervalSince1970:[[NSUserDefaults standardUserDefaults]
-																	integerForKey:kCiCacheLastUpdateKey]];
+	   NSDate *storageDate = [NSDate dateWithTimeIntervalSince1970:[[NSUserDefaults standardUserDefaults] integerForKey:kCiCacheLastUpdateKey]];
 	   
-	   if ([[NSDate date] timeIntervalSinceDate:storageDate] <= 3600*24)
+	   if ([[NSDate date] timeIntervalSinceDate:storageDate] <= 3600 * 24)
 	   {
 		   shouldLoadCache = YES;
 	   }
    }
    
-   if (shouldLoadCache && allFile)
+   if (shouldLoadCache && filePath)
    {
-	   NSDictionary *cacheDict = nil;
-	   
-	   if ([[NSFileManager defaultManager] fileExistsAtPath:allFile.relativePath])
-	   {
-		   NSData *data = [NSData dataWithContentsOfFile:allFile.relativePath];
+       if ([[NSFileManager defaultManager] fileExistsAtPath:filePath.relativePath])
+       {
+           NSLog(@"Loading cache at: %@", [filePath debugDescription]);
+           
 		   NSError *error = nil;
-
-		   if (@available(macOS 10.13, *)) {
-			   NSSet *classes = [NSSet setWithArray:@[[NSString class], [NSDictionary class], [NSMutableArray class], [CiFormula class], [NSNumber class]]];
-			   cacheDict = [NSKeyedUnarchiver unarchivedObjectOfClasses:classes fromData:data error:&error];
-			   if (error) {
-				   NSLog(@"Failed decoding data: %@", [error localizedDescription]);
-			   }
-		   } else {
-			   cacheDict = [NSKeyedUnarchiver unarchiveObjectWithFile:allFile.relativePath];
-		   }
+           NSDictionary *cacheDict = [NSKeyedUnarchiver unarchivedObjectOfClasses:[NSSet setWithArray:@[[NSNumber class],
+                                                                                                        [NSString class],
+                                                                                                        [NSDictionary class],
+                                                                                                        [NSMutableArray class],
+                                                                                                        [CiFormula class]]]
+                                                                         fromData:[NSData dataWithContentsOfFile:filePath.relativePath]
+                                                                            error:&error];
+           if (error) {
+               NSLog(@"Failed decoding cache data: %@", [error localizedDescription]);
+           }
+           
 		   cache = [cacheDict objectForKey:kCiCacheDataKey];
 	   }
    } else {
+       NSLog(@"Deleting cache supposedly at: %@", [filePath debugDescription]);
+       
 	   // Delete all cache data
-	   [[NSFileManager defaultManager] removeItemAtURL:allFile error:nil];
+	   [[NSFileManager defaultManager] removeItemAtURL:filePath error:nil];
 	   [[NSUserDefaults standardUserDefaults] removeObjectForKey:kCiCacheLastUpdateKey];
    }
     
@@ -213,38 +216,31 @@ NSString *const kCiCacheDataKey	= @"CiCacheDataKey";
 		NSURL *cachesFolder = [CiAppDelegate urlForApplicationCachesFolder];
 		if (cachesFolder)
 		{
-			NSURL *allFile = [cachesFolder URLByAppendingPathComponent:fileName];
+			NSURL *filePath = [cachesFolder URLByAppendingPathComponent:fileName];
 			NSDate *storageDate = [NSDate date];
 			
 			if ([[NSUserDefaults standardUserDefaults] objectForKey:kCiCacheLastUpdateKey])
 			{
-				storageDate = [NSDate dateWithTimeIntervalSince1970:[[NSUserDefaults standardUserDefaults]
-																	 integerForKey:kCiCacheLastUpdateKey]];
+				storageDate = [NSDate dateWithTimeIntervalSince1970:[[NSUserDefaults standardUserDefaults] integerForKey:kCiCacheLastUpdateKey]];
 			}
 			
 			NSDictionary *cacheDict = @{kCiCacheDataKey: cache};
-			NSData *cacheData;
-
-			if (@available(macOS 10.13, *)) {
-				NSError *error = nil;
-				cacheData = [NSKeyedArchiver archivedDataWithRootObject:cacheDict
-												  requiringSecureCoding:YES
-																  error:&error];
-
-				if (error) {
-					NSLog(@"Failed encoding data: %@", [error localizedDescription]);
-				}
-			} else {
-				cacheData = [NSKeyedArchiver archivedDataWithRootObject:cacheDict];
-			}
+            NSError *error = nil;
+            NSData *cacheData = [NSKeyedArchiver archivedDataWithRootObject:cacheDict
+                                                      requiringSecureCoding:YES
+                                                                      error:&error];
+            
+            if (error) {
+                NSLog(@"Failed encoding data: %@", [error localizedDescription]);
+            }
 			
-			if ([[NSFileManager defaultManager] fileExistsAtPath:allFile.relativePath])
+			if ([[NSFileManager defaultManager] fileExistsAtPath:filePath.relativePath])
 			{
-				[cacheData writeToURL:allFile atomically:YES];
+				[cacheData writeToURL:filePath atomically:YES];
 			}
 			else
 			{
-				[[NSFileManager defaultManager] createFileAtPath:allFile.relativePath
+				[[NSFileManager defaultManager] createFileAtPath:filePath.relativePath
 														contents:cacheData attributes:nil];
 			}
 			
@@ -266,11 +262,11 @@ NSString *const kCiCacheDataKey	= @"CiCacheDataKey";
 	[[CiHomebrewInterface sharedInterface] cleanup];
 }
 
-#pragma mark - Homebrew Interface Delegate
+#pragma mark - Calls to Homebrew Interface Delegate
 
 - (void)homebrewInterfaceChangedDependedHomebrewPrefixState
 {
-	[self loadHomebrewPrefixState:YES];
+	[self loadHomebrewPrefixState];
 }
 
 - (void)homebrewInterfaceDidNotFindBrew:(BOOL)yesOrNo

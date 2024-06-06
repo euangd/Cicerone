@@ -54,7 +54,7 @@ NSString *const kCi_CICERONE_WEBSITE = @"https://github.com/TheFanatr/Cicerone";
 {	
 	[self setupSignalHandler];
 	
-	[[CiHomebrewManager sharedManager] loadHomebrewPrefixState:NO];
+	[[CiHomebrewManager sharedManager] loadHomebrewPrefixState];
 	
 	[NSUserNotificationCenter defaultUserNotificationCenter].delegate = self;
 }

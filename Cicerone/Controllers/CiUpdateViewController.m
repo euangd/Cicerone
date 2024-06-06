@@ -56,7 +56,7 @@
     self.updateTextView.string = @"";
 	self.isPerformingUpdate = YES;
 	[self.progressIndicator startAnimation:sender];
-    self.homebrewViewController.loading = YES;
+    self.homebrewViewController.lock = YES;
 	
 	dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
         NSString *standardOutput = [[CiHomebrewInterface sharedInterface] update]; // eventually sets self.homebrewViewController.loading = NO;

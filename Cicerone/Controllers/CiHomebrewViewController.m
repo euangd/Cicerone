@@ -243,11 +243,10 @@ NSOpenSavePanelDelegate>
                                               views:@{@"view": selectedFormulaView}]];
     
     self.sidebarController.delegate = self;
+    [self.sidebarController selectSidebarRowWithIndex:kCiSidebarRowInstalledFormulae];
     
     [self addToolbar];
-    [self addLoadingView];
-    
-    [self.sidebarController selectSidebarRowWithIndex:kCiSidebarRowInstalledFormulae];
+        
     self.loading = YES;
     
     _appDelegate = CiAppDelegateRef;
@@ -464,7 +463,45 @@ NSOpenSavePanelDelegate>
 
 - (void)setLoading:(BOOL)loading
 {
-    if (_loading = loading) {
+    //can stop loading as many times as needed, but should not start multiple times in a row
+    if (_loading == loading && loading) {
+        return;
+    }
+    
+    _loading = loading;
+    
+    if (loading) {
+        [self addLoadingView];
+        
+        self.informationTextField.hidden = YES;
+        self.mainWindowController.windowContentViewHidden = YES;
+        
+        self.lock = YES;
+    } else {
+        [self.loadingView removeFromSuperview];
+        self.loadingView = nil;
+        
+        if (self.isHomebrewInstalled)
+        {
+            self.lock = NO;
+            
+            self.mainWindowController.windowContentViewHidden = NO;
+            self.informationTextField.hidden = NO;
+            
+            // Used after unlocking the app when inserting custom homebrew installation path
+            BOOL shouldReselectFirstRow = _lastSelectedSidebarIndex == -1;
+            
+            [self.sidebarController selectSidebarRowWithIndex:shouldReselectFirstRow ? kCiSidebarRowInstalledFormulae : (NSUInteger)_lastSelectedSidebarIndex];
+        }
+    }
+}
+
+// intentionally allows lock to happen multiple times
+- (void)setLock:(BOOL)load
+{
+    _lock = load;
+    
+    if (load) {
         self.sidebarController.loading = YES;
         
         self.toolbar.mode = kCiToolbarModeDud;
@@ -490,23 +527,17 @@ NSOpenSavePanelDelegate>
 
 #pragma mark - Homebrew Manager Delegate
 
+- (void)homebrewManagerWillLoadHomebrewPrefixState:(CiHomebrewManager *)manager
+{
+    // set the content view to a loading screen and lock the UI only if the current content view is unrelated to the
+//    if (!hasOperationPopup) {
+//    }
+    self.loading = YES;
+}
+
 - (void)homebrewManagerDidLoadHomebrewPrefixState:(CiHomebrewManager *)manager
 {
-    [self.loadingView removeFromSuperview];
-    self.loadingView = nil;
-    
-    if (self.isHomebrewInstalled)
-    {
-        self.loading = NO;
-        
-        self.mainWindowController.windowContentViewHidden = NO;
-        self.informationTextField.hidden = NO;
-        
-        // Used after unlocking the app when inserting custom homebrew installation path
-        BOOL shouldReselectFirstRow = _lastSelectedSidebarIndex == -1;
-        
-        [self.sidebarController selectSidebarRowWithIndex:shouldReselectFirstRow ? kCiSidebarRowInstalledFormulae : (NSUInteger)_lastSelectedSidebarIndex];
-    }
+    self.loading = NO;
 }
 
 - (void)homebrewManager:(CiHomebrewManager *)manager didFinishSearchReturningSearchResults:(NSArray *)searchResults
@@ -523,7 +554,7 @@ NSOpenSavePanelDelegate>
         [self addDisabledView];
         self.informationTextField.hidden = YES;
         self.mainWindowController.windowContentViewHidden = YES;
-        self.loading = false;
+        self.lock = false;
         self.toolbar.mode = kCiToolbarModeDud;
         self.sidebarController.sidebar.enabled = NO;
         
@@ -556,9 +587,9 @@ NSOpenSavePanelDelegate>
         self.informationTextField.hidden = NO;
         self.mainWindowController.windowContentViewHidden = NO;
         
-        self.loading = YES;
+        self.lock = YES;
         
-        [[CiHomebrewManager sharedManager] loadHomebrewPrefixState:YES];
+        [[CiHomebrewManager sharedManager] loadHomebrewPrefixState];
     }
 }
 

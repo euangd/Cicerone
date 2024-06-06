@@ -57,7 +57,7 @@
 	[self.doctorTextView setString:@""];
 	self.isPerformingDoctor = YES;
 	[self.progressIndicator startAnimation:sender];
-    self.homebrewViewController.loading = YES;
+    self.homebrewViewController.lock = YES;
 
 	NSString *previousString = [self.doctorTextView string];
 	
@@ -71,7 +71,7 @@
 			[self.progressIndicator stopAnimation:sender];
 			self.isPerformingDoctor = NO;
 			[appDelegate setRunningBackgroundTask:NO];
-            self.homebrewViewController.loading = NO;
+            self.homebrewViewController.lock = NO;
 			
 			NSString *title = [NSLocalizedString(@"Homebrew_Task_Finished", nil) capitalizedString];
 			NSString *desc = NSLocalizedString(@"Notification_Update", nil);

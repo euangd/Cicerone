@@ -27,7 +27,8 @@
 
 @protocol CiHomebrewManagerDelegate <NSObject>
 
-- (void)homebrewManagerDidLoadHomebrewPrefixState:(CiHomebrewManager*)manager;
+- (void)homebrewManagerWillLoadHomebrewPrefixState:(CiHomebrewManager *)manager;
+- (void)homebrewManagerDidLoadHomebrewPrefixState:(CiHomebrewManager *)manager;
 - (void)homebrewManager:(CiHomebrewManager *)manager didFinishSearchReturningSearchResults:(NSArray *)searchResults;
 - (void)homebrewManager:(CiHomebrewManager *)manager didNotFindBrew:(BOOL)yesOrNo;
 
@@ -64,7 +65,7 @@
 - (instancetype)init __attribute__((unavailable("init not available, call sharedManager instead")));
 + (instancetype)new __attribute__((unavailable("new not available, call sharedManager instead")));
 
-- (void)loadHomebrewPrefixState:(BOOL)shouldRebuildCache;
+- (void)loadHomebrewPrefixState;
 - (void)updateSearchWithName:(NSString *)name;
 
 - (void)cleanUp;
