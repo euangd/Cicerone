@@ -27,7 +27,7 @@
 	<key>NSHumanReadableCopyright</key>
 	<string>Copyright © 2014—2021 Bruno Philipe, © 2023—2024 Alex Fânaț. All rights reserved.</string>
 	<key>NSMainNibFile</key>
-	<string>CiHomebrewView</string>
+	<string>COHomebrewView</string>
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
 	<key>SUEnableSystemProfiling</key>

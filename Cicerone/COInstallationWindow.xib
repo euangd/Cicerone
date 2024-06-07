@@ -69,7 +69,7 @@
                                 <rect key="frame" x="0.0" y="34" width="346" height="164"/>
                                 <clipView key="contentView" drawsBackground="NO" id="3cv-KF-r8a">
                                     <rect key="frame" x="1" y="1" width="344" height="162"/>
-                                    <autoresizingMask key="autoresizingMask"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <textView editable="NO" importsGraphics="NO" richText="NO" verticallyResizable="YES" findStyle="bar" allowsNonContiguousLayout="YES" id="coD-Fc-WwQ" customClass="COAutoScrollTextView">
                                             <rect key="frame" x="0.0" y="0.0" width="344" height="162"/>

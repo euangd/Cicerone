@@ -1,6 +1,6 @@
 //
 //	AppDelegate.m
-//	Bruh – The Homebrew GUI App for OS X
+//	Cicerone – The Homebrew GUI App for OS X
 //
 //	Created by Vincent Saluzzo on 06/12/11.
 //	Copyright (c) 2014 Bruno Philipe. All rights reserved.
@@ -23,7 +23,7 @@
 #import "DCOAboutWindowController.h"
 #import "COAppDelegate.h"
 
-NSString *const kCO_Bruh_WEBSITE = @"https://github.com/TheFanatr/Bruh";
+NSString *const kCO_Cicerone_WEBSITE = @"https://github.com/TheFanatr/Cicerone";
 
 
 @interface COAppDelegate () <NSUserNotificationCenterDelegate>
@@ -44,7 +44,7 @@ NSString *const kCO_Bruh_WEBSITE = @"https://github.com/TheFanatr/Bruh";
 {
 	if (!_aboutWindowController){
 		_aboutWindowController = [[DCOAboutWindowController alloc] init];
-        _aboutWindowController.appWebsiteURL = [NSURL URLWithString:kCO_Bruh_WEBSITE];
+        _aboutWindowController.appWebsiteURL = [NSURL URLWithString:kCO_Cicerone_WEBSITE];
 	}
     
 	return _aboutWindowController;
@@ -91,7 +91,7 @@ NSString *const kCO_Bruh_WEBSITE = @"https://github.com/TheFanatr/Bruh";
 	if (error) return nil;
 	error = nil;
 
-	path = [path URLByAppendingPathComponent:@"Bruh/"];
+	path = [path URLByAppendingPathComponent:@"Cicerone/"];
 
 	[[NSFileManager defaultManager] createDirectoryAtPath:path.relativePath withIntermediateDirectories:YES attributes:nil error:&error];
 
@@ -114,13 +114,13 @@ NSString *const kCO_Bruh_WEBSITE = @"https://github.com/TheFanatr/Bruh";
 	
 	error = nil;
 
-	path = [path URLByAppendingPathComponent:@"oaVa-o.Bruh/"];
+	path = [path URLByAppendingPathComponent:@"oaVa-o.Cicerone/"];
 
 	[[NSFileManager defaultManager] createDirectoryAtPath:path.relativePath withIntermediateDirectories:YES attributes:nil error:&error];
 
 	if (error)
 	{
-		NSLog(@"Error creating Bruh cache directory: %@", path);
+		NSLog(@"Error creating Cicerone cache directory: %@", path);
 		return nil;
 	}
 	
@@ -169,7 +169,7 @@ NSString *const kCO_Bruh_WEBSITE = @"https://github.com/TheFanatr/Bruh";
 
 - (IBAction)openWebsite:(id)sender
 {
-	[[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:kCO_Bruh_WEBSITE]];
+	[[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:kCO_Cicerone_WEBSITE]];
 }
 
 #pragma mark - User Notification Center Delegate

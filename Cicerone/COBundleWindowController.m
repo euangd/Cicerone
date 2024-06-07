@@ -1,6 +1,6 @@
 //
 //  COBundleWindowController.m
-//  Bruh
+//  Cicerone
 //
 //  Created by Bruno Philipe on 20/02/16.
 //  Copyright © 2016 Bruno Philipe. All rights reserved.

@@ -1,5 +1,5 @@
 //
-//  CiTimedDispatch.m
+//  COTimedDispatch.m
 //  Cicerone
 //
 //  Created by Bruno Philipe on 4/17/15.

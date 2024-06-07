@@ -7,7 +7,7 @@
 //
 
 #import "COSideBarController.h"
-#import "CISourceListTableCellView.h"
+#import "COSourceListTableCellView.h"
 #import "COHomebrewManager.h"
 #import "COStyle.h"
 

@@ -6,8 +6,8 @@
 	#import <Cocoa/Cocoa.h>
 #endif
 
-#ifndef __Ci_Cicerone__
-	#define __Ci_Cicerone__
+#ifndef __CO_Cicerone__
+	#define __CO_Cicerone__
 
 	#ifndef MAC_OS_X_VERSION_10_10
 		#define NSVisualEffectsView NSView

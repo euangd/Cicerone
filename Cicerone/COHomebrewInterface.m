@@ -1,6 +1,6 @@
 //
 //	BrewInterface.m
-//	Bruh – The Homebrew GUI App for OS X
+//	Cicerone – The Homebrew GUI App for OS X
 //
 //	Created by Vincent Saluzzo on 06/12/11.
 //	Copyright (c) 2014 Bruno Philipe. All rights reserved.
@@ -22,7 +22,7 @@
 #import "COHomebrewInterface.h"
 #import "COTask.h"
 
-static NSString * const shellHeaderEndMarker = @"+++++ Bruh +++++";
+static NSString * const shellHeaderEndMarker = @"+++++ Cicerone +++++";
 
 @interface COHomebrewInterfaceListCall : NSObject
 
@@ -64,7 +64,7 @@ static NSString * const shellHeaderEndMarker = @"+++++ Bruh +++++";
 @end
 
 /* this class used to use
-dispatch_queue_create("oaVa-o.Bruh.COHomebrewInterface.Tasks", dispatch_queue_attr_make_with_qos_class(DISPATCH_QUEUE_CONCURRENT,
+dispatch_queue_create("oaVa-o.Cicerone.COHomebrewInterface.Tasks", dispatch_queue_attr_make_with_qos_class(DISPATCH_QUEUE_CONCURRENT,
                                                                                                            QOS_CLASS_USER_INITIATED,
                                                                                                            -5));
 to pass to async tasks, even though this never happened, to run the update blocks on, the output of which were only ever used in the case of list commands
@@ -419,7 +419,7 @@ to pass to async tasks, even though this never happened, to run the update block
 
 // supposedly this command sends errors over standard output and no output on success? highly dubious.
 // this method used to return an error on output with fatal: or Error:
-// [NSError errorWithDomain:@"Bruh"
+// [NSError errorWithDomain:@"Cicerone"
 //                     code:2701
 //                 userInfo:@{NSLocalizedDescriptionKey: errorLine}];
 

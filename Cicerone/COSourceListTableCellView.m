@@ -1,6 +1,6 @@
 //
 //  COSourceListTableCellView.m
-//  Bruh
+//  Cicerone
 //
 //  Created by Alexander Yan on 2024-05-29.
 //  Copyright © 2024 oaVa-o. All rights reserved.

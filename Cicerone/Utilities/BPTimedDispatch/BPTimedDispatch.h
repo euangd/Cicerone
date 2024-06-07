@@ -1,5 +1,5 @@
 //
-//  CiTimedDispatch.h
+//  COTimedDispatch.h
 //  Cicerone
 //
 //  Created by Bruno Philipe on 4/17/15.

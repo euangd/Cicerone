@@ -14,10 +14,10 @@
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <menu title="AMainMenu" systemMenu="main" id="29">
             <items>
-                <menuItem title="Bruh" id="56">
-                    <menu key="submenu" title="Bruh" systemMenu="apple" id="57">
+                <menuItem title="Cicerone" id="56">
+                    <menu key="submenu" title="Cicerone" systemMenu="apple" id="57">
                         <items>
-                            <menuItem title="About Bruh" id="58">
+                            <menuItem title="About Cicerone" id="58">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <connections>
                                     <action selector="showAboutWindow:" target="494" id="z48-Z9-LW3"/>
@@ -51,7 +51,7 @@
                             <menuItem isSeparatorItem="YES" id="144">
                                 <modifierMask key="keyEquivalentModifierMask" command="YES"/>
                             </menuItem>
-                            <menuItem title="Hide Bruh" keyEquivalent="h" id="134">
+                            <menuItem title="Hide Cicerone" keyEquivalent="h" id="134">
                                 <connections>
                                     <action selector="hide:" target="-1" id="367"/>
                                 </connections>
@@ -68,7 +68,7 @@
                                 </connections>
                             </menuItem>
                             <menuItem isSeparatorItem="YES" id="G6K-O4-GYJ"/>
-                            <menuItem title="Quit Bruh" keyEquivalent="q" id="136">
+                            <menuItem title="Quit Cicerone" keyEquivalent="q" id="136">
                                 <connections>
                                     <action selector="terminate:" target="-3" id="449"/>
                                 </connections>
@@ -662,7 +662,7 @@ CA
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <menu key="submenu" title="Help" systemMenu="help" id="491">
                         <items>
-                            <menuItem title="Bruh Help" keyEquivalent="?" id="492">
+                            <menuItem title="Cicerone Help" keyEquivalent="?" id="492">
                                 <connections>
                                     <action selector="showHelp:" target="-1" id="493"/>
                                 </connections>
@@ -676,7 +676,7 @@ CA
             </connections>
             <point key="canvasLocation" x="-235" y="154"/>
         </menu>
-        <window title="Bruh" separatorStyle="none" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" frameAutosaveName="MainWindow" animationBehavior="default" tabbingMode="disallowed" id="371" userLabel="Bruh" customClass="COWindow">
+        <window title="Cicerone" separatorStyle="none" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" frameAutosaveName="MainWindow" animationBehavior="default" tabbingMode="disallowed" id="371" userLabel="Cicerone" customClass="COWindow">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES" fullSizeContentView="YES"/>
             <windowCollectionBehavior key="collectionBehavior" fullScreenPrimary="YES"/>
             <rect key="contentRect" x="629" y="349" width="826" height="439"/>
@@ -942,7 +942,7 @@ CA
                             <rect key="frame" x="0.0" y="0.0" width="396" height="264"/>
                             <clipView key="contentView" focusRingType="none" copiesOnScroll="NO" id="6nf-zO-0ou">
                                 <rect key="frame" x="0.0" y="0.0" width="396" height="264"/>
-                                <autoresizingMask key="autoresizingMask"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <subviews>
                                     <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" alternatingRowBackgroundColors="YES" columnReordering="NO" multipleSelection="NO" autosaveColumns="NO" headerView="pLZ-e2-9bs" id="swO-GD-dpc" customClass="COFormulaeTableView">
                                         <rect key="frame" x="0.0" y="0.0" width="546" height="241"/>
@@ -1112,7 +1112,7 @@ CA
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <clipView key="contentView" drawsBackground="NO" id="xPi-so-Sop">
                 <rect key="frame" x="0.0" y="0.0" width="210" height="275"/>
-                <autoresizingMask key="autoresizingMask"/>
+                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                 <subviews>
                     <outlineView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" selectionHighlightStyle="sourceList" columnReordering="NO" multipleSelection="NO" autosaveColumns="NO" rowHeight="24" rowSizeStyle="systemDefault" viewBased="YES" indentationPerLevel="13" outlineTableColumn="Dme-LE-cyv" id="9f4-xo-e1c" customClass="PXSourceList">
                         <rect key="frame" x="0.0" y="0.0" width="210" height="275"/>

@@ -78,7 +78,7 @@
                     <rect key="frame" x="-1" y="-1" width="402" height="234"/>
                     <clipView key="contentView" drawsBackground="NO" id="6br-2h-BB7">
                         <rect key="frame" x="1" y="1" width="400" height="232"/>
-                        <autoresizingMask key="autoresizingMask"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <textView editable="NO" importsGraphics="NO" richText="NO" verticallyResizable="YES" findStyle="bar" incrementalSearchingEnabled="YES" allowsNonContiguousLayout="YES" id="ZcW-pB-23F" customClass="COAutoScrollTextView">
                                 <rect key="frame" x="0.0" y="0.0" width="400" height="232"/>

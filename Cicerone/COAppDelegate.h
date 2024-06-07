@@ -1,6 +1,6 @@
 //
 //	AppDelegate.h
-//	Bruh – The Homebrew GUI App for OS X
+//	Cicerone – The Homebrew GUI App for OS X
 //
 //	Created by Vincent Saluzzo on 06/12/11.
 //	Copyright (c) 2014 Bruno Philipe. All rights reserved.
@@ -25,7 +25,7 @@
 
 extern NSString *const kCO_HOMEBREW_PATH;
 extern NSString *const kCO_HOMEBREW_PATH_KEY;
-extern NSString *const kCO_Bruh_WEBSITE;
+extern NSString *const kCO_Cicerone_WEBSITE;
 
 @interface COAppDelegate : NSObject <NSApplicationDelegate>
 

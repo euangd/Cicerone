@@ -1,6 +1,6 @@
 //
 //	BrewInterface.h
-//	Bruh – The Homebrew GUI App for OS X
+//	Cicerone – The Homebrew GUI App for OS X
 //
 //  Created by Marek Hrusovsky on 24/08/15.
 //	Copyright (c) 2014 Bruno Philipe. All rights reserved.

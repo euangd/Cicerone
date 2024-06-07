@@ -63,7 +63,7 @@
                                 <rect key="frame" x="0.0" y="97" width="440" height="151"/>
                                 <clipView key="contentView" focusRingType="none" id="axm-h7-5Uc">
                                     <rect key="frame" x="1" y="1" width="438" height="149"/>
-                                    <autoresizingMask key="autoresizingMask"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <tableView focusRingType="none" verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" columnSelection="YES" multipleSelection="NO" autosaveColumns="NO" headerView="3Ww-t9-yNY" id="5A9-PF-xAL">
                                             <rect key="frame" x="0.0" y="0.0" width="438" height="126"/>
