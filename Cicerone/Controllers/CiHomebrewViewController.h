@@ -60,8 +60,8 @@ typedef NS_ENUM(NSUInteger, CiWindowOperation) {
 
 @property (nonatomic, readonly) CiFormula *selectedFormula; // used to be (copy) but then -[setSelectedFormula:] would freeze, at least when @synchronized (self) up the call stack
 
-- (IBAction)showFormulaInfo:(id)sender;
-- (IBAction)installFormulaWithOptions:(id)sender;
+- (IBAction)showSelectedFormulaInfo:(id)sender;
+- (IBAction)installSelectedFormulaWithOptions:(id)sender;
 - (IBAction)upgradeSelectedFormulae:(id)sender;
 - (IBAction)upgradeAllOutdatedFormulae:(id)sender;
 - (IBAction)openSelectedFormulaWebsite:(id)sender;

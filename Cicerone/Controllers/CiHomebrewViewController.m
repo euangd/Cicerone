@@ -19,6 +19,7 @@
 //	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
+// this file kinda begs for a rewrite
 
 #import "CiFormula.h"
 #import "CiFormulaOptionsWindowController.h"
@@ -246,7 +247,7 @@ NSOpenSavePanelDelegate>
     [self.sidebarController selectSidebarRowWithIndex:kCiSidebarRowInstalledFormulae];
     
     [self addToolbar];
-        
+    
     self.loading = YES;
     
     _appDelegate = CiAppDelegateRef;
@@ -530,8 +531,8 @@ NSOpenSavePanelDelegate>
 - (void)homebrewManagerWillLoadHomebrewPrefixState:(CiHomebrewManager *)manager
 {
     // set the content view to a loading screen and lock the UI only if the current content view is unrelated to the
-//    if (!hasOperationPopup) {
-//    }
+    //    if (!hasOperationPopup) {
+    //    }
     self.loading = YES;
 }
 
@@ -742,7 +743,7 @@ apply:
 
 #pragma mark - IBActions
 
-- (IBAction)showFormulaInfo:(id)sender
+- (IBAction)showSelectedFormulaInfo:(id)sender
 {
     [self showFormulaInfoForCurrentlySelectedFormulaUsingInfoType:kCiFormulaInfoTypeGeneral];
 }
@@ -783,7 +784,7 @@ apply:
     }
 }
 
-- (IBAction)installFormulaWithOptions:(id)sender
+- (IBAction)installSelectedFormulaWithOptions:(id)sender
 {
     [self checkForBackgroundTask];
     
@@ -796,6 +797,40 @@ apply:
     self.formulaOptionsWindowController = [CiFormulaOptionsWindowController runFormula:formula withCompletionBlock:^(NSArray *options) {
         self.operationWindowController = [CiInstallationWindowController runWithOperation:kCiWindowOperationInstall formulae:@[formula] options:options];
     }];
+}
+
+- (IBAction)removeSelectedListing:(id)sender
+{
+    switch (self.listMode) {
+        case kCiListModeRepositories:
+            return [self untapSelectedRepository:sender];
+            
+        default:
+            return [self uninstallSelectedFormula:sender];
+    }
+}
+
+- (IBAction)untapSelectedRepository:(id)sender
+{
+    [self checkForBackgroundTask];
+    CiFormula *formula = [self selectedFormula];
+    
+    if (!formula)
+    {
+        return;
+    }
+    
+    NSAlert *alert = [[NSAlert alloc] init];
+    [alert setMessageText:NSLocalizedString(@"Message_Untap_Title", nil)];
+    [alert addButtonWithTitle:NSLocalizedString(@"Generic_OK", nil)];
+    [alert addButtonWithTitle:NSLocalizedString(@"Generic_Cancel", nil)];
+    [alert setInformativeText:[NSString stringWithFormat:NSLocalizedString(@"Message_Untap_Body", nil), formula.name]];
+    [alert.window setTitle:NSLocalizedString(@"Cicerone", nil)];
+    
+    if ([alert runModal] == NSAlertFirstButtonReturn)
+    {
+        self.operationWindowController = [CiInstallationWindowController runWithOperation:kCiWindowOperationUntap formulae:@[formula] options:nil];
+    }
 }
 
 - (IBAction)uninstallSelectedFormula:(id)sender
@@ -892,40 +927,6 @@ apply:
     }
 }
 
-- (IBAction)removeSelectedListing:(id)sender
-{
-    switch (self.listMode) {
-        case kCiListModeRepositories:
-            return [self untapSelectedRepository:sender];
-
-        default:
-            return [self uninstallSelectedFormula:sender];
-    }
-}
-
-- (IBAction)untapSelectedRepository:(id)sender
-{
-    [self checkForBackgroundTask];
-    CiFormula *formula = [self selectedFormula];
-    
-    if (!formula)
-    {
-        return;
-    }
-    
-    NSAlert *alert = [[NSAlert alloc] init];
-    [alert setMessageText:NSLocalizedString(@"Message_Untap_Title", nil)];
-    [alert addButtonWithTitle:NSLocalizedString(@"Generic_OK", nil)];
-    [alert addButtonWithTitle:NSLocalizedString(@"Generic_Cancel", nil)];
-    [alert setInformativeText:[NSString stringWithFormat:NSLocalizedString(@"Message_Untap_Body", nil), formula.name]];
-    [alert.window setTitle:NSLocalizedString(@"Cicerone", nil)];
-    
-    if ([alert runModal] == NSAlertFirstButtonReturn)
-    {
-        self.operationWindowController = [CiInstallationWindowController runWithOperation:kCiWindowOperationUntap formulae:@[formula] options:nil];
-    }
-}
-
 - (IBAction)openSelectedFormulaWebsite:(id)sender
 {
     CiFormula *formula = [self selectedFormula];
@@ -950,14 +951,11 @@ apply:
     }
 }
 
-- (void)infoForSelectedFormula:(id)sender { 
-    [self showFormulaInfo:sender];
-}
-
 - (void)update:(id)sender {
     [self.sidebarController selectSidebarRowWithIndex:kCiSidebarRowUpdate];
     [self.updateViewController runStopUpdate:nil];
 }
+
 
 - (IBAction)beginFormulaSearch:(id)sender
 {

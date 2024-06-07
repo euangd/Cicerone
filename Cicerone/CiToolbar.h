@@ -26,24 +26,29 @@ extern NSString *const kToolbarIdentifier;
 extern NSString *const kToolbarItemBrewUpdateToolIdentifier;
 extern NSString *const kToolbarItemBrewInfoToolIdentifier;
 extern NSString *const kToolbarItemSearchIdentifier;
-extern NSString *const kToolbarItemMultiActionIdentifier;
 extern NSString *const kToolbarItemBewTapToolIdentifier;
+extern NSString *const kToolbarItemRemoveListingIdentifier;
+extern NSString *const kToolbarItemInstallLatestPackageVersionIdentifier;
+extern NSString *const kToolbarItemConfigurePackageOptionsIdentifier;
 
 @protocol CiToolbarProtocol <NSObject>
 
 @required
-- (void)update:(id)sender;
-- (void)upgradeSelectedFormulae:(id)sender;
-- (void)infoForSelectedFormula:(id)sender;
-- (void)tap:(id)sender;
-- (void)removeSelectedListing:(id)sender;
-- (void)untapSelectedRepository:(id)sender;
-- (void)installSelectedFormula:(id)sender;
-- (void)uninstallSelectedFormula:(id)sender;
+
+- (IBAction)upgradeSelectedFormulae:(id)sender;
+- (IBAction)showSelectedFormulaInfo:(id)sender;
+- (IBAction)tap:(id)sender;
+- (IBAction)removeSelectedListing:(id)sender;
+- (IBAction)untapSelectedRepository:(id)sender;
+- (IBAction)installSelectedFormula:(id)sender;
+- (IBAction)installSelectedFormulaWithOptions:(id)sender;
+- (IBAction)uninstallSelectedFormula:(id)sender;
+- (IBAction)update:(id)sender;
 
 - (void)performSearchWithString:(NSString *)search;
 
 - (void)actualizeToolbarItem:(NSToolbarItem *)item;
+
 @end
 
 @interface CiToolbar : NSToolbar <NSToolbarDelegate, NSToolbarItemValidation>
@@ -54,6 +59,7 @@ typedef NS_ENUM(NSUInteger, CiToolbarMode)
 {
 	kCiToolbarModeDud,
     
+    /// any page, nothing selected
 	kCiToolbarModeCore,
     
 	kCiToolbarModeNotInstalledPackage,
@@ -61,6 +67,7 @@ typedef NS_ENUM(NSUInteger, CiToolbarMode)
     
 	kCiToolbarModeOutdatedPackage,
     
+    /// added taps page, nothing selected
 	kCiToolbarModeTap,
 	kCiToolbarModeTappedRepository
 };
@@ -70,7 +77,7 @@ typedef NS_ENUM(NSUInteger, CiToolbarMode)
 @property (nonatomic, weak) id homebrewViewController;
 
 - (void)showSearch;
-- (NSSearchField*)searchField;
+- (NSSearchField *)searchField;
 
 - (void)actualizeVisibleItems;
 - (void)actualizeToolbarItem:(NSToolbarItem *)item;

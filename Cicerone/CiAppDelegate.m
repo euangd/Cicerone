@@ -33,7 +33,9 @@ NSString *const kCi_CICERONE_WEBSITE = @"https://github.com/TheFanatr/Cicerone";
 @end
 
 @interface CiAppDelegate (SignalHandler)
+
 - (void)setupSignalHandler;
+
 @end
 
 @implementation CiAppDelegate

@@ -23,24 +23,24 @@
 #import "CiStyle.h"
 #import "CiAppDelegate.h"
 
-// keeping the values the same in case they are used in XIB, todo: check this; seems to be overridden here in init code versus the value given from HomebrewViewController
+NSString *const kToolbarIdentifier = @"ToolbarListingsOperations";
 
-NSString *const kToolbarIdentifier = @"toolbarIdentifier";
+NSString *const kToolbarItemBrewUpdateToolIdentifier = @"ToolbarItemHomebrewUpdate";
+NSString *const kToolbarItemBrewInfoToolIdentifier = @"ToolbarItemInformation";
+NSString *const kToolbarItemSearchIdentifier = @"ToolbarItemSearch";
+NSString *const kToolbarItemBrewTapToolIdentifier = @"ToolbarItemTap";
+NSString *const kToolbarItemRemoveListingIdentifier = @"ToolbarItemRemoveListing";
+NSString *const kToolbarItemInstallLatestPackageVersionIdentifier = @"ToolbarItemInstallLatestPackageVersion";
+NSString *const kToolbarItemConfigurePackageOptionsIdentifier = @"ToolbarItemConfigurePackageOptions";
 
-NSString *const kToolbarItemBrewUpdateToolIdentifier = @"toolbarItemHomebrewUpdate";
-NSString *const kToolbarItemBrewInfoToolIdentifier = @"toolbarItemInformation";
-NSString *const kToolbarItemSearchIdentifier = @"toolbarItemSearch";
-NSString *const kToolbarItemMultiActionIdentifier = @"toolbarItemMultiAction";
-NSString *const kToolbarItemBrewTapToolIdentifier = @"toolbarItemTap";
-
-@interface CiToolbar() <NSSearchFieldDelegate, NSToolbarItemValidation>
+@interface CiToolbar () <NSSearchFieldDelegate, NSToolbarItemValidation>
 
 @property (strong) NSSearchField *searchField;
 
 @property (nonatomic) NSArray *systemToolbarItemIdentifiers;
 @property (nonatomic, strong) NSDictionary<NSString *, NSToolbarItem *> *customToolbarItemsLookup;
 
-@property (nonatomic) NSToolbarItem *brewTapToolToolbarItem, *brewUpdateToolToolbarItem, *brewInfoToolToolbarItem, *multiActionToolbarItem;
+@property (nonatomic) NSToolbarItem *brewTapToolToolbarItem, *brewUpdateToolToolbarItem, *brewInfoToolToolbarItem, *installLatestPackageVersionToolbarItem, *configurePackageOptionsToolbarItem, *removeListingToolbarItem;
 @property (nonatomic) NSSearchToolbarItem *searchToolbarItem;
 
 @end
@@ -81,15 +81,31 @@ NSString *const kToolbarItemBrewTapToolIdentifier = @"toolbarItemTap";
         case kCiToolbarModeTappedRepository:
             return NO;
         }
-    } else if ([item.itemIdentifier isEqualToString:kToolbarItemMultiActionIdentifier]) {
+    } else if ([item.itemIdentifier isEqualToString:kToolbarItemInstallLatestPackageVersionIdentifier]) {
+        switch (self.mode) {
+            case kCiToolbarModeOutdatedPackage:
+            case kCiToolbarModeNotInstalledPackage:
+                return YES;
+                
+            default:
+                return NO;
+        }
+    } else if ([item.itemIdentifier isEqualToString:kToolbarItemConfigurePackageOptionsIdentifier]) {
         switch (self.mode) {
             case kCiToolbarModeCore:
             case kCiToolbarModeTap:
+            case kCiToolbarModeTappedRepository:
+                return NO;
+        }
+    } else if ([item.itemIdentifier isEqualToString:kToolbarItemRemoveListingIdentifier]) {
+        switch (self.mode) {
+            case kCiToolbarModeCore:
+            case kCiToolbarModeNotInstalledPackage:
                 return NO;
         }
     }
     
-    return item.enabled = YES;
+    return YES;
 }
 
 - (void)disableToolbarItem:(NSToolbarItem *)item withTarget:(id)target withValidation:(BOOL)valid
@@ -144,31 +160,72 @@ NSString *const kToolbarItemBrewTapToolIdentifier = @"toolbarItemTap";
 
 - (void)actualizeToolbarItem:(NSToolbarItem *)item
 {
-    if ([item.itemIdentifier isEqualToString:kToolbarItemMultiActionIdentifier]) {
+    if ([item.itemIdentifier isEqualToString:kToolbarItemInstallLatestPackageVersionIdentifier]) {
         switch (self.mode) {
+            case kCiToolbarModeInstalledPackage:
             case kCiToolbarModeNotInstalledPackage:
-                [self modifyToolbarItem:_multiActionToolbarItem withVisual:[CiStyle toolbarImageForInstall] withLabel:NSLocalizedString(@"Toolbar_Install_Formula", nil)
+                [self modifyToolbarItem:item
+                             withVisual:[CiStyle toolbarImageForInstall]
+                              withLabel:NSLocalizedString(@"Toolbar_Install_Formula", nil)
                              withAction:@selector(installSelectedFormula:)];
                 break;
                 
-            case kCiToolbarModeInstalledPackage:
-                [self modifyToolbarItem:_multiActionToolbarItem withVisual:[CiStyle toolbarImageForUninstall] withLabel:NSLocalizedString(@"Toolbar_Uninstall_Formula", nil)
-                             withAction:@selector(uninstallSelectedFormula:)];
-                break;
-                
-            case kCiToolbarModeTappedRepository:
-                [self modifyToolbarItem:_multiActionToolbarItem withVisual:[CiStyle toolbarImageForUntap] withLabel:NSLocalizedString(@"Toolbar_Untap_Repo", nil)
-                             withAction:@selector(untapSelectedRepository:)];
-                break;
-                
             case kCiToolbarModeOutdatedPackage:
-                [self modifyToolbarItem:_multiActionToolbarItem withVisual:[CiStyle toolbarImageForUpgrade] withLabel:NSLocalizedString(@"Toolbar_Update_Selected", nil) // Toolbar_Update_Formula
+                [self modifyToolbarItem:item
+                             withVisual:[CiStyle toolbarImageForUpgrade]
+                              withLabel:NSLocalizedString(@"Toolbar_Update_Selected", nil) // Toolbar_Update_Formula
                              withAction:@selector(upgradeSelectedFormulae:)];
                 break;
                 
             default:
-                [self modifyToolbarItem:_multiActionToolbarItem withVisual:[NSImage imageWithSystemSymbolName:@"plus" accessibilityDescription:@"more actions"] withLabel:@"Add Item"
+                [self modifyToolbarItem:item
+                             withVisual:[NSImage imageWithSystemSymbolName:@"plus" accessibilityDescription:@"add listing"]
+                              withLabel:@"Add Item"
                              withAction:@selector(installSelectedFormula:)];
+                break;
+        }
+    } else if ([item.itemIdentifier isEqualToString:kToolbarItemConfigurePackageOptionsIdentifier]) {
+        switch (self.mode) {
+            case kCiToolbarModeInstalledPackage:
+            case kCiToolbarModeNotInstalledPackage:
+            case kCiToolbarModeOutdatedPackage:
+                [self modifyToolbarItem:item
+                             withVisual:[NSImage imageWithSystemSymbolName:@"gearshape.2.fill" accessibilityDescription:@"configure"]
+                              withLabel:@"Install with Options"
+                             withAction:@selector(installSelectedFormulaWithOptions:)];
+                break;
+                
+            default:
+                [self modifyToolbarItem:item
+                             withVisual:[NSImage imageWithSystemSymbolName:@"ellipsis" accessibilityDescription:@"more"]
+                              withLabel:@"Options"
+                             withAction:@selector(installSelectedFormulaWithOptions:)];
+                break;
+        }
+    } else if ([item.itemIdentifier isEqualToString:kToolbarItemRemoveListingIdentifier]) {
+        switch (self.mode) {
+            case kCiToolbarModeNotInstalledPackage:
+            case kCiToolbarModeOutdatedPackage:
+            case kCiToolbarModeInstalledPackage:
+                [self modifyToolbarItem:item
+                             withVisual:[CiStyle toolbarImageForUninstall]
+                              withLabel:NSLocalizedString(@"Toolbar_Uninstall_Formula", nil)
+                             withAction:@selector(uninstallSelectedFormula:)];
+                break;
+                
+            case kCiToolbarModeTap:
+            case kCiToolbarModeTappedRepository:
+                [self modifyToolbarItem:item
+                             withVisual:[CiStyle toolbarImageForUntap]
+                              withLabel:NSLocalizedString(@"Toolbar_Untap_Repo", nil)
+                             withAction:@selector(untapSelectedRepository:)];
+                break;
+                
+            default:
+                [self modifyToolbarItem:item
+                             withVisual:[NSImage imageWithSystemSymbolName:@"minus" accessibilityDescription:@"remove listing"]
+                              withLabel:@"Remove Item"
+                             withAction:@selector(removeSelectedListing:)];
                 break;
         }
     }
@@ -197,7 +254,9 @@ NSString *const kToolbarItemBrewTapToolIdentifier = @"toolbarItemTap";
         kToolbarItemBrewTapToolIdentifier,
         NSToolbarSidebarTrackingSeparatorItemIdentifier,
         NSToolbarFlexibleSpaceItemIdentifier,
-        kToolbarItemMultiActionIdentifier,
+        kToolbarItemInstallLatestPackageVersionIdentifier,
+        kToolbarItemConfigurePackageOptionsIdentifier,
+        kToolbarItemRemoveListingIdentifier,
         NSToolbarFlexibleSpaceItemIdentifier,
         kToolbarItemBrewInfoToolIdentifier,
         kToolbarItemSearchIdentifier,
@@ -212,7 +271,9 @@ NSString *const kToolbarItemBrewTapToolIdentifier = @"toolbarItemTap";
         kToolbarItemBrewUpdateToolIdentifier,
         kToolbarItemBrewInfoToolIdentifier,
         kToolbarItemSearchIdentifier,
-        kToolbarItemMultiActionIdentifier,
+        kToolbarItemInstallLatestPackageVersionIdentifier,
+        kToolbarItemConfigurePackageOptionsIdentifier,
+        kToolbarItemRemoveListingIdentifier,
         kToolbarItemBrewTapToolIdentifier
     ]];
 }
@@ -234,27 +295,54 @@ NSString *const kToolbarItemBrewTapToolIdentifier = @"toolbarItemTap";
 
 - (NSDictionary *)customToolbarItemsLookup
 {
-	if (!_customToolbarItemsLookup)
-	{
+	if (!_customToolbarItemsLookup) {
 		_customToolbarItemsLookup = @{
-            kToolbarItemBrewTapToolIdentifier :self.brewTapToolToolbarItem,
-            kToolbarItemBrewUpdateToolIdentifier :self.brewUpdateToolToolbarItem,
-            kToolbarItemBrewInfoToolIdentifier : self.brewInfoToolToolbarItem,
-            kToolbarItemSearchIdentifier : self.searchToolbarItem,
-            kToolbarItemMultiActionIdentifier : self.multiActionToolbarItem
+            kToolbarItemBrewTapToolIdentifier: self.brewTapToolToolbarItem,
+            kToolbarItemBrewUpdateToolIdentifier: self.brewUpdateToolToolbarItem,
+            kToolbarItemBrewInfoToolIdentifier: self.brewInfoToolToolbarItem,
+            kToolbarItemSearchIdentifier: self.searchToolbarItem,
+            kToolbarItemInstallLatestPackageVersionIdentifier: self.installLatestPackageVersionToolbarItem,
+            kToolbarItemConfigurePackageOptionsIdentifier: self.configurePackageOptionsToolbarItem,
+            kToolbarItemRemoveListingIdentifier: self.removeListingToolbarItem
         };
 	}
     
 	return _customToolbarItemsLookup;
 }
 
+- (NSToolbarItem *)installLatestPackageVersionToolbarItem
+{
+    if (!_installLatestPackageVersionToolbarItem) {
+        _installLatestPackageVersionToolbarItem = [self uniqueActualizedToolbarItemWithIdentifier:kToolbarItemInstallLatestPackageVersionIdentifier];
+    }
+    
+    return _installLatestPackageVersionToolbarItem;
+}
+
+- (NSToolbarItem *)configurePackageOptionsToolbarItem
+{
+    if (!_configurePackageOptionsToolbarItem) {
+        _configurePackageOptionsToolbarItem = [self uniqueActualizedToolbarItemWithIdentifier:kToolbarItemConfigurePackageOptionsIdentifier];
+    }
+    
+    return _configurePackageOptionsToolbarItem;
+}
+
+- (NSToolbarItem *)removeListingToolbarItem
+{
+    if (!_removeListingToolbarItem) {
+        _removeListingToolbarItem = [self uniqueActualizedToolbarItemWithIdentifier:kToolbarItemRemoveListingIdentifier];
+    }
+    
+    return _removeListingToolbarItem;
+}
+
 - (NSToolbarItem *)brewTapToolToolbarItem
 {
-    if (!_brewTapToolToolbarItem)
-    {
+    if (!_brewTapToolToolbarItem) {
         _brewTapToolToolbarItem = [self toolbarItemWithIdentifier:kToolbarItemBrewTapToolIdentifier
                                                        withVisual:[CiStyle toolbarImageForTap]
-                                                 withPaletteLabel:NSLocalizedString(@"Toolbar_Tap_Repo", nil)
+                                                 withPalettedLabel:NSLocalizedString(@"Toolbar_Tap_Repo", nil)
                                                        withAction:@selector(tap:)];
     }
     
@@ -267,7 +355,7 @@ NSString *const kToolbarItemBrewTapToolIdentifier = @"toolbarItemTap";
 	{
         _brewUpdateToolToolbarItem = [self toolbarItemWithIdentifier:kToolbarItemBrewUpdateToolIdentifier
                                                           withVisual:[CiStyle toolbarImageForUpdate]
-                                                    withPaletteLabel:NSLocalizedString(@"Toolbar_Homebrew_Update", nil)
+                                                    withPalettedLabel:NSLocalizedString(@"Toolbar_Homebrew_Update", nil)
                                                           withAction:@selector(update:)];
 	}
     
@@ -280,23 +368,11 @@ NSString *const kToolbarItemBrewTapToolIdentifier = @"toolbarItemTap";
 	{
 		_brewInfoToolToolbarItem = [self toolbarItemWithIdentifier:kToolbarItemBrewInfoToolIdentifier
                                                         withVisual:[CiStyle toolbarImageForMoreInformation]
-                                                  withPaletteLabel:NSLocalizedString(@"Toolbar_More_Information", nil)
-                                                        withAction:@selector(infoForSelectedFormula:)];
+                                                  withPalettedLabel:NSLocalizedString(@"Toolbar_More_Information", nil)
+                                                        withAction:@selector(showSelectedFormulaInfo:)];
 	}
     
 	return _brewInfoToolToolbarItem;
-}
-
-
-- (NSToolbarItem *)multiActionToolbarItem
-{
-    if (!_multiActionToolbarItem)
-    {
-        _multiActionToolbarItem = [self toolbarItemWithIdentifier:kToolbarItemMultiActionIdentifier withVisual:nil withPaletteLabel:nil withAction:nil];
-        [self actualizeToolbarItem:_multiActionToolbarItem];
-    }
-    
-	return _multiActionToolbarItem;
 }
 
 - (NSSearchToolbarItem *)searchToolbarItem
@@ -327,7 +403,15 @@ NSString *const kToolbarItemBrewTapToolIdentifier = @"toolbarItemTap";
 	[[searchView window] makeFirstResponder:searchView];
 }
 
-- (NSToolbarItem *)toolbarItemWithIdentifier:(NSString *)identifier withVisual:(NSImage *)image withPaletteLabel:(NSString *)label withAction:(SEL)action
+- (NSToolbarItem *)uniqueActualizedToolbarItemWithIdentifier:(NSString *)identifier
+{
+    NSToolbarItem *toolbarItem = [self toolbarItemWithIdentifier:identifier withVisual:nil withPalettedLabel:nil withAction:nil];
+    [self actualizeToolbarItem:toolbarItem];
+    
+    return toolbarItem;
+}
+
+- (NSToolbarItem *)toolbarItemWithIdentifier:(NSString *)identifier withVisual:(NSImage *)image withPalettedLabel:(NSString *)label withAction:(SEL)action
 {
     NSToolbarItem *item = [[NSToolbarItem alloc] initWithItemIdentifier:identifier];
     

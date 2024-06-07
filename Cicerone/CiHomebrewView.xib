@@ -117,7 +117,7 @@ DQ
 </string>
                                 <modifierMask key="keyEquivalentModifierMask" option="YES"/>
                                 <connections>
-                                    <action selector="installFormulaWithOptions:" target="547" id="0BB-I6-WDa"/>
+                                    <action selector="installSelectedFormulaWithOptions:" target="547" id="0BB-I6-WDa"/>
                                     <binding destination="547" name="enabled2" keyPath="isListingPackages" previousBinding="rjc-07-dtk" id="QEG-gt-Y8d">
                                         <dictionary key="options">
                                             <integer key="NSMultipleValuesPlaceholder" value="-1"/>
@@ -136,6 +136,15 @@ DQ
                             <menuItem title="Upgrade…" keyEquivalent="u" id="Ep8-j6-m5Q">
                                 <connections>
                                     <action selector="upgradeSelectedFormulae:" target="547" id="Bew-vq-VDK"/>
+                                    <binding destination="547" name="enabled" keyPath="hasUpgrades" id="cuz-Ef-kuW"/>
+                                    <binding destination="547" name="enabled2" keyPath="isListingPackages" previousBinding="cuz-Ef-kuW" id="NfP-Q4-U2k">
+                                        <dictionary key="options">
+                                            <integer key="NSMultipleValuesPlaceholder" value="-1"/>
+                                            <integer key="NSNoSelectionPlaceholder" value="-1"/>
+                                            <integer key="NSNotApplicablePlaceholder" value="-1"/>
+                                            <integer key="NSNullPlaceholder" value="-1"/>
+                                        </dictionary>
+                                    </binding>
                                     <binding destination="547" name="enabled3" keyPath="selectedFormula" previousBinding="NfP-Q4-U2k" id="9MU-Tu-LqF">
                                         <dictionary key="options">
                                             <integer key="NSMultipleValuesPlaceholder" value="-1"/>
@@ -154,15 +163,6 @@ DQ
                                         </dictionary>
                                     </binding>
                                     <binding destination="547" name="enabled5" keyPath="selectedFormula.outdated" previousBinding="ddB-jy-nTF" id="YfB-3i-IQl">
-                                        <dictionary key="options">
-                                            <integer key="NSMultipleValuesPlaceholder" value="-1"/>
-                                            <integer key="NSNoSelectionPlaceholder" value="-1"/>
-                                            <integer key="NSNotApplicablePlaceholder" value="-1"/>
-                                            <integer key="NSNullPlaceholder" value="-1"/>
-                                        </dictionary>
-                                    </binding>
-                                    <binding destination="547" name="enabled" keyPath="hasUpgrades" id="cuz-Ef-kuW"/>
-                                    <binding destination="547" name="enabled2" keyPath="isListingPackages" previousBinding="cuz-Ef-kuW" id="NfP-Q4-U2k">
                                         <dictionary key="options">
                                             <integer key="NSMultipleValuesPlaceholder" value="-1"/>
                                             <integer key="NSNoSelectionPlaceholder" value="-1"/>
@@ -198,7 +198,7 @@ CA
                             <menuItem isSeparatorItem="YES" id="Co2-VP-o4m"/>
                             <menuItem title="Show Information" keyEquivalent="i" id="eus-Jb-JjS">
                                 <connections>
-                                    <action selector="showFormulaInfo:" target="547" id="O1K-Cz-TGd"/>
+                                    <action selector="showSelectedFormulaInfo:" target="547" id="O1K-Cz-TGd"/>
                                     <binding destination="547" name="enabled2" keyPath="isListingPackages" previousBinding="kNw-uF-DZ5" id="Ygq-2w-OVq">
                                         <dictionary key="options">
                                             <integer key="NSMultipleValuesPlaceholder" value="-1"/>
@@ -676,7 +676,7 @@ CA
             </connections>
             <point key="canvasLocation" x="-235" y="154"/>
         </menu>
-        <window title="Cicerone" separatorStyle="none" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" frameAutosaveName="MainWindow" animationBehavior="default" id="371" userLabel="CIcerone" customClass="CiWindow">
+        <window title="Cicerone" separatorStyle="none" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" frameAutosaveName="MainWindow" animationBehavior="default" tabbingMode="disallowed" id="371" userLabel="CIcerone" customClass="CiWindow">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES" fullSizeContentView="YES"/>
             <windowCollectionBehavior key="collectionBehavior" fullScreenPrimary="YES"/>
             <rect key="contentRect" x="629" y="349" width="826" height="439"/>
@@ -721,7 +721,7 @@ CA
                 <menuItem title="Configure Options…" id="4CZ-OB-FIp">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <connections>
-                        <action selector="installFormulaWithOptions:" target="547" id="g49-k6-vTj"/>
+                        <action selector="installSelectedFormulaWithOptions:" target="547" id="g49-k6-vTj"/>
                         <binding destination="547" name="hidden" keyPath="isListingPackages" previousBinding="IEE-AW-NhX" id="Bcl-NW-4qQ">
                             <dictionary key="options">
                                 <string key="NSValueTransformerName">NSNegateBoolean</string>
@@ -738,6 +738,12 @@ CA
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <connections>
                         <action selector="upgradeSelectedFormulae:" target="547" id="60X-RF-YuO"/>
+                        <binding destination="547" name="enabled" keyPath="hasUpgrades" id="ttk-E2-f5P"/>
+                        <binding destination="547" name="hidden" keyPath="isListingPackages" previousBinding="Qhn-Lt-fZZ" id="jYV-OO-EWj">
+                            <dictionary key="options">
+                                <string key="NSValueTransformerName">NSNegateBoolean</string>
+                            </dictionary>
+                        </binding>
                         <binding destination="547" name="enabled2" keyPath="selectedFormula" previousBinding="ttk-E2-f5P" id="gIt-iy-0d4">
                             <dictionary key="options">
                                 <integer key="NSMultipleValuesPlaceholder" value="-1"/>
@@ -761,12 +767,6 @@ CA
                                 <integer key="NSNoSelectionPlaceholder" value="-1"/>
                                 <integer key="NSNotApplicablePlaceholder" value="-1"/>
                                 <integer key="NSNullPlaceholder" value="-1"/>
-                            </dictionary>
-                        </binding>
-                        <binding destination="547" name="enabled" keyPath="hasUpgrades" id="ttk-E2-f5P"/>
-                        <binding destination="547" name="hidden" keyPath="isListingPackages" previousBinding="Qhn-Lt-fZZ" id="jYV-OO-EWj">
-                            <dictionary key="options">
-                                <string key="NSValueTransformerName">NSNegateBoolean</string>
                             </dictionary>
                         </binding>
                     </connections>
@@ -811,7 +811,7 @@ CA
                 <menuItem title="Show Information" id="O9z-RR-JoW">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <connections>
-                        <action selector="showFormulaInfo:" target="547" id="u6S-bi-fMw"/>
+                        <action selector="showSelectedFormulaInfo:" target="547" id="u6S-bi-fMw"/>
                         <binding destination="547" name="hidden" keyPath="isListingPackages" previousBinding="6LN-rb-t8l" id="lQb-q9-wUW">
                             <dictionary key="options">
                                 <string key="NSValueTransformerName">NSNegateBoolean</string>
@@ -878,14 +878,14 @@ CA
                     <modifierMask key="keyEquivalentModifierMask" option="YES"/>
                     <connections>
                         <action selector="showFormulaDependents:" target="547" id="Utb-sm-R2X"/>
-                        <binding destination="547" name="enabled" keyPath="selectedFormula" id="ilo-lF-3AD">
-                            <dictionary key="options">
-                                <string key="NSValueTransformerName">NSIsNotNil</string>
-                            </dictionary>
-                        </binding>
                         <binding destination="547" name="hidden" keyPath="isListingPackages" previousBinding="ilo-lF-3AD" id="6AM-pw-cb4">
                             <dictionary key="options">
                                 <string key="NSValueTransformerName">NSNegateBoolean</string>
+                            </dictionary>
+                        </binding>
+                        <binding destination="547" name="enabled" keyPath="selectedFormula" id="ilo-lF-3AD">
+                            <dictionary key="options">
+                                <string key="NSValueTransformerName">NSIsNotNil</string>
                             </dictionary>
                         </binding>
                     </connections>
@@ -930,11 +930,11 @@ CA
             </connections>
         </customObject>
         <customObject id="thg-zu-BuQ" customClass="SUUpdater"/>
-        <splitView dividerStyle="thin" id="hkt-Ff-Ha2">
+        <splitView focusRingType="none" dividerStyle="thin" id="hkt-Ff-Ha2">
             <rect key="frame" x="0.0" y="0.0" width="396" height="354"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
-                <customView id="i6w-ej-a1P" userLabel="Formulae Table View">
+                <customView focusRingType="none" id="i6w-ej-a1P" userLabel="Formulae Table View">
                     <rect key="frame" x="0.0" y="0.0" width="396" height="264"/>
                     <autoresizingMask key="autoresizingMask"/>
                     <subviews>

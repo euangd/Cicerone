@@ -7,7 +7,7 @@
 //
 
 #import "CiFormulaeTableView.h"
-static void * CiFormulaeTableViewContext = &CiFormulaeTableViewContext;
+static void * kCiFormulaeTableViewContext = &kCiFormulaeTableViewContext;
 NSString * const kColumnIdentifierVersion = @"Version";
 NSString * const kColumnIdentifierLatestVersion = @"LatestVersion";
 NSString * const kColumnIdentifierStatus = @"Status";
@@ -22,7 +22,7 @@ unichar SPACE_CHARACTER = 0x0020;
 	[self addObserver:self
 		   forKeyPath:NSStringFromSelector(@selector(mode))
 			  options:NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew
-			  context:CiFormulaeTableViewContext];
+			  context:kCiFormulaeTableViewContext];
 }
 
 - (instancetype)initWithFrame:(NSRect)frameRect
@@ -146,7 +146,7 @@ unichar SPACE_CHARACTER = 0x0020;
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
-	if (context == CiFormulaeTableViewContext) {
+	if (context == kCiFormulaeTableViewContext) {
 		if ([object isEqualTo:self]) {
 			if([keyPath isEqualToString:NSStringFromSelector(@selector(mode))]){
 				[self configureTableForListing];
@@ -213,13 +213,13 @@ unichar SPACE_CHARACTER = 0x0020;
 	//On yosemite or later viewcontroller is part of responder chain
 	if (floor(NSAppKitVersionNumber) >= NSAppKitVersionNumber10_10)
 	{
-		[NSApp sendAction:@selector(infoForSelectedFormula:) to:nil from:self];
+		[NSApp sendAction:@selector(showSelectedFormulaInfo:) to:nil from:self];
 	}
 	else
 	{
-		if ([self.delegate respondsToSelector:@selector(infoForSelectedFormula:)])
+		if ([self.delegate respondsToSelector:@selector(showSelectedFormulaInfo:)])
 		{
-			[self.delegate performSelector:@selector(infoForSelectedFormula:) withObject:nil];
+			[self.delegate performSelector:@selector(showSelectedFormulaInfo:) withObject:nil];
 		}
 	}
 }
@@ -230,7 +230,7 @@ unichar SPACE_CHARACTER = 0x0020;
 {
 	[self removeObserver:self
 			  forKeyPath:NSStringFromSelector(@selector(mode))
-				 context:CiFormulaeTableViewContext];
+				 context:kCiFormulaeTableViewContext];
 }
 
 @end

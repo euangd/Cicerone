@@ -7,7 +7,7 @@
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="CiSelectedFormulaViewController">
             <connections>
-                <outlet property="formulaConflictsLabel" destination="zEv-zT-rkr" id="9NW-cy-0Rn"/>
+                <outlet property="formulaConflictsLabel" destination="Jdh-0W-l2m" id="h7l-1s-Ze8"/>
                 <outlet property="formulaDependenciesLabel" destination="0zJ-9h-wR5" id="4JG-ym-yKI"/>
                 <outlet property="formulaDescriptionLabel" destination="AJU-px-9sR" id="GP7-Wd-buf"/>
                 <outlet property="formulaPathLabel" destination="1Ud-Jm-0ek" id="mZs-Iy-hpv"/>
@@ -147,7 +147,7 @@
                                 <real value="3.4028234663852886e+38"/>
                             </customSpacing>
                         </stackView>
-                        <stackView distribution="fill" orientation="horizontal" alignment="top" spacing="9" horizontalStackHuggingPriority="750" verticalStackHuggingPriority="1000" horizontalHuggingPriority="750" verticalHuggingPriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="CrO-9B-2rv">
+                        <stackView distribution="fill" orientation="horizontal" alignment="top" horizontalStackHuggingPriority="750" verticalStackHuggingPriority="1000" horizontalHuggingPriority="750" verticalHuggingPriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="CrO-9B-2rv">
                             <rect key="frame" x="0.0" y="0.0" width="409" height="14"/>
                             <subviews>
                                 <textField horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="qga-yy-j75">
@@ -158,9 +158,9 @@
                                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                     </textFieldCell>
                                 </textField>
-                                <textField horizontalHuggingPriority="249" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="251" verticalCompressionResistancePriority="1000" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="zEv-zT-rkr">
-                                    <rect key="frame" x="91" y="0.0" width="320" height="14"/>
-                                    <textFieldCell key="cell" controlSize="small" selectable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" title="None" id="iSv-34-44i">
+                                <textField horizontalHuggingPriority="249" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="251" verticalCompressionResistancePriority="1000" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Jdh-0W-l2m">
+                                    <rect key="frame" x="90" y="0.0" width="321" height="14"/>
+                                    <textFieldCell key="cell" controlSize="small" selectable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" title="None" id="mFi-Pa-ZAu">
                                         <font key="font" metaFont="smallSystem"/>
                                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
@@ -207,7 +207,7 @@
                 <constraint firstItem="udO-g0-WC6" firstAttribute="leading" secondItem="GxG-TU-x9D" secondAttribute="leading" constant="8" id="XgX-ot-nAK"/>
                 <constraint firstItem="udO-g0-WC6" firstAttribute="top" secondItem="GxG-TU-x9D" secondAttribute="top" constant="6" id="dh9-LL-rg2"/>
             </constraints>
-            <point key="canvasLocation" x="265.5" y="149.5"/>
+            <point key="canvasLocation" x="250" y="125"/>
         </customView>
     </objects>
 </document>
