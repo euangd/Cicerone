@@ -73,12 +73,6 @@ NSString *const kCi_CICERONE_WEBSITE = @"https://github.com/TheFanatr/Cicerone";
 	return YES;
 }
 
-- (NSApplicationTerminateReply)applicationShouldTerminate:(NSApplication *)sender
-{
-	[[CiHomebrewManager sharedManager] cleanUp];
-	return NSTerminateNow;
-}
-
 - (BOOL)applicationShouldTerminateAfterLastWindowClosed:(NSApplication *)sender {
 	return YES;
 }
