@@ -101,6 +101,7 @@ NSString *const kToolbarItemConfigurePackageOptionsIdentifier = @"ToolbarItemCon
         switch (self.mode) {
             case kCOToolbarModeCore:
             case kCOToolbarModeNotInstalledPackage:
+            case kCOToolbarModeTap:
                 return NO;
         }
     }

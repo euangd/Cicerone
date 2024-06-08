@@ -93,36 +93,36 @@ static COCustomFormula *nmapFormula;
 
 + (void)initialize {
 	if (!ffmpegFormula) {
-		ffmpegFormula = [COCustomFormula formulaWithName:@"ffmpeg"];
+        ffmpegFormula = [COCustomFormula formulaWithName:@"ffmpeg" cask:NO];
 		[ffmpegFormula setNeedsInformation:YES];
 	}
 	
 	if (!mysqlFormula){
-		mysqlFormula = [COCustomFormula formulaWithName:@"mysql"];
+        mysqlFormula = [COCustomFormula formulaWithName:@"mysql" cask:NO];
 		[mysqlFormula setNeedsInformation:YES];
 	}
 	if (!perconaFormula) {
-		perconaFormula = [COCustomFormula formulaWithName:@"percona-server"];
+        perconaFormula = [COCustomFormula formulaWithName:@"percona-server" cask:NO];
 		[perconaFormula setNeedsInformation:YES];
 	}
 	if(!acmeFormula){
-		acmeFormula = [COCustomFormula formulaWithName:@"acme"];
+        acmeFormula = [COCustomFormula formulaWithName:@"acme" cask:NO];
 		[acmeFormula setNeedsInformation:YES];
 	}
 	if(!bfgFormula){
-		bfgFormula = [COCustomFormula formulaWithName:@"bfg"];
+        bfgFormula = [COCustomFormula formulaWithName:@"bfg" cask:NO];
 		[bfgFormula setNeedsInformation:YES];
 	}
 	if(!bisonFormula){
-		bisonFormula = [COCustomFormula formulaWithName:@"bison"];
+        bisonFormula = [COCustomFormula formulaWithName:@"bison" cask:NO];
 		[bisonFormula setNeedsInformation:YES];
 	}
 	if(!sbtenvFormula){
-		sbtenvFormula = [COCustomFormula formulaWithName:@"sbtenv"];
+        sbtenvFormula = [COCustomFormula formulaWithName:@"sbtenv" cask:NO];
 		[sbtenvFormula setNeedsInformation:YES];
 	}
 	if(!nmapFormula){
-		nmapFormula = [COCustomFormula formulaWithName:@"nmap"];
+        nmapFormula = [COCustomFormula formulaWithName:@"nmap" cask:NO];
 		[nmapFormula setNeedsInformation:YES];
 	}
 }
@@ -133,7 +133,7 @@ static COCustomFormula *nmapFormula;
 
 - (void)testFormulaCreation
 {
-	formula = [COFormula formulaWithName:@"abcde" version:@"1" andLatestVersion:@"2"];
+    formula = [COFormula formulaWithName:@"abcde" withVersion:@"1" withLatestVersion:@"2" cask:NO];
 	XCTAssertNotNil(formula, @"Formula failed to initialize");
 	XCTAssertTrue([formula.name isEqualToString:@"abcde"], @"Formula has invalid name");
 	XCTAssertTrue([formula.version isEqualToString:@"1"], @"Formula has invalid name");
@@ -142,7 +142,7 @@ static COCustomFormula *nmapFormula;
 
 - (void)testFormulaFullCopy
 {
-	formula = [COCustomFormula formulaWithName:@"fakeformula" version:@"1" andLatestVersion:@"2"];
+    formula = [COCustomFormula formulaWithName:@"fakeformula" withVersion:@"1" withLatestVersion:@"2" cask:NO];
 	[formula setNeedsInformation:YES];
 	COFormula *copiedFormula = [formula copy];
 	XCTAssertTrue([formula.name isEqualToString:copiedFormula.name] && [copiedFormula.name length] > 0, @"Name failed to copy");
@@ -306,7 +306,7 @@ static COCustomFormula *nmapFormula;
 
 - (void)testFormulaObserverAddition
 {
-	COCustomFormula *observerFormula = [COCustomFormula formulaWithName:@"acme"];
+	COCustomFormula *observerFormula = [COCustomFormula formulaWithName:@"acme" cask:NO];
 	XCTAssertTrue(observerFormula->observerAdded);
 	COCustomFormula *formulaCopy = [observerFormula copy];
 	XCTAssertTrue(formulaCopy->observerAdded);
@@ -314,8 +314,8 @@ static COCustomFormula *nmapFormula;
 
 - (void)testFormulaNotificationUpdate
 {
-	COCustomFormula *customFormula = [COCustomFormula formulaWithName:@"acme"];
-	XCTestExpectation __block *expectation = [self expectationForNotification:COFormulaDidUpdateNotification
+    COCustomFormula *customFormula = [COCustomFormula formulaWithName:@"acme" cask:NO];
+	XCTestExpectation __block *expectation = [self expectationForNotification:kCOFormulaDidUpdateNotification
 																	   object:customFormula
 																	  handler:^BOOL(NSNotification *notification)
 		{
