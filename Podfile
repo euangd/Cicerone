@@ -1,6 +1,7 @@
 $macOSVersion = '13.3'
+$NATIVE_ARCH=arm64
 
-platform :macos, $macOSVersion
+platform :macos, $macOSVersion, $NATIVE_ARCH
 workspace 'Cicerone'
 
 target 'Cicerone' do
