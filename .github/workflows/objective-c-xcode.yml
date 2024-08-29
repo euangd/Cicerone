@@ -20,10 +20,10 @@ jobs:
         run: sudo xcode-select -s /Applications/Xcode_14.3.app
 
       - name: Build and test
-        run: xcodebuild clean build -project Cicerone.xcodeproj -scheme CiceroneTests CODE_SIGNING_REQUIRED=NO test | xcpretty
+        run: xcodebuild clean build -project Cicerone.xcodeproj -scheme Cicerone CODE_SIGNING_REQUIRED=NO test | xcpretty
 
       - name: Archive the app
-        run: xcodebuild -project Cicerone.xcodeproj -scheme CiceroneTests -archivePath ${{ github.workspace }}/build/Cicerone.xcarchive archive
+        run: xcodebuild -project Cicerone.xcodeproj -scheme Cicerone -archivePath ${{ github.workspace }}/build/Cicerone.xcarchive archive
 
       - name: Export the .app file
         run: xcodebuild -exportArchive -archivePath ${{ github.workspace }}/build/Cicerone.xcarchive -exportPath ${{ github.workspace }}/build -exportOptionsPlist ExportOptions.plist
